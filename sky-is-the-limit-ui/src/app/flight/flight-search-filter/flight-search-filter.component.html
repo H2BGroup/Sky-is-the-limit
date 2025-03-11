@@ -24,6 +24,36 @@
     </div>
 
     <div class="input-group">
+      <label for="departure-date">Departure Date:</label>
+      <input
+        formControlName="departureDate"
+        type="date"
+        id="departure-date"
+        name="departure-date"
+      />
+    </div>
+
+    <div class="input-group">
+      <label for="arrival-date">Arrival Date:</label>
+      <input
+        formControlName="arrivalDate"
+        type="date"
+        id="arrival-date"
+        name="arrival-date"
+      />
+    </div>
+
+    <div class="input-group">
+      <label for="passengers">Passengers:</label>
+      <input
+        formControlName="passengers"
+        type="number"
+        id="passengers"
+        name="passengers"
+      />
+    </div>
+
+    <div class="input-group">
       <label for="price">Max Price:</label>
       <input
         formControlName="price"
@@ -34,7 +64,7 @@
         max="2000"
         step="50"
       />
-      <span id="price-value">1000</span>
+      <span id="price-value">50</span>
     </div>
 
     <button type="submit" [disabled]="filtersForm.invalid">Search</button>

@@ -3,16 +3,23 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-search-filter',
+  selector: 'app-flight-search-filter',
   imports: [ReactiveFormsModule],
-  templateUrl: './search-filter.component.html',
-  styleUrl: './search-filter.component.css',
+  templateUrl: './flight-search-filter.component.html',
+  styleUrl: './flight-search-filter.component.css',
 })
-export class SearchFilterComponent implements OnInit {
+export class FlightSearchFilterComponent implements OnInit {
   filtersForm = new FormGroup({
     departure: new FormControl('', []),
     arrival: new FormControl('', []),
-    price: new FormControl(1000, [Validators.min(0), Validators.max(2000)]),
+    departureDate: new FormControl('', [
+      Validators.pattern(/^\d{2}\/\d{2}\/\d{4}$/),
+    ]),
+    arrivalDate: new FormControl('', [
+      Validators.pattern(/^\d{2}\/\d{2}\/\d{4}$/),
+    ]),
+    passengers: new FormControl(1, [Validators.min(1), Validators.max(10)]),
+    price: new FormControl(50, [Validators.min(0), Validators.max(2000)]),
   });
 
   ngOnInit(): void {
