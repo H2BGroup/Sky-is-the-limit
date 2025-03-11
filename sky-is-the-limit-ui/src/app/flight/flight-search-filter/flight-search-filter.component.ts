@@ -23,6 +23,10 @@ export class FlightSearchFilterComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    this.setInitialPriceValue();
+  }
+
+  setInitialPriceValue() {
     const priceInput = document.getElementById('price') as HTMLInputElement;
     const priceValue = document.getElementById(
       'price-value'

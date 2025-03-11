@@ -2,7 +2,5 @@
 @if(!loggedIn) {
 <app-login (loggedIn)="checkIfLoggedIn($event)" />
 } @else {
-<app-flight-search-filter />
-<app-flight-list />
 <router-outlet />
 }

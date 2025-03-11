@@ -24,6 +24,9 @@
             <h3>{{ flight.price }} zł</h3>
           </div>
         </div>
+        <div class="button-row">
+          <button (click)="onBookFlight(flight.id)">Book</button>
+        </div>
       </div>
     </mat-expansion-panel>
     }

@@ -56,6 +56,11 @@
   flex-wrap: wrap;
 }
 
+.button-row {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .info-item {
   flex: 1;
 }
