@@ -19,7 +19,7 @@ export class FlightSearchFilterComponent implements OnInit {
       Validators.pattern(/^\d{2}\/\d{2}\/\d{4}$/),
     ]),
     passengers: new FormControl(1, [Validators.min(1), Validators.max(10)]),
-    price: new FormControl(50, [Validators.min(0), Validators.max(2000)]),
+    price: new FormControl(1000, [Validators.min(0), Validators.max(2000)]),
   });
 
   ngOnInit(): void {
@@ -28,7 +28,8 @@ export class FlightSearchFilterComponent implements OnInit {
       'price-value'
     ) as HTMLSpanElement;
 
-    priceValue.textContent = priceInput.value;
+    priceValue.textContent = this.filtersForm.get('price')
+      ?.value as unknown as string;
 
     priceInput.addEventListener('input', function () {
       priceValue.textContent = priceInput.value;
