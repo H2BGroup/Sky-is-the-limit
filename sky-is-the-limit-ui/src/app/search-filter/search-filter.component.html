@@ -1,0 +1,42 @@
+<div class="search-container">
+  <h2>Search for Flights</h2>
+  <form [formGroup]="filtersForm" (ngSubmit)="onSearch()" class="search-form">
+    <div class="input-group">
+      <label for="departure">Departure:</label>
+      <input
+        formControlName="departure"
+        type="text"
+        id="departure"
+        name="departure"
+        placeholder="Enter departure city"
+      />
+    </div>
+
+    <div class="input-group">
+      <label for="arrival">Arrival:</label>
+      <input
+        formControlName="arrival"
+        type="text"
+        id="arrival"
+        name="arrival"
+        placeholder="Enter arrival city"
+      />
+    </div>
+
+    <div class="input-group">
+      <label for="price">Max Price:</label>
+      <input
+        formControlName="price"
+        type="range"
+        id="price"
+        name="price"
+        min="0"
+        max="2000"
+        step="50"
+      />
+      <span id="price-value">1000</span>
+    </div>
+
+    <button type="submit" [disabled]="filtersForm.invalid">Search</button>
+  </form>
+</div>
