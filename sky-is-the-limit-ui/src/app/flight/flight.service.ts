@@ -15,4 +15,8 @@ export class FlightService {
   startBooking(flightId: string) {
     this.router.navigate(['/flights', flightId, 'book']);
   }
+
+  backToList() {
+    this.router.navigate(['/flights']);
+  }
 }

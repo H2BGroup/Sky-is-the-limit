@@ -16,6 +16,6 @@ export const routes: Routes = [
   {
     path: 'flights/:id/book',
     component: FlightBookComponent,
-    title: 'Sky is the limit',
+    title: 'Sky is the limit - book flight',
   },
 ];

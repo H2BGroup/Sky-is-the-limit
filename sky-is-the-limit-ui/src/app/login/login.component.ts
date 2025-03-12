@@ -22,11 +22,9 @@ export class LoginComponent {
     ]),
   });
 
-  startLogIn() {
+  logIn() {
     if (this.loginForm.valid) {
-      const { username, password } = this.loginForm.value;
-      console.log('Logged in with', username, password);
-
+      localStorage.setItem('isLoggedIn', 'true');
       this.loggedIn.emit(true);
     }
   }

@@ -9,7 +9,8 @@ import { Component, EventEmitter, Output } from '@angular/core';
 export class HeaderComponent {
   @Output() loggedIn = new EventEmitter<boolean>();
 
-  startLogOut() {
+  logOut() {
+    localStorage.removeItem('isLoggedIn');
     this.loggedIn.emit(false);
   }
 }

@@ -15,7 +15,7 @@
 }
 
 .mat-expansion-panel-header {
-  background-color: #f0f8ff;
+  background-color: #ffffff;
   font-size: 1rem;
   font-weight: 600;
   padding: 12px 16px;
@@ -41,8 +41,11 @@
 }
 
 .mat-expansion-panel {
-  background-color: #f0f8ff;
   color: #2c63c2;
+}
+
+.mat-expansion-panel:hover {
+  background-color: #f0f8ff;
 }
 
 .mat-expansion-panel.mt-8 {

@@ -17,7 +17,7 @@ export class FlightListComponent {
   protected flights: Flight[] = this.flightService.getFlights;
 
   createFlightSummary(flight: Flight): string {
-    return `${flight.departure} ---> ${flight.arrival} for ${flight.price} zł`;
+    return `✈️ ${flight.departure} → ${flight.arrival} for ${flight.price} zł`;
   }
 
   onBookFlight(flightId: string) {
