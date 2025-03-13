@@ -1,0 +1,114 @@
+.container {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+  border-radius: 12px;
+}
+
+.flight-details {
+  margin: 20px 0;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background-color: #f8f9fa;
+  width: 30%;
+}
+
+.flight-book {
+  margin: 20px 0;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background-color: #f8f9fa;
+  width: 60%;
+  text-align: center;
+}
+
+.info-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.info-row {
+  display: flex;
+  gap: 5vw;
+}
+
+h1 {
+  text-align: center;
+  color: #2c63c2;
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-size: 1.2rem;
+  color: #2c63c2;
+  margin-bottom: 5px;
+}
+
+h3 {
+  font-size: 1.3rem;
+  color: #2c63c2;
+  font-weight: bold;
+}
+
+.book-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  align-items: center;
+}
+
+.input-group-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 20px;
+}
+
+.input-group {
+  flex: 1 1 calc(50% - 10px);
+  display: flex;
+  flex-direction: column;
+  padding: 0 1rem;
+}
+
+label {
+  display: block;
+  color: #2c63c2;
+  margin-bottom: 0.5rem;
+}
+
+input[type="number"],
+input[type="checkbox"] {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #2c63c2;
+  border-radius: 4px;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+.button-container {
+  display: flex;
+  justify-content: center;
+}
+
+.book-button {
+  width: 15%;
+}
+
+@media (max-width: 768px) {
+  .flight-details,
+  .flight-book {
+    flex: 1 1 100%;
+  }
+
+  .input-group {
+    flex: 1 1 100%;
+  }
+}

@@ -5,6 +5,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { FlightService } from '../flight.service';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { formatDateTime } from '../shared/formatDateTime';
 
 @Component({
   selector: 'app-flight-list',
@@ -17,8 +18,12 @@ export class FlightListComponent {
 
   protected flights$: Observable<Flight[]> = this.flightService.getFlights;
 
+  getFormattedDate(date: string): string {
+    return formatDateTime(date);
+  }
+
   createFlightSummary(flight: Flight): string {
-    return `✈️ ${flight.departure} → ${flight.arrival} for ${flight.price} zł`;
+    return `✈️ ${flight.departure} → ${flight.arrival} from just ${flight.price} zł`;
   }
 
   onBookFlight(flightId: string) {

@@ -9,7 +9,6 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class FlightService {
   private flightsSubject = new BehaviorSubject<Flight[]>(FLIGHTS);
 
-  private flights$: Observable<Flight[]> = this.flightsSubject.asObservable();
   public filteredFlights$: BehaviorSubject<Flight[]> = new BehaviorSubject<
     Flight[]
   >(FLIGHTS);
@@ -45,5 +44,10 @@ export class FlightService {
       );
     });
     this.filteredFlights$.next(filteredFlights);
+  }
+  getFlight(flightId: string) {
+    return this.flightsSubject
+      .getValue()
+      .find((flight) => flight.id === flightId);
   }
 }
