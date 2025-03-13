@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using reservation_service.Models.DTO;
 using reservation_service.Models;
 using reservation_service.Services;
 
@@ -16,28 +17,45 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
-    public IEnumerable<User> GetUsers()
+    public GetUsersResponse GetUsers()
     {
-        return _userService.GetUsers();
+        return UserDTOMapper.UsersToResponse(_userService.GetUsers());
     }
 
     [HttpGet("{id}")]
-    public User? GetUser(string id)
+    public ActionResult<GetUserReponse> GetUser(string id)
     {
-        return _userService.GetUser(id);
+        User? user = _userService.GetUser(id);
+        if (user == null)
+        {
+            return NotFound();
+        }
+        return UserDTOMapper.UserToResponse(user);
     }
 
     [HttpGet("login/{login}")]
-    public User? GetUserByLogin(string login)
+    public ActionResult<GetUserReponse> GetUserByLogin(string login)
     {
-        return _userService.GetUserByLogin(login);
+        User? user = _userService.GetUserByLogin(login);
+        if (user == null)
+        {
+            return NotFound();
+        }
+        return UserDTOMapper.UserToResponse(user);
     }
     
-    [HttpPut]
-    public IActionResult Create(User user)
+    [HttpPut("{id}")]
+    public IActionResult Create(string id, PutUserRequest user)
     {
-        _userService.Create(user);
-        return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+        try
+        {
+            _userService.Create(UserDTOMapper.RequestToUser(id, user));
+        } 
+        catch(ArgumentException e)
+        {
+            return BadRequest(e.Message);
+        }
+        return CreatedAtAction(nameof(GetUser), new { id = id }, user);
     }
 
     [HttpDelete("{id}")]
