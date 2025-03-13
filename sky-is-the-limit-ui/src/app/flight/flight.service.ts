@@ -37,14 +37,16 @@ export class FlightService {
           flight.arrival
             .toLowerCase()
             .includes(filters.arrival.toLowerCase())) &&
-        //(!filters.departureDate || flight.departureDate === filters.departureDate) &&
-        //(!filters.arrivalDate || flight.arrivalDate === filters.arrivalDate) &&
-        //(!filters.passengers <= flight.passengers) &&
+        (!filters.fromDate || filters.fromDate <= flight.datetime) &&
+        (!filters.toDate || filters.toDate >= flight.datetime) &&
+        (!filters.passengers ||
+          filters.passengers <= flight.seatsEconomy + flight.seatsFirstClass) &&
         (!filters.price || filters.price >= flight.price)
       );
     });
     this.filteredFlights$.next(filteredFlights);
   }
+
   getFlight(flightId: string) {
     return this.flightsSubject
       .getValue()

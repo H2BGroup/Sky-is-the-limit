@@ -43,7 +43,7 @@ export class FlightBookComponent implements OnInit, OnDestroy {
     {
       classSelection: new FormGroup({
         firstClass: new FormControl(0, [Validators.min(0)]),
-        economyClass: new FormControl(0, [Validators.min(0)]),
+        economyClass: new FormControl(1, [Validators.min(0)]),
       }),
       baggageSelection: new FormGroup({
         carryOnBaggage: new FormControl(0, [
@@ -65,7 +65,7 @@ export class FlightBookComponent implements OnInit, OnDestroy {
     if (this.flight) {
       this.basePrice = this.flight.price;
     }
-
+    this.calculateTotalPrice();
     this.formSubscription = this.bookForm.valueChanges.subscribe(() => {
       this.calculateTotalPrice();
     });

@@ -130,5 +130,8 @@
         Proceed
       </button>
     </form>
+    @if(bookForm.invalid) {
+    <div class="error-message">The form is invalid.</div>
+    }
   </div>
 </div>

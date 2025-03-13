@@ -1,5 +1,12 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FlightService } from '../flight.service';
 import { Router } from '@angular/router';
@@ -13,18 +20,19 @@ import { Router } from '@angular/router';
 export class FlightSearchFilterComponent implements OnInit {
   flightService = inject(FlightService);
 
-  filtersForm = new FormGroup({
-    departure: new FormControl('', []),
-    arrival: new FormControl('', []),
-    departureDate: new FormControl('', [
-      Validators.pattern(/^\d{2}\/\d{2}\/\d{4}$/),
-    ]),
-    arrivalDate: new FormControl('', [
-      Validators.pattern(/^\d{2}\/\d{2}\/\d{4}$/),
-    ]),
-    passengers: new FormControl(1, [Validators.min(1), Validators.max(10)]),
-    price: new FormControl(1000, [Validators.min(0), Validators.max(2000)]),
-  });
+  filtersForm = new FormGroup(
+    {
+      departure: new FormControl('', []),
+      arrival: new FormControl('', []),
+      fromDate: new FormControl('', [
+        Validators.pattern(/^\d{4}-\d{2}-\d{2}$/),
+      ]),
+      toDate: new FormControl('', [Validators.pattern(/^\d{4}-\d{2}-\d{2}$/)]),
+      passengers: new FormControl(1, [Validators.min(1), Validators.max(10)]),
+      price: new FormControl(1000, [Validators.min(0), Validators.max(2000)]),
+    },
+    { validators: this.datesValidator() }
+  );
 
   constructor(private router: Router) {}
 
@@ -53,7 +61,6 @@ export class FlightSearchFilterComponent implements OnInit {
       this.router.navigate([], { queryParamsHandling: 'merge' }).then(() => {
         this.router.navigateByUrl(this.router.url);
       });
-      //console.log('Flights: ', this.flightService.getFlights.length);
     } else {
       console.log('Form is invalid');
     }
@@ -63,10 +70,24 @@ export class FlightSearchFilterComponent implements OnInit {
     return {
       departure: this.filtersForm.get('departure')?.value || '',
       arrival: this.filtersForm.get('arrival')?.value || '',
-      departureDate: this.filtersForm.get('departureDate')?.value || '',
-      arrivalDate: this.filtersForm.get('arrivalDate')?.value || '',
+      fromDate: this.filtersForm.get('fromDate')?.value || '',
+      toDate: this.filtersForm.get('toDate')?.value || '',
       passengers: this.filtersForm.get('passengers')?.value || 1,
       price: this.filtersForm.get('price')?.value || 1000,
+    };
+  }
+
+  datesValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const group = control as FormGroup;
+      const fromDate = group.get('fromDate')?.value;
+      const toDate = group.get('toDate')?.value;
+
+      if (toDate && fromDate && toDate <= fromDate) {
+        return { invalidDates: 'To date must be greater than from date.' };
+      }
+
+      return null;
     };
   }
 }

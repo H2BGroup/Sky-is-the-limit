@@ -22,4 +22,8 @@
 
     <button type="submit" [disabled]="loginForm.invalid">Log in</button>
   </form>
+  @if(loginForm.invalid && loginForm.get('username')!.touched &&
+  loginForm.get('password')!.touched) {
+  <div class="error-message">Invalid login or password.</div>
+  }
 </div>

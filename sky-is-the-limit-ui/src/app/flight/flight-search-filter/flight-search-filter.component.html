@@ -24,23 +24,18 @@
     </div>
 
     <div class="input-group">
-      <label for="departure-date">Departure Date:</label>
+      <label for="from-date">From Date:</label>
       <input
-        formControlName="departureDate"
+        formControlName="fromDate"
         type="date"
-        id="departure-date"
-        name="departure-date"
+        id="from-date"
+        name="from-date"
       />
     </div>
 
     <div class="input-group">
-      <label for="arrival-date">Arrival Date:</label>
-      <input
-        formControlName="arrivalDate"
-        type="date"
-        id="arrival-date"
-        name="arrival-date"
-      />
+      <label for="to-date">To Date:</label>
+      <input formControlName="toDate" type="date" id="to-date" name="to-date" />
     </div>
 
     <div class="input-group">
@@ -69,4 +64,7 @@
 
     <button type="submit" [disabled]="filtersForm.invalid">Search</button>
   </form>
+  @if(filtersForm.invalid) {
+  <div class="error-message">The form is invalid.</div>
+  }
 </div>

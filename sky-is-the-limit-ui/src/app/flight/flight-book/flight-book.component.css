@@ -89,10 +89,6 @@ input[type="checkbox"] {
   border-radius: 4px;
 }
 
-button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
 .button-container {
   display: flex;
   justify-content: center;

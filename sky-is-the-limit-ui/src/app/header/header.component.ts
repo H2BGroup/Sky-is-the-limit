@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Output } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -8,9 +9,10 @@ import { Component, EventEmitter, Output } from '@angular/core';
 })
 export class HeaderComponent {
   @Output() loggedIn = new EventEmitter<boolean>();
-
+  private router = inject(Router);
   logOut() {
     localStorage.removeItem('isLoggedIn');
     this.loggedIn.emit(false);
+    this.router.navigate(['/flights']);
   }
 }
