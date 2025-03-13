@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using reservation_service.Models;
+using reservation_service.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,7 @@ builder.Services.AddDbContext<ReservationContext>(options =>
 {
     options.UseInMemoryDatabase("Reservations");
 });
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 

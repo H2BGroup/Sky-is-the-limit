@@ -11,9 +11,9 @@ public enum ReservationStatus
 
 public class Reservation
 {
-    public string Id { get; set; }
-    public Offer Offer { get; set; }
-    public User User { get; set; }
+    required public string Id { get; set; }
+    public Offer? Offer { get; set; }
+    public User? User { get; set; }
     public int FirstClassSeats { get; set; }
     public int SecondClassSeats { get; set; }
     public double Price { get; set; }
