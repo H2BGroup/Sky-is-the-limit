@@ -65,6 +65,13 @@
     <button type="submit" [disabled]="filtersForm.invalid">Search</button>
   </form>
   @if(filtersForm.invalid) {
-  <div class="error-message">The form is invalid.</div>
+  <div class="error-message">
+    The form is invalid. @if(filtersForm.errors?.['invalidDates']) {
+    {{ filtersForm.errors!["invalidDates"] }} }
+    @if(filtersForm.get(['passengers'])?.errors?.['max']) { You can select a
+    maximum of 10 passengers. }
+    @if(filtersForm.get(['passengers'])?.errors?.['min']) { You must select at
+    least one passenger. }
+  </div>
   }
 </div>

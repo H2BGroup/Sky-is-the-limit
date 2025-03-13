@@ -61,8 +61,6 @@ export class FlightSearchFilterComponent implements OnInit {
       this.router.navigate([], { queryParamsHandling: 'merge' }).then(() => {
         this.router.navigateByUrl(this.router.url);
       });
-    } else {
-      console.log('Form is invalid');
     }
   }
 
@@ -84,7 +82,7 @@ export class FlightSearchFilterComponent implements OnInit {
       const toDate = group.get('toDate')?.value;
 
       if (toDate && fromDate && toDate <= fromDate) {
-        return { invalidDates: 'To date must be greater than from date.' };
+        return { invalidDates: "'To' date must be greater than 'From' date." };
       }
 
       return null;

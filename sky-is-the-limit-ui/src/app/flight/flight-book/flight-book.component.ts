@@ -46,14 +46,8 @@ export class FlightBookComponent implements OnInit, OnDestroy {
         economyClass: new FormControl(1, [Validators.min(0)]),
       }),
       baggageSelection: new FormGroup({
-        carryOnBaggage: new FormControl(0, [
-          Validators.min(0),
-          Validators.max(this.MAX_BAGGAGE),
-        ]),
-        checkedBaggage: new FormControl(0, [
-          Validators.min(0),
-          Validators.max(this.MAX_BAGGAGE),
-        ]),
+        carryOnBaggage: new FormControl(0, [Validators.min(0)]),
+        checkedBaggage: new FormControl(0, [Validators.min(0)]),
       }),
       priorityBoarding: new FormControl(false, []),
       insurance: new FormControl(false, []),
@@ -102,6 +96,27 @@ export class FlightBookComponent implements OnInit, OnDestroy {
 
       if (totalSeats > this.MAX_SEATS) {
         return { maxSeatsExceeded: 'You can select a maximum of 10 seats.' };
+      }
+
+      const carryOnBaggage = group.get(
+        'baggageSelection.carryOnBaggage'
+      )?.value;
+      const checkedBaggage = group.get(
+        'baggageSelection.checkedBaggage'
+      )?.value;
+
+      if (carryOnBaggage > totalSeats * this.MAX_BAGGAGE) {
+        return {
+          maxCarryOnBaggagesExceeded:
+            'You can select a maximum of 2 carry on baggages per person.',
+        };
+      }
+
+      if (checkedBaggage > totalSeats * this.MAX_BAGGAGE) {
+        return {
+          maxCheckedBaggagesExceeded:
+            'You can select a maximum of 2 checked baggages per person.',
+        };
       }
 
       return null;
