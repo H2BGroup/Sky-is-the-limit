@@ -52,9 +52,6 @@
     } @else {
     <p>Flight not found!</p>
     }
-    <div class="button-container">
-      <button (click)="OnBackToList()">Back to flights</button>
-    </div>
   </div>
   <div class="flight-book">
     <h1>Book flight</h1>
@@ -142,6 +139,7 @@
       </div>
 
       <div class="button-container">
+        <button (click)="OnBackToList()">Back to flights</button>
         <button type="submit" [disabled]="!bookForm.valid">Proceed</button>
       </div>
     </form>

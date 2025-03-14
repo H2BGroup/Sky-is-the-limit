@@ -60,10 +60,6 @@
 
       <h2>In Total: {{ this.totalPrice }} zł</h2>
     </div>
-
-    <div class="button-container">
-      <button (click)="OnBackToDetails()">Back to flight details</button>
-    </div>
   </div>
 
   <div class="flight-personal-info">
@@ -77,7 +73,7 @@
         <h3>Personal Details</h3>
         <div class="input-group-row">
           <div class="input-group">
-            <label for="name-and-surname">Name and surname:</label>
+            <label for="name-and-surname">Name and Surname:</label>
             <input
               formControlName="nameAndSurname"
               type="text"
@@ -86,11 +82,20 @@
           </div>
 
           <div class="input-group">
-            <label for="date-of-birth">Date of birth:</label>
+            <label for="date-of-birth">Date of Birth:</label>
             <input
               formControlName="dateOfBirth"
               type="date"
               id="date-of-birth"
+            />
+          </div>
+
+          <div class="input-group">
+            <label for="id-document-number">ID Document Number:</label>
+            <input
+              formControlName="idDocumentNumber"
+              type="text"
+              id="id-document-number"
             />
           </div>
         </div>
@@ -105,7 +110,7 @@
           </div>
 
           <div class="input-group">
-            <label for="phone">Phone number:</label>
+            <label for="phone">Phone Number:</label>
             <input formControlName="phone" type="text" id="phone" />
           </div>
         </div>
@@ -135,6 +140,26 @@
           </div>
         </div>
       </div>
+      <div class="button-container">
+        <button (click)="OnBackToDetails()">Back to flight details</button>
+        <button type="submit" [disabled]="!personalInfoForm.valid">
+          Proceed
+        </button>
+      </div>
     </form>
+    @if(personalInfoForm.invalid && everyFieldTouched()) {
+    <div class="error-message">
+      The following fields were filled in incorrectly:
+      @if(personalInfoForm.get('nameAndSurname')?.invalid) { Name and Surname; }
+      @if(personalInfoForm.get('dateOfBirth')?.invalid) { Date of Birth; }
+      @if(personalInfoForm.get('idDocumentNumber')?.invalid) { ID Document;
+      Number } @if(personalInfoForm.get('email')?.invalid) { Email; }
+      @if(personalInfoForm.get('phone')?.invalid) { Phone Number; }
+      @if(personalInfoForm.get('address')?.invalid) { Address; }
+      @if(personalInfoForm.get('city')?.invalid) { Country; }
+      @if(personalInfoForm.get('country')?.invalid) { City; }
+      @if(personalInfoForm.get('postalCode')?.invalid) { Postal Code; }
+    </div>
+    }
   </div>
 </div>

@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { FlightBookDetailsComponent } from './flight/flight-book/flight-book-details/flight-book-details.component';
 import { FlightsMainPageComponent } from './flight/flights-main-page/flights-main-page.component';
 import { FlightBookInfoComponent } from './flight/flight-book/flight-book-info/flight-book-info.component';
+import { FlightBookSummaryComponent } from './flight/flight-book/flight-book-summary/flight-book-summary.component';
 
 export const routes: Routes = [
   {
@@ -19,6 +20,7 @@ export const routes: Routes = [
     children: [
       { path: 'info', component: FlightBookInfoComponent },
       { path: 'details', component: FlightBookDetailsComponent },
+      { path: 'summary', component: FlightBookSummaryComponent },
     ],
   },
 ];

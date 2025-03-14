@@ -92,26 +92,28 @@ export class FlightBookInfoComponent implements OnInit {
 
     if (this.selectedFirstClassSeats) {
       this.pricingDetails.push(
-        `First Class Seats: ${
+        `First Class Seats (${this.selectedFirstClassSeats}): ${
           this.selectedFirstClassSeats * basePrice * FIRST_CLASS_PRICE_RATIO
         } zł`
       );
     }
     if (this.selectedEconomyClassSeats) {
       this.pricingDetails.push(
-        `Economy Class Seats: ${this.selectedEconomyClassSeats * basePrice} zł`
+        `Economy Class Seats (${this.selectedEconomyClassSeats}): ${
+          this.selectedEconomyClassSeats * basePrice
+        } zł`
       );
     }
     if (this.selectedCarryOnBaggages) {
       this.pricingDetails.push(
-        `Carry-on Baggage: ${
+        `Carry-on Baggages (${this.selectedCarryOnBaggages}): ${
           this.selectedCarryOnBaggages * CARRY_ON_BAGGAGE_PRICE
         } zł`
       );
     }
     if (this.selectedCheckedBaggages) {
       this.pricingDetails.push(
-        `Checked Baggage: ${
+        `Checked Baggages (${this.selectedCheckedBaggages}): ${
           this.selectedCheckedBaggages * CHECKED_BAGGAGE_PRICE
         } zł`
       );
@@ -126,5 +128,24 @@ export class FlightBookInfoComponent implements OnInit {
     }
   }
 
-  onViewSummary(flightId: string) {}
+  everyFieldTouched() {
+    if (
+      this.personalInfoForm.get('nameAndSurname')?.touched &&
+      this.personalInfoForm.get('dateOfBirth')?.touched &&
+      this.personalInfoForm.get('idDocumentNumber')?.touched &&
+      this.personalInfoForm.get('email')?.touched &&
+      this.personalInfoForm.get('phone')?.touched &&
+      this.personalInfoForm.get('address')?.touched &&
+      this.personalInfoForm.get('city')?.touched &&
+      this.personalInfoForm.get('country')?.touched &&
+      this.personalInfoForm.get('postalCode')?.touched
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  onViewSummary(flightId: string) {
+    this.flightService.toBookingSummary(flightId);
+  }
 }

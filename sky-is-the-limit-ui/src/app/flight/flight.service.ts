@@ -31,6 +31,10 @@ export class FlightService {
     this.router.navigate(['/flights']);
   }
 
+  toBookingSummary(flightId: string) {
+    this.router.navigate(['/flights', flightId, 'book', 'summary']);
+  }
+
   filterFlights(filters: Filters) {
     const filteredFlights = this.flightsSubject.getValue().filter((flight) => {
       return (
