@@ -1,0 +1,112 @@
+<div class="container">
+  <div class="booking-details">
+    <h1>Booking Details</h1>
+    <div class="info-grid">
+      <div class="section">
+        <h3>Chosen seats</h3>
+        <div class="info-row">
+          <h2>First class:</h2>
+        </div>
+        <div class="info-row">
+          <h2>Economy class:</h2>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3>Baggage</h3>
+        <div class="info-row">
+          <h2>Carry on baggages:</h2>
+        </div>
+        <div class="info-row">
+          <h2>Checked baggages:</h2>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3>Additional Services</h3>
+        <div class="info-row">
+          <h2>Priority boarding:</h2>
+        </div>
+        <div class="info-row">
+          <h2>Insurance:</h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="button-container">
+      <button (click)="OnBackToDetails()">Back to flight details</button>
+    </div>
+  </div>
+
+  <div class="flight-personal-info">
+    <h1>Provide Personal Information</h1>
+    <form
+      [formGroup]="personalInfoForm"
+      (ngSubmit)="onViewSummary(flight!.id)"
+      class="book-form"
+    >
+      <div class="section personal-details">
+        <h3>Personal Details</h3>
+        <div class="input-group-row">
+          <div class="input-group">
+            <label for="name-and-surname">Name and surname:</label>
+            <input
+              formControlName="nameAndSurname"
+              type="text"
+              id="name-and-surname"
+            />
+          </div>
+
+          <div class="input-group">
+            <label for="date-of-birth">Date of birth:</label>
+            <input
+              formControlName="dateOfBirth"
+              type="date"
+              id="date-of-birth"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="section contact-info">
+        <h3>Contact Information</h3>
+        <div class="input-group-row">
+          <div class="input-group">
+            <label for="email">Email:</label>
+            <input formControlName="email" type="email" id="email" />
+          </div>
+
+          <div class="input-group">
+            <label for="phone">Phone number:</label>
+            <input formControlName="phone" type="text" id="phone" />
+          </div>
+        </div>
+      </div>
+
+      <div class="section address-details">
+        <h3>Address Details</h3>
+        <div class="input-group-row">
+          <div class="input-group">
+            <label for="address">Address:</label>
+            <input formControlName="address" type="text" id="address" />
+          </div>
+
+          <div class="input-group">
+            <label for="country">Country:</label>
+            <input formControlName="country" type="text" id="country" />
+          </div>
+
+          <div class="input-group">
+            <label for="city">City:</label>
+            <input formControlName="city" type="text" id="city" />
+          </div>
+
+          <div class="input-group">
+            <label for="postal-code">Postal Code:</label>
+            <input formControlName="postalCode" type="text" id="postal-code" />
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

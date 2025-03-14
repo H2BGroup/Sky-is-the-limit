@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
-import { FlightBookComponent } from './flight/flight-book/flight-book.component';
+import { FlightBookDetailsComponent } from './flight/flight-book/flight-book-details/flight-book-details.component';
 import { FlightsMainPageComponent } from './flight/flights-main-page/flights-main-page.component';
+import { FlightBookInfoComponent } from './flight/flight-book/flight-book-info/flight-book-info.component';
 
 export const routes: Routes = [
   {
@@ -15,7 +16,9 @@ export const routes: Routes = [
   },
   {
     path: 'flights/:id/book',
-    component: FlightBookComponent,
-    title: 'Sky is the limit - book flight',
+    children: [
+      { path: 'info', component: FlightBookInfoComponent },
+      { path: 'details', component: FlightBookDetailsComponent },
+    ],
   },
 ];

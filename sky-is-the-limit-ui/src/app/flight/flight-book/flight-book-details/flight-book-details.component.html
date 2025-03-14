@@ -1,0 +1,162 @@
+<div class="container">
+  <div class="flight-details">
+    @if(flight != null) {
+    <h1>Flight Details</h1>
+    <div class="info-grid">
+      <div class="section info-row">
+        <div class="info-item">
+          <h3>Airline</h3>
+          <h2>{{ flight.airline }}</h2>
+        </div>
+      </div>
+
+      <div class="section info-row">
+        <h3>Connection</h3>
+        <div class="info-item">
+          <h2>Departure:</h2>
+          <h2>{{ flight.departure }}</h2>
+        </div>
+        <div class="info-item">
+          <h2>Arrival:</h2>
+          <h2>{{ flight.arrival }}</h2>
+        </div>
+      </div>
+
+      <div class="section info-row">
+        <h3>Date</h3>
+        <div class="info-item">
+          <h2>Departure time:</h2>
+          <h2>{{ getFormattedDate(flight.datetime) }}</h2>
+        </div>
+        <div class="info-item">
+          <h2>Flight duration:</h2>
+          <h2>{{ flight.duration }}</h2>
+        </div>
+      </div>
+
+      <div class="section info-row">
+        <h3>Seats Availability</h3>
+        <div class="info-item">
+          <h2>First class - {{ flight.seatsFirstClass }}</h2>
+          <h2>Economy class - {{ flight.seatsEconomy }}</h2>
+        </div>
+      </div>
+
+      <div class="section info-row">
+        <h3>Base Price</h3>
+        <div class="info-item">
+          <h2>{{ flight.price }} zł</h2>
+        </div>
+      </div>
+    </div>
+    } @else {
+    <p>Flight not found!</p>
+    }
+    <div class="button-container">
+      <button (click)="OnBackToList()">Back to flights</button>
+    </div>
+  </div>
+  <div class="flight-book">
+    <h1>Book flight</h1>
+
+    <form
+      [formGroup]="bookForm"
+      (ngSubmit)="onProceedWithBooking(flight!.id)"
+      class="book-form"
+    >
+      <div class="section">
+        <h3>Seats</h3>
+        <div formGroupName="classSelection" class="input-group-row">
+          <div class="input-group">
+            <label for="first-class">First class seats:</label>
+            <input
+              formControlName="firstClass"
+              type="number"
+              id="first-class"
+              name="first-class"
+            />
+          </div>
+
+          <div class="input-group">
+            <label for="economy-class">Economy class seats:</label>
+            <input
+              formControlName="economyClass"
+              type="number"
+              id="economy-class"
+              name="economy-class"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3>Baggage</h3>
+        <div formGroupName="baggageSelection" class="input-group-row">
+          <div class="input-group">
+            <label for="carry-on-baggage">Carry on baggage:</label>
+            <input
+              formControlName="carryOnBaggage"
+              type="number"
+              id="carry-on-baggage"
+              name="carry-on-baggage"
+            />
+          </div>
+
+          <div class="input-group">
+            <label for="checked-baggage">Checked baggage:</label>
+            <input
+              formControlName="checkedBaggage"
+              type="number"
+              id="checked-baggage"
+              name="checked-baggage"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3>Additional Services</h3>
+        <div class="input-group">
+          <label for="priority-boarding">Priority boarding:</label>
+          <input
+            formControlName="priorityBoarding"
+            type="checkbox"
+            id="priority-boarding"
+            name="priority-boarding"
+          />
+        </div>
+
+        <div class="input-group">
+          <label for="insurance">Insurance:</label>
+          <input
+            formControlName="insurance"
+            type="checkbox"
+            id="insurance"
+            name="insurance"
+          />
+        </div>
+      </div>
+
+      <div>
+        <h2>Total price: {{ totalPrice }} zł</h2>
+      </div>
+
+      <div class="button-container">
+        <button type="submit" [disabled]="!bookForm.valid">Proceed</button>
+      </div>
+    </form>
+    @if(bookForm.invalid) {
+    <div class="error-message">
+      The form is invalid. @if(bookForm.errors?.['minSeatsRequired']) {
+      {{ bookForm.errors!["minSeatsRequired"] }}
+      } @if(bookForm.errors?.['maxSeatsExceeded']) {
+      {{ bookForm.errors!["maxSeatsExceeded"] }}
+      } @if(bookForm.errors?.['maxCarryOnBaggagesExceeded']) {
+      {{ bookForm.errors!["maxCarryOnBaggagesExceeded"] }}
+      } @if(bookForm.errors?.['maxCheckedBaggagesExceeded']) {
+      {{ bookForm.errors!["maxCheckedBaggagesExceeded"] }}
+      }
+    </div>
+    }
+  </div>
+</div>

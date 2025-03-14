@@ -1,8 +1,8 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { FlightService } from '../flight.service';
-import { Flight } from '../flight.model';
+import { FlightService } from '../../flight.service';
+import { Flight } from '../../flight.model';
 import { ActivatedRoute } from '@angular/router';
-import { formatDateTime } from '../shared/formatDateTime';
+import { formatDateTime } from '../../shared/formatDateTime';
 import {
   AbstractControl,
   FormControl,
@@ -15,12 +15,12 @@ import {
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-flight-book',
+  selector: 'app-flight-book-details',
   imports: [ReactiveFormsModule],
-  templateUrl: './flight-book.component.html',
-  styleUrl: './flight-book.component.css',
+  templateUrl: './flight-book-details.component.html',
+  styleUrl: './flight-book-details.component.css',
 })
-export class FlightBookComponent implements OnInit, OnDestroy {
+export class FlightBookDetailsComponent implements OnInit, OnDestroy {
   private flightService = inject(FlightService);
   private activatedRoute = inject(ActivatedRoute);
   protected totalPrice: number = 0;
@@ -79,8 +79,8 @@ export class FlightBookComponent implements OnInit, OnDestroy {
     this.flightService.backToList();
   }
 
-  onProceed() {
-    console.log(this.bookForm.value);
+  onProceedWithBooking(flightId: string) {
+    this.flightService.proceedWithBooking(flightId);
   }
 
   seatsValidator(): ValidatorFn {

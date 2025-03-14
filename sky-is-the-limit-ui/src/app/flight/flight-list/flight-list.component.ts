@@ -27,6 +27,6 @@ export class FlightListComponent {
   }
 
   onBookFlight(flightId: string) {
-    this.flightService.startBooking(flightId);
+    this.flightService.toFlightDetails(flightId);
   }
 }

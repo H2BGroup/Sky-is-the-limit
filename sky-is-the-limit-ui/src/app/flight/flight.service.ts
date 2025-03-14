@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Flight } from './flight.model';
 import { FLIGHTS } from './flights';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Filters } from './flight-search-filter/filters.model';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -13,13 +13,18 @@ export class FlightService {
     Flight[]
   >(FLIGHTS);
   private router = inject(Router);
+  private activatedRoute = inject(ActivatedRoute);
 
   get getFlights(): Observable<Flight[]> {
     return this.filteredFlights$.asObservable();
   }
 
-  startBooking(flightId: string) {
-    this.router.navigate(['/flights', flightId, 'book']);
+  toFlightDetails(flightId: string) {
+    this.router.navigate(['/flights', flightId, 'book', 'details']);
+  }
+
+  proceedWithBooking(flightId: string) {
+    this.router.navigate(['/flights', flightId, 'book', 'info']);
   }
 
   backToList() {
