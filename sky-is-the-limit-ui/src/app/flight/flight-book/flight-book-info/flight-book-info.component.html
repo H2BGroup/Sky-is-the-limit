@@ -5,32 +5,60 @@
       <div class="section">
         <h3>Chosen seats</h3>
         <div class="info-row">
-          <h2>First class:</h2>
+          <h2>
+            First class:
+            {{ this.selectedFirstClassSeats || "None" }}
+          </h2>
         </div>
         <div class="info-row">
-          <h2>Economy class:</h2>
+          <h2>Economy class: {{ this.selectedEconomyClassSeats || "None" }}</h2>
         </div>
       </div>
 
       <div class="section">
         <h3>Baggage</h3>
         <div class="info-row">
-          <h2>Carry on baggages:</h2>
+          <h2>
+            Carry on baggages: {{ this.selectedCarryOnBaggages || "None" }}
+          </h2>
         </div>
         <div class="info-row">
-          <h2>Checked baggages:</h2>
+          <h2>
+            Checked baggages: {{ this.selectedCheckedBaggages || "None" }}
+          </h2>
         </div>
       </div>
 
       <div class="section">
         <h3>Additional Services</h3>
         <div class="info-row">
-          <h2>Priority boarding:</h2>
+          <h2>
+            Priority boarding:
+            {{ this.selectedPriorityBoarding ? "Selected" : "Not selected" }}
+          </h2>
         </div>
         <div class="info-row">
-          <h2>Insurance:</h2>
+          <h2>
+            Insurance:
+            {{ this.selectedInsurance ? "Selected" : "Not selected" }}
+          </h2>
         </div>
       </div>
+    </div>
+
+    <div class="section">
+      <h3>Pricing</h3>
+
+      @for(priceDetail of pricingDetails; track priceDetail) {
+      <div class="info-row">
+        <h2>
+          {{ priceDetail }}
+        </h2>
+      </div>
+      }
+      <hr />
+
+      <h2>In Total: {{ this.totalPrice }} zł</h2>
     </div>
 
     <div class="button-container">

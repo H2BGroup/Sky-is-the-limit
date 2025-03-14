@@ -13,6 +13,15 @@ import {
   Validators,
 } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { FlightBookService } from '../flight-book.service';
+import { BookingDetails } from '../booking-details.model';
+import {
+  CARRY_ON_BAGGAGE_PRICE,
+  CHECKED_BAGGAGE_PRICE,
+  FIRST_CLASS_PRICE_RATIO,
+  INSURANCE_PRICE,
+  PRIORITY_BOARDING_PRICE,
+} from '../price-constants';
 
 @Component({
   selector: 'app-flight-book-details',
@@ -23,17 +32,13 @@ import { Subscription } from 'rxjs';
 export class FlightBookDetailsComponent implements OnInit, OnDestroy {
   private flightService = inject(FlightService);
   private activatedRoute = inject(ActivatedRoute);
+  private flightBookService = inject(FlightBookService);
   protected totalPrice: number = 0;
   private basePrice: number = 0;
   private formSubscription!: Subscription;
 
   private MAX_BAGGAGE: number = 2;
   private MAX_SEATS: number = 10;
-  private FIRST_CLASS_PRICE_RATIO: number = 3;
-  private CHECKED_BAGGAGE_PRICE: number = 200;
-  private CARRY_ON_BAGGAGE_PRICE: number = 100;
-  private PRIORITY_BOARDING_PRICE: number = 30;
-  private INSURANCE_PRICE: number = 50;
 
   flight?: Flight = this.flightService.getFlight(
     this.activatedRoute.snapshot.paramMap.get('id')!
@@ -80,6 +85,21 @@ export class FlightBookDetailsComponent implements OnInit, OnDestroy {
   }
 
   onProceedWithBooking(flightId: string) {
+    if (this.bookForm) {
+      let bookingDetails: BookingDetails = {
+        firstClassSeats: this.bookForm.get('classSelection.firstClass')?.value!,
+        economyClassSeats: this.bookForm.get('classSelection.economyClass')
+          ?.value!,
+        carryOnBaggages: this.bookForm.get('baggageSelection.carryOnBaggage')
+          ?.value!,
+        checkedBaggages: this.bookForm.get('baggageSelection.checkedBaggage')
+          ?.value!,
+        priorityBoarding: this.bookForm.get('priorityBoarding')?.value!,
+        insurance: this.bookForm.get('insurance')?.value!,
+        price: this.totalPrice,
+      };
+      this.flightBookService.setBookingDetails(bookingDetails);
+    }
     this.flightService.proceedWithBooking(flightId);
   }
 
@@ -134,27 +154,25 @@ export class FlightBookDetailsComponent implements OnInit, OnDestroy {
 
       if (classSelection && classSelection.firstClass) {
         this.totalPrice +=
-          classSelection.firstClass *
-          this.basePrice *
-          this.FIRST_CLASS_PRICE_RATIO;
+          classSelection.firstClass * this.basePrice * FIRST_CLASS_PRICE_RATIO;
       }
       if (classSelection && classSelection.economyClass) {
         this.totalPrice += classSelection.economyClass * this.basePrice;
       }
       if (baggageSelection && baggageSelection.carryOnBaggage) {
         this.totalPrice +=
-          baggageSelection.carryOnBaggage * this.CARRY_ON_BAGGAGE_PRICE;
+          baggageSelection.carryOnBaggage * CARRY_ON_BAGGAGE_PRICE;
       }
       if (baggageSelection && baggageSelection.checkedBaggage) {
         this.totalPrice +=
-          baggageSelection.checkedBaggage * this.CHECKED_BAGGAGE_PRICE;
+          baggageSelection.checkedBaggage * CHECKED_BAGGAGE_PRICE;
       }
 
       if (priorityBoarding) {
-        this.totalPrice += this.PRIORITY_BOARDING_PRICE;
+        this.totalPrice += PRIORITY_BOARDING_PRICE;
       }
       if (insurance) {
-        this.totalPrice += this.INSURANCE_PRICE;
+        this.totalPrice += INSURANCE_PRICE;
       }
     }
   }
