@@ -124,8 +124,8 @@ hr {
 }
 
 @media (max-width: 768px) {
-  .flight-details,
-  .flight-book {
+  .booking-details,
+  .flight-personal-info {
     flex: 1 1 100%;
   }
 

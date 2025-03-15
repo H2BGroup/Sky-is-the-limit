@@ -1,61 +1,7 @@
 <div class="container">
-  <div class="flight-details">
-    @if(flight != null) {
-    <h1>Flight Details</h1>
-    <div class="info-grid">
-      <div class="section info-row">
-        <div class="info-item">
-          <h3>Airline</h3>
-          <h2>{{ flight.airline }}</h2>
-        </div>
-      </div>
-
-      <div class="section info-row">
-        <h3>Connection</h3>
-        <div class="info-item">
-          <h2>Departure:</h2>
-          <h2>{{ flight.departure }}</h2>
-        </div>
-        <div class="info-item">
-          <h2>Arrival:</h2>
-          <h2>{{ flight.arrival }}</h2>
-        </div>
-      </div>
-
-      <div class="section info-row">
-        <h3>Date</h3>
-        <div class="info-item">
-          <h2>Departure time:</h2>
-          <h2>{{ getFormattedDate(flight.datetime) }}</h2>
-        </div>
-        <div class="info-item">
-          <h2>Flight duration:</h2>
-          <h2>{{ flight.duration }}</h2>
-        </div>
-      </div>
-
-      <div class="section info-row">
-        <h3>Seats Availability</h3>
-        <div class="info-item">
-          <h2>First class - {{ flight.seatsFirstClass }}</h2>
-          <h2>Economy class - {{ flight.seatsEconomy }}</h2>
-        </div>
-      </div>
-
-      <div class="section info-row">
-        <h3>Base Price</h3>
-        <div class="info-item">
-          <h2>{{ flight.price }} zł</h2>
-        </div>
-      </div>
-    </div>
-    } @else {
-    <p>Flight not found!</p>
-    }
-  </div>
+  <app-flight-details />
   <div class="flight-book">
     <h1>Book flight</h1>
-
     <form
       [formGroup]="bookForm"
       (ngSubmit)="onProceedWithBooking(flight!.id)"

@@ -2,7 +2,6 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FlightService } from '../../flight.service';
 import { Flight } from '../../flight.model';
 import { ActivatedRoute } from '@angular/router';
-import { formatDateTime } from '../../shared/formatDateTime';
 import {
   AbstractControl,
   FormControl,
@@ -22,10 +21,11 @@ import {
   INSURANCE_PRICE,
   PRIORITY_BOARDING_PRICE,
 } from '../price-constants';
+import { FlightDetailsComponent } from '../shared/flight-details/flight-details.component';
 
 @Component({
   selector: 'app-flight-book-details',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, FlightDetailsComponent],
   templateUrl: './flight-book-details.component.html',
   styleUrl: './flight-book-details.component.css',
 })
@@ -74,10 +74,6 @@ export class FlightBookDetailsComponent implements OnInit, OnDestroy {
     if (this.formSubscription) {
       this.formSubscription.unsubscribe();
     }
-  }
-
-  getFormattedDate(date: string): string {
-    return formatDateTime(date);
   }
 
   OnBackToList() {
