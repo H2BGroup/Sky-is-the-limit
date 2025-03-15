@@ -5,3 +5,19 @@
   flex-wrap: wrap;
   border-radius: 12px;
 }
+
+app-flight-details,
+app-booking-details,
+app-personal-details {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+}
+
+@media (max-width: 768px) {
+  app-flight-details,
+  app-booking-details,
+  app-personal-details {
+    flex: 1 1 100%;
+  }
+}

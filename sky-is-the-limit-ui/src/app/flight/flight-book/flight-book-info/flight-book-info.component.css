@@ -6,15 +6,6 @@
   border-radius: 12px;
 }
 
-.booking-details {
-  margin: 20px 0;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  background-color: #f8f9fa;
-  width: 30%;
-}
-
 .flight-personal-info {
   margin: 20px 0;
   padding: 20px;
@@ -23,16 +14,6 @@
   background-color: #f8f9fa;
   width: 60%;
   text-align: center;
-}
-
-.info-grid {
-  display: grid;
-  gap: 16px;
-}
-
-.info-row {
-  display: flex;
-  gap: 5vw;
 }
 
 h1 {
@@ -117,14 +98,7 @@ input {
   left: 20px;
 }
 
-hr {
-  border: none;
-  border-top: 2px solid #2c63c2;
-  width: 100%;
-}
-
 @media (max-width: 768px) {
-  .booking-details,
   .flight-personal-info {
     flex: 1 1 100%;
   }

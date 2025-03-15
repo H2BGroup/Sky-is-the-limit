@@ -1,4 +1,4 @@
-.flight-details {
+.booking-details {
   margin: 20px 0;
   padding: 20px;
   border-radius: 12px;
@@ -55,4 +55,10 @@ h3 {
   position: absolute;
   top: -20px;
   left: 20px;
+}
+
+hr {
+  border: none;
+  border-top: 2px solid #2c63c2;
+  width: 100%;
 }
