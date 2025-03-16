@@ -14,6 +14,27 @@ app-personal-details {
   width: 30%;
 }
 
+.title,
+.button-container {
+  justify-self: center;
+  width: 92%;
+  padding: 10px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background-color: #f8f9fa;
+  flex: 1;
+  text-align: center;
+  color: #2c63c2;
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
 @media (max-width: 768px) {
   app-flight-details,
   app-booking-details,

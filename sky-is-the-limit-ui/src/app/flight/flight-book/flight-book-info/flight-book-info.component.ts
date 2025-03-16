@@ -30,31 +30,71 @@ export class FlightBookInfoComponent {
   );
 
   personalInfoForm = new FormGroup({
-    nameAndSurname: new FormControl('', [Validators.required]),
-    dateOfBirth: new FormControl('', [
-      Validators.required,
-      Validators.pattern(/^\d{4}-\d{2}-\d{2}$/),
-    ]),
-    idDocumentNumber: new FormControl('', [
-      Validators.required,
-      Validators.pattern(/^[A-Z0-9]{5,15}$/),
-    ]),
-    email: new FormControl('', [Validators.required, Validators.email]),
-    phone: new FormControl('', [
-      Validators.required,
-      Validators.pattern(/^\+?[0-9\s\-]{7,15}$/),
-    ]),
-    address: new FormControl('', [Validators.required]),
-    city: new FormControl('', [Validators.required]),
-    country: new FormControl('', [Validators.required]),
-    postalCode: new FormControl('', [
-      Validators.required,
-      Validators.pattern(/^\d{2}-\d{3}$/),
-    ]),
+    nameAndSurname: new FormControl(
+      this.flightBookService.getPersonalDetails()?.nameAndSurname ?? '',
+      [Validators.required]
+    ),
+    dateOfBirth: new FormControl(
+      this.flightBookService.getPersonalDetails()?.dateOfBirth ?? '',
+      [Validators.required, Validators.pattern(/^\d{4}-\d{2}-\d{2}$/)]
+    ),
+    idDocumentNumber: new FormControl(
+      this.flightBookService.getPersonalDetails()?.idDocumentNumber ?? '',
+      [Validators.required, Validators.pattern(/^[A-Z0-9]{5,15}$/)]
+    ),
+    email: new FormControl(
+      this.flightBookService.getPersonalDetails()?.email ?? '',
+      [Validators.required, Validators.email]
+    ),
+    phone: new FormControl(
+      this.flightBookService.getPersonalDetails()?.phone ?? '',
+      [Validators.required, Validators.pattern(/^\+?[0-9\s\-]{7,15}$/)]
+    ),
+    address: new FormControl(
+      this.flightBookService.getPersonalDetails()?.address ?? '',
+      [Validators.required]
+    ),
+    country: new FormControl(
+      this.flightBookService.getPersonalDetails()?.country ?? '',
+      [Validators.required]
+    ),
+    city: new FormControl(
+      this.flightBookService.getPersonalDetails()?.city ?? '',
+      [Validators.required]
+    ),
+    postalCode: new FormControl(
+      this.flightBookService.getPersonalDetails()?.postalCode ?? '',
+      [Validators.required, Validators.pattern(/^\d{2}-\d{3}$/)]
+    ),
   });
 
   OnBackToDetails() {
+    this.setPersonalDetailsFromForm();
     this.flightService.toFlightDetails(this.flight!.id);
+  }
+
+  onViewSummary() {
+    this.setPersonalDetailsFromForm();
+    this.flightService.toBookingSummary(this.flight!.id);
+  }
+
+  setPersonalDetailsFromForm() {
+    if (this.personalInfoForm) {
+      let personalDetails: PersonalDetails = {
+        nameAndSurname:
+          this.personalInfoForm.get('nameAndSurname')?.value ?? '',
+        dateOfBirth: this.personalInfoForm.get('dateOfBirth')?.value ?? '',
+        idDocumentNumber:
+          this.personalInfoForm.get('idDocumentNumber')?.value ?? '',
+        email: this.personalInfoForm.get('email')?.value ?? '',
+        phone: this.personalInfoForm.get('phone')?.value ?? '',
+        address: this.personalInfoForm.get('address')?.value ?? '',
+        city: this.personalInfoForm.get('city')?.value ?? '',
+        country: this.personalInfoForm.get('country')?.value ?? '',
+        postalCode: this.personalInfoForm.get('postalCode')?.value ?? '',
+      };
+      this.flightBookService.setPersonalDetails(personalDetails);
+    }
   }
 
   everyFieldTouched() {
@@ -72,23 +112,5 @@ export class FlightBookInfoComponent {
       return true;
     }
     return false;
-  }
-
-  onViewSummary(flightId: string) {
-    if (this.personalInfoForm) {
-      let personalDetails: PersonalDetails = {
-        nameAndSurname: this.personalInfoForm.get('nameAndSurname')?.value!,
-        dateOfBirth: this.personalInfoForm.get('dateOfBirth')?.value!,
-        idDocumentNumber: this.personalInfoForm.get('idDocumentNumber')?.value!,
-        email: this.personalInfoForm.get('email')?.value!,
-        phone: this.personalInfoForm.get('phone')?.value!,
-        address: this.personalInfoForm.get('address')?.value!,
-        city: this.personalInfoForm.get('city')?.value!,
-        country: this.personalInfoForm.get('country')?.value!,
-        postalCode: this.personalInfoForm.get('postalCode')?.value!,
-      };
-      this.flightBookService.setPersonalDetails(personalDetails);
-    }
-    this.flightService.toBookingSummary(flightId);
   }
 }

@@ -19,20 +19,24 @@ export class FlightService {
     return this.filteredFlights$.asObservable();
   }
 
+  toFlightList() {
+    this.router.navigate(['/flights']);
+  }
+
   toFlightDetails(flightId: string) {
     this.router.navigate(['/flights', flightId, 'book', 'details']);
   }
 
-  proceedWithBooking(flightId: string) {
+  toPersonalDetailsForm(flightId: string) {
     this.router.navigate(['/flights', flightId, 'book', 'info']);
-  }
-
-  backToList() {
-    this.router.navigate(['/flights']);
   }
 
   toBookingSummary(flightId: string) {
     this.router.navigate(['/flights', flightId, 'book', 'summary']);
+  }
+
+  toBookingPayment(flightId: string) {
+    this.router.navigate(['/flights', flightId, 'book', 'payment']);
   }
 
   filterFlights(filters: Filters) {

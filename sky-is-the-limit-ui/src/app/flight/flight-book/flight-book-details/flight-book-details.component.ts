@@ -47,15 +47,33 @@ export class FlightBookDetailsComponent implements OnInit, OnDestroy {
   bookForm = new FormGroup(
     {
       classSelection: new FormGroup({
-        firstClass: new FormControl(0, [Validators.min(0)]),
-        economyClass: new FormControl(1, [Validators.min(0)]),
+        firstClass: new FormControl(
+          this.flightBookService.getBookingDetails()?.firstClassSeats ?? 0,
+          [Validators.min(0)]
+        ),
+        economyClass: new FormControl(
+          this.flightBookService.getBookingDetails()?.economyClassSeats ?? 1,
+          [Validators.min(0)]
+        ),
       }),
       baggageSelection: new FormGroup({
-        carryOnBaggage: new FormControl(0, [Validators.min(0)]),
-        checkedBaggage: new FormControl(0, [Validators.min(0)]),
+        carryOnBaggage: new FormControl(
+          this.flightBookService.getBookingDetails()?.carryOnBaggages ?? 0,
+          [Validators.min(0)]
+        ),
+        checkedBaggage: new FormControl(
+          this.flightBookService.getBookingDetails()?.checkedBaggages ?? 0,
+          [Validators.min(0)]
+        ),
       }),
-      priorityBoarding: new FormControl(false, []),
-      insurance: new FormControl(false, []),
+      priorityBoarding: new FormControl(
+        this.flightBookService.getBookingDetails()?.priorityBoarding ?? false,
+        []
+      ),
+      insurance: new FormControl(
+        this.flightBookService.getBookingDetails()?.insurance ?? false,
+        []
+      ),
     },
     { validators: this.seatsValidator() }
   );
@@ -77,10 +95,10 @@ export class FlightBookDetailsComponent implements OnInit, OnDestroy {
   }
 
   OnBackToList() {
-    this.flightService.backToList();
+    this.flightService.toFlightList();
   }
 
-  onProceedWithBooking(flightId: string) {
+  onProceedWithBooking() {
     if (this.bookForm) {
       let bookingDetails: BookingDetails = {
         firstClassSeats: this.bookForm.get('classSelection.firstClass')?.value!,
@@ -96,7 +114,7 @@ export class FlightBookDetailsComponent implements OnInit, OnDestroy {
       };
       this.flightBookService.setBookingDetails(bookingDetails);
     }
-    this.flightService.proceedWithBooking(flightId);
+    this.flightService.toPersonalDetailsForm(this.flight!.id);
   }
 
   seatsValidator(): ValidatorFn {
@@ -106,12 +124,30 @@ export class FlightBookDetailsComponent implements OnInit, OnDestroy {
       const economyClass = group.get('classSelection.economyClass')?.value;
       const totalSeats = firstClass + economyClass;
 
+      if (firstClass > this.flight!.seatsFirstClass) {
+        return {
+          notEnoughFirstClassSeatsLeft: `There is/are only ${
+            this.flight!.seatsFirstClass
+          } first class seats left.`,
+        };
+      }
+
+      if (economyClass > this.flight!.seatsEconomy) {
+        return {
+          notEnoughEconomySeatsLeft: `There is/are only ${
+            this.flight!.seatsEconomy
+          } economy class seats left.`,
+        };
+      }
+
       if (totalSeats === 0) {
         return { minSeatsRequired: 'You must select at least one seat.' };
       }
 
       if (totalSeats > this.MAX_SEATS) {
-        return { maxSeatsExceeded: 'You can select a maximum of 10 seats.' };
+        return {
+          maxSeatsExceeded: `You can select a maximum of ${this.MAX_SEATS} seats.`,
+        };
       }
 
       const carryOnBaggage = group.get(

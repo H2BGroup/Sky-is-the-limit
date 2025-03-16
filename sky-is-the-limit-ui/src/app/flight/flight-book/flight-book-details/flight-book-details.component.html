@@ -4,7 +4,7 @@
     <h1>Book flight</h1>
     <form
       [formGroup]="bookForm"
-      (ngSubmit)="onProceedWithBooking(flight!.id)"
+      (ngSubmit)="onProceedWithBooking()"
       class="book-form"
     >
       <div class="section">
@@ -91,7 +91,12 @@
     </form>
     @if(bookForm.invalid) {
     <div class="error-message">
-      The form is invalid. @if(bookForm.errors?.['minSeatsRequired']) {
+      The form is invalid.
+      @if(bookForm.errors?.['notEnoughFirstClassSeatsLeft']) {
+      {{ bookForm.errors!["notEnoughFirstClassSeatsLeft"] }}
+      } @if(bookForm.errors?.['notEnoughEconomySeatsLeft']) {
+      {{ bookForm.errors!["notEnoughEconomySeatsLeft"] }}
+      } @if(bookForm.errors?.['minSeatsRequired']) {
       {{ bookForm.errors!["minSeatsRequired"] }}
       } @if(bookForm.errors?.['maxSeatsExceeded']) {
       {{ bookForm.errors!["maxSeatsExceeded"] }}
