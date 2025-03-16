@@ -12,4 +12,17 @@ public class ReservationContext : DbContext
         : base(options)
     {
     }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Reservation>()
+            .HasOne(r => r.User)
+            .WithMany(u => u.Reservations)
+            .HasForeignKey(r => r.UserId);
+
+        modelBuilder.Entity<Reservation>()
+            .HasOne(r => r.Offer)
+            .WithMany(o => o.Reservations)
+            .HasForeignKey(r => r.OfferId);
+    }
 }

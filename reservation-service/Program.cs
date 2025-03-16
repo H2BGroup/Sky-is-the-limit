@@ -14,8 +14,17 @@ builder.Services.AddDbContext<ReservationContext>(options =>
     options.UseInMemoryDatabase("Reservations");
 });
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IReservationService, ReservationService>();
 
 var app = builder.Build();
+
+// Seed the database with sample data TODO: delete later
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<ReservationContext>();
+    reservation_service.DataInitializer.Initialize(context);
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
