@@ -33,3 +33,25 @@ button {
   top: 0.5rem;
   padding: 0.7rem 1rem;
 }
+
+.logo {
+  width: 60px;
+  height: auto;
+  position: absolute;
+  left: 0.5rem;
+  top: 0.5rem;
+}
+
+.logo:hover {
+  animation: rotate 1.5s linear infinite;
+  opacity: 0.8;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
