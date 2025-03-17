@@ -1,4 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { FlightService } from '../../flight.service';
+import Swal from 'sweetalert2';
+import { clearFormData } from '../../shared/clearFormData';
 
 @Component({
   selector: 'app-flight-book-confirm',
@@ -7,11 +10,14 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
   styleUrl: './flight-book-confirm.component.css',
 })
 export class FlightBookConfirmComponent implements OnInit, OnDestroy {
-  protected displayTime: string = '01:00';
+  private flightService = inject(FlightService);
   private remainingSeconds: number = 60;
   private timerInterval: any;
 
   private readonly SECONDS = 60;
+
+  protected displayTime: string = '01:00';
+  protected isLoading = false;
 
   ngOnInit(): void {
     this.startTimer();
@@ -21,7 +27,27 @@ export class FlightBookConfirmComponent implements OnInit, OnDestroy {
     clearInterval(this.timerInterval);
   }
 
-  onPayment() {}
+  onPayment() {
+    this.isLoading = true;
+
+    setTimeout(() => {
+      this.isLoading = false;
+      Swal.fire({
+        title: 'Payment Accepted!',
+        text: 'Return to the homepage?',
+        icon: 'success',
+        showCancelButton: false,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        allowEnterKey: false,
+        confirmButtonText: 'Yes',
+        willClose: () => {
+          this.flightService.toFlightList();
+          clearFormData();
+        },
+      });
+    }, 2000);
+  }
 
   private startTimer(): void {
     this.timerInterval = setInterval(() => {
