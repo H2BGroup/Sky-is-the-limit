@@ -22,6 +22,9 @@ public class GetReservationResponse
     public int FirstClassSeats { get; set; }
     public int SecondClassSeats { get; set; }
     public int RegisteredBaggage { get; set; }
+    public int CarryOnBaggage { get; set; }
+    public bool PriorityBoarding { get; set; }
+    public bool Insurance { get; set; }
     public double Price { get; set; }
     public ReservationStatus Status { get; set; }
 }
@@ -42,5 +45,8 @@ public class PutReservationRequest
     public int FirstClassSeats { get; set; }
     public int SecondClassSeats { get; set; }
     public int RegisteredBaggage { get; set; }
+    public int CarryOnBaggage { get; set; }
+    public bool PriorityBoarding { get; set; }
+    public bool Insurance { get; set; }
     public double Price { get; set; }
 }

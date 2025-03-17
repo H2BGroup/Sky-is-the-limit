@@ -22,6 +22,9 @@ public static class ReservationDTOMapper
             FirstClassSeats = reservation.FirstClassSeats,
             SecondClassSeats = reservation.SecondClassSeats,
             RegisteredBaggage = reservation.RegisteredBaggage,
+            CarryOnBaggage = reservation.CarryOnBaggage,
+            PriorityBoarding = reservation.PriorityBoarding,
+            Insurance = reservation.Insurance,
             Price = reservation.Price,
             Status = reservation.Status
         };
@@ -48,6 +51,9 @@ public static class ReservationDTOMapper
             FirstClassSeats = request.FirstClassSeats,
             SecondClassSeats = request.SecondClassSeats,
             RegisteredBaggage = request.RegisteredBaggage,
+            CarryOnBaggage = request.CarryOnBaggage,
+            PriorityBoarding = request.PriorityBoarding,
+            Insurance = request.Insurance,
             Price = request.Price,
             Status = ReservationStatus.Pending
         };

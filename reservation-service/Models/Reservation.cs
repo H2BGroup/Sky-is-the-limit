@@ -27,6 +27,9 @@ public class Reservation
     public int FirstClassSeats { get; set; }
     public int SecondClassSeats { get; set; }
     public int RegisteredBaggage { get; set; }
+    public int CarryOnBaggage { get; set; }
+    public bool PriorityBoarding { get; set; }
+    public bool Insurance { get; set; }
     public double Price { get; set; }
     
     [JsonConverter(typeof(JsonStringEnumConverter))]
