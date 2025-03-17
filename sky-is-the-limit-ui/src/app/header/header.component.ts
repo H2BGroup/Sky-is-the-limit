@@ -1,5 +1,6 @@
 import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { clearFormData } from '../flight/shared/clearFormData';
 
 @Component({
   selector: 'app-header',
@@ -14,5 +15,6 @@ export class HeaderComponent {
     sessionStorage.removeItem('isLoggedIn');
     this.loggedIn.emit(false);
     this.router.navigate(['/flights']);
+    clearFormData();
   }
 }

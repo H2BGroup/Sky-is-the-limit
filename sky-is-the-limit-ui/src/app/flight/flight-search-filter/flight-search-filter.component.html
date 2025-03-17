@@ -1,6 +1,8 @@
 <div class="search-container">
   <h2>Search for Flights</h2>
   <form [formGroup]="filtersForm" (ngSubmit)="onSearch()" class="search-form">
+    <button type="button" (click)="onResetFilters()">Reset Filters</button>
+
     <div class="input-group">
       <label for="departure">Departure:</label>
       <input

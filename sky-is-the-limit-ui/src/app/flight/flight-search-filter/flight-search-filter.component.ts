@@ -64,6 +64,18 @@ export class FlightSearchFilterComponent implements OnInit {
     }
   }
 
+  onResetFilters() {
+    this.filtersForm.reset({
+      departure: '',
+      arrival: '',
+      fromDate: '',
+      toDate: '',
+      passengers: 1,
+      price: 1000,
+    });
+    this.setInitialPriceValue();
+  }
+
   getFilterValues() {
     return {
       departure: this.filtersForm.get('departure')?.value || '',

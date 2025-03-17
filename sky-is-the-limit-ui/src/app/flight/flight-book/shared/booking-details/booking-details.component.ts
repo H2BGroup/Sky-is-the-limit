@@ -44,12 +44,16 @@ export class BookingDetailsComponent implements OnInit {
       ? JSON.parse(sessionStorage.getItem('bookFormData')!)
       : {};
 
-    this.selectedFirstClassSeats = savedBookForm.firstClassSeats;
-    this.selectedEconomyClassSeats = savedBookForm.economyClassSeats;
-    this.selectedCarryOnBaggages = savedBookForm.carryOnBaggages;
-    this.selectedCheckedBaggages = savedBookForm.checkedBaggages;
-    this.selectedPriorityBoarding = savedBookForm.priorityBoarding;
-    this.selectedInsurance = savedBookForm.insurance;
+    this.selectedFirstClassSeats =
+      savedBookForm.classSelection?.firstClass ?? 0;
+    this.selectedEconomyClassSeats =
+      savedBookForm.classSelection?.economyClass ?? 0;
+    this.selectedCarryOnBaggages =
+      savedBookForm.baggageSelection?.carryOnBaggage ?? 0;
+    this.selectedCheckedBaggages =
+      savedBookForm.baggageSelection?.checkedBaggage ?? 0;
+    this.selectedPriorityBoarding = savedBookForm.priorityBoarding ?? false;
+    this.selectedInsurance = savedBookForm.insurance ?? false;
     this.totalPrice = sessionStorage.getItem(
       'totalPrice'
     )! as unknown as number;

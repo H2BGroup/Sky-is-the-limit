@@ -92,6 +92,10 @@ export class FlightBookInfoComponent implements OnInit, OnDestroy {
   }
 
   onViewSummary() {
+    sessionStorage.setItem(
+      'personalInfoFormData',
+      JSON.stringify(this.personalInfoForm.value)
+    );
     this.flightService.toBookingSummary(this.flight!.id);
   }
 
