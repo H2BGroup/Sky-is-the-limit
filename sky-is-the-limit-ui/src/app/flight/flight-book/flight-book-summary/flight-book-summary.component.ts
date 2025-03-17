@@ -24,8 +24,8 @@ export class FlightBookSummaryComponent {
     this.activatedRoute.snapshot.paramMap.get('id')!
   );
 
-  onToPayment() {
-    this.flightService.toBookingPayment(this.flight!.id);
+  onToConfirmation() {
+    this.flightService.toBookingConfirmation(this.flight!.id);
   }
   onBackToBookInfo() {
     this.flightService.toPersonalDetailsForm(this.flight!.id);

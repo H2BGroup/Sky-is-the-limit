@@ -35,8 +35,8 @@ export class FlightService {
     this.router.navigate(['/flights', flightId, 'book', 'summary']);
   }
 
-  toBookingPayment(flightId: string) {
-    this.router.navigate(['/flights', flightId, 'book', 'payment']);
+  toBookingConfirmation(flightId: string) {
+    this.router.navigate(['/flights', flightId, 'book', 'confirm']);
   }
 
   filterFlights(filters: Filters) {
