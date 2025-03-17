@@ -33,13 +33,17 @@ public class UserController : ControllerBase
         return UserDTOMapper.UserToResponse(user);
     }
 
-    [HttpGet("login/{login}")]
-    public ActionResult<GetUserReponse> GetUserByLogin(string login)
+    [HttpPost("login")]
+    public ActionResult<GetUserReponse> Login([FromForm] UserLoginForm userForm)
     {
-        User? user = _userService.GetUserByLogin(login);
+        User? user = _userService.GetUserByLogin(userForm.Login);
         if (user == null)
         {
-            return NotFound();
+            return Unauthorized();
+        }
+        if (user.Password != userForm.Password)
+        {
+            return Unauthorized();
         }
         return UserDTOMapper.UserToResponse(user);
     }

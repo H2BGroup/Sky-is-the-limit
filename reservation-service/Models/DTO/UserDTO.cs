@@ -25,3 +25,9 @@ public class PutUserRequest
     public string? Name { get; set; }
     public string? Surname { get; set; }
 }
+
+public class UserLoginForm
+{
+    required public string Login { get; set; }
+    required public string Password { get; set; }
+}
