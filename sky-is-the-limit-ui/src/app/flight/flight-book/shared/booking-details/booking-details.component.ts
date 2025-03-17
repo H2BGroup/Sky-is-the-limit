@@ -1,6 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FlightService } from '../../../flight.service';
-import { FlightBookService } from '../../flight-book.service';
 import { ActivatedRoute } from '@angular/router';
 import { Flight } from '../../../flight.model';
 import {
@@ -19,7 +18,6 @@ import {
 })
 export class BookingDetailsComponent implements OnInit {
   private flightService = inject(FlightService);
-  private flightBookService = inject(FlightBookService);
   private activatedRoute = inject(ActivatedRoute);
 
   protected selectedFirstClassSeats?: number;
@@ -42,14 +40,19 @@ export class BookingDetailsComponent implements OnInit {
   }
 
   setSelectedBookingDetails() {
-    let bookingDetails = this.flightBookService.getBookingDetails();
-    this.selectedFirstClassSeats = bookingDetails.firstClassSeats;
-    this.selectedEconomyClassSeats = bookingDetails.economyClassSeats;
-    this.selectedCarryOnBaggages = bookingDetails.carryOnBaggages;
-    this.selectedCheckedBaggages = bookingDetails.checkedBaggages;
-    this.selectedPriorityBoarding = bookingDetails.priorityBoarding;
-    this.selectedInsurance = bookingDetails.insurance;
-    this.totalPrice = bookingDetails.price;
+    const savedBookForm = sessionStorage.getItem('bookFormData')
+      ? JSON.parse(sessionStorage.getItem('bookFormData')!)
+      : {};
+
+    this.selectedFirstClassSeats = savedBookForm.firstClassSeats;
+    this.selectedEconomyClassSeats = savedBookForm.economyClassSeats;
+    this.selectedCarryOnBaggages = savedBookForm.carryOnBaggages;
+    this.selectedCheckedBaggages = savedBookForm.checkedBaggages;
+    this.selectedPriorityBoarding = savedBookForm.priorityBoarding;
+    this.selectedInsurance = savedBookForm.insurance;
+    this.totalPrice = sessionStorage.getItem(
+      'totalPrice'
+    )! as unknown as number;
   }
 
   showDetailedPrice() {

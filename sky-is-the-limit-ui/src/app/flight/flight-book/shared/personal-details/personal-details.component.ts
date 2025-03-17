@@ -1,5 +1,4 @@
-import { Component, inject } from '@angular/core';
-import { FlightBookService } from '../../flight-book.service';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-personal-details',
@@ -8,8 +7,6 @@ import { FlightBookService } from '../../flight-book.service';
   styleUrl: './personal-details.component.css',
 })
 export class PersonalDetailsComponent {
-  private flightBookService = inject(FlightBookService);
-
   protected providedNameAndSurname?: string;
   protected providedDateOfBirth?: string;
   protected providedIdDocumentNumber?: string;
@@ -25,15 +22,18 @@ export class PersonalDetailsComponent {
   }
 
   setProvidedPersonalDetails() {
-    let personalDetails = this.flightBookService.getPersonalDetails();
-    this.providedNameAndSurname = personalDetails.nameAndSurname;
-    this.providedDateOfBirth = personalDetails.dateOfBirth;
-    this.providedIdDocumentNumber = personalDetails.idDocumentNumber;
-    this.providedEmail = personalDetails.email;
-    this.providedPhone = personalDetails.phone;
-    this.providedAddress = personalDetails.address;
-    this.providedCity = personalDetails.city;
-    this.providedCountry = personalDetails.country;
-    this.providedPostalCode = personalDetails.postalCode;
+    const savedPersonalInfoForm = sessionStorage.getItem('personalInfoFormData')
+      ? JSON.parse(sessionStorage.getItem('personalInfoFormData')!)
+      : {};
+
+    this.providedNameAndSurname = savedPersonalInfoForm.nameAndSurname;
+    this.providedDateOfBirth = savedPersonalInfoForm.dateOfBirth;
+    this.providedIdDocumentNumber = savedPersonalInfoForm.idDocumentNumber;
+    this.providedEmail = savedPersonalInfoForm.email;
+    this.providedPhone = savedPersonalInfoForm.phone;
+    this.providedAddress = savedPersonalInfoForm.address;
+    this.providedCity = savedPersonalInfoForm.city;
+    this.providedCountry = savedPersonalInfoForm.country;
+    this.providedPostalCode = savedPersonalInfoForm.postalCode;
   }
 }

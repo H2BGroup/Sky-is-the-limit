@@ -11,7 +11,7 @@ export class HeaderComponent {
   @Output() loggedIn = new EventEmitter<boolean>();
   private router = inject(Router);
   logOut() {
-    localStorage.removeItem('isLoggedIn');
+    sessionStorage.removeItem('isLoggedIn');
     this.loggedIn.emit(false);
     this.router.navigate(['/flights']);
   }

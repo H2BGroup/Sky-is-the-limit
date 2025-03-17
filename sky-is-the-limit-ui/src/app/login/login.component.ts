@@ -24,7 +24,7 @@ export class LoginComponent {
 
   logIn() {
     if (this.loginForm.valid) {
-      localStorage.setItem('isLoggedIn', 'true');
+      sessionStorage.setItem('isLoggedIn', 'true');
       this.loggedIn.emit(true);
     }
   }

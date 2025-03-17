@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
   protected loggedIn: boolean = false;
 
   ngOnInit(): void {
-    this.loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    this.loggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
   }
 
   checkIfLoggedIn(isLogged: boolean) {

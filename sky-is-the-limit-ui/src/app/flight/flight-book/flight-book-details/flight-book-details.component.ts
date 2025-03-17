@@ -12,8 +12,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { FlightBookService } from '../flight-book.service';
-import { BookingDetails } from '../booking-details.model';
 import {
   CARRY_ON_BAGGAGE_PRICE,
   CHECKED_BAGGAGE_PRICE,
@@ -32,7 +30,6 @@ import { FlightDetailsComponent } from '../shared/flight-details/flight-details.
 export class FlightBookDetailsComponent implements OnInit, OnDestroy {
   private flightService = inject(FlightService);
   private activatedRoute = inject(ActivatedRoute);
-  private flightBookService = inject(FlightBookService);
   protected totalPrice: number = 0;
   private basePrice: number = 0;
   private formSubscription!: Subscription;
@@ -44,47 +41,19 @@ export class FlightBookDetailsComponent implements OnInit, OnDestroy {
     this.activatedRoute.snapshot.paramMap.get('id')!
   );
 
-  bookForm = new FormGroup(
-    {
-      classSelection: new FormGroup({
-        firstClass: new FormControl(
-          this.flightBookService.getBookingDetails()?.firstClassSeats ?? 0,
-          [Validators.min(0)]
-        ),
-        economyClass: new FormControl(
-          this.flightBookService.getBookingDetails()?.economyClassSeats ?? 1,
-          [Validators.min(0)]
-        ),
-      }),
-      baggageSelection: new FormGroup({
-        carryOnBaggage: new FormControl(
-          this.flightBookService.getBookingDetails()?.carryOnBaggages ?? 0,
-          [Validators.min(0)]
-        ),
-        checkedBaggage: new FormControl(
-          this.flightBookService.getBookingDetails()?.checkedBaggages ?? 0,
-          [Validators.min(0)]
-        ),
-      }),
-      priorityBoarding: new FormControl(
-        this.flightBookService.getBookingDetails()?.priorityBoarding ?? false,
-        []
-      ),
-      insurance: new FormControl(
-        this.flightBookService.getBookingDetails()?.insurance ?? false,
-        []
-      ),
-    },
-    { validators: this.seatsValidator() }
-  );
+  bookForm!: FormGroup;
 
   ngOnInit(): void {
     if (this.flight) {
       this.basePrice = this.flight.price;
     }
+    this.setBookForm();
     this.calculateTotalPrice();
-    this.formSubscription = this.bookForm.valueChanges.subscribe(() => {
+
+    this.formSubscription = this.bookForm.valueChanges.subscribe((values) => {
       this.calculateTotalPrice();
+      sessionStorage.setItem('bookFormData', JSON.stringify(values));
+      sessionStorage.setItem('totalPrice', JSON.stringify(this.totalPrice));
     });
   }
 
@@ -94,26 +63,46 @@ export class FlightBookDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
+  setBookForm() {
+    const savedBookForm = sessionStorage.getItem('bookFormData')
+      ? JSON.parse(sessionStorage.getItem('bookFormData')!)
+      : {};
+    this.bookForm = new FormGroup(
+      {
+        classSelection: new FormGroup({
+          firstClass: new FormControl(
+            savedBookForm?.classSelection?.firstClass ?? 0,
+            [Validators.min(0)]
+          ),
+          economyClass: new FormControl(
+            savedBookForm?.classSelection?.economyClass ?? 1,
+            [Validators.min(0)]
+          ),
+        }),
+        baggageSelection: new FormGroup({
+          carryOnBaggage: new FormControl(
+            savedBookForm?.baggageSelection?.carryOnBaggage ?? 0,
+            [Validators.min(0)]
+          ),
+          checkedBaggage: new FormControl(
+            savedBookForm?.baggageSelection?.checkedBaggage ?? 0,
+            [Validators.min(0)]
+          ),
+        }),
+        priorityBoarding: new FormControl(
+          savedBookForm?.priorityBoarding ?? false
+        ),
+        insurance: new FormControl(savedBookForm?.insurance ?? false),
+      },
+      { validators: this.seatsValidator() }
+    );
+  }
+
   OnBackToList() {
     this.flightService.toFlightList();
   }
 
   onProceedWithBooking() {
-    if (this.bookForm) {
-      let bookingDetails: BookingDetails = {
-        firstClassSeats: this.bookForm.get('classSelection.firstClass')?.value!,
-        economyClassSeats: this.bookForm.get('classSelection.economyClass')
-          ?.value!,
-        carryOnBaggages: this.bookForm.get('baggageSelection.carryOnBaggage')
-          ?.value!,
-        checkedBaggages: this.bookForm.get('baggageSelection.checkedBaggage')
-          ?.value!,
-        priorityBoarding: this.bookForm.get('priorityBoarding')?.value!,
-        insurance: this.bookForm.get('insurance')?.value!,
-        price: this.totalPrice,
-      };
-      this.flightBookService.setBookingDetails(bookingDetails);
-    }
     this.flightService.toPersonalDetailsForm(this.flight!.id);
   }
 
