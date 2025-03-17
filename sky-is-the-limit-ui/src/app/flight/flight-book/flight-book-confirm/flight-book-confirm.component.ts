@@ -32,21 +32,42 @@ export class FlightBookConfirmComponent implements OnInit, OnDestroy {
 
     setTimeout(() => {
       this.isLoading = false;
-      Swal.fire({
-        title: 'Payment Accepted!',
-        text: 'Return to the homepage?',
-        icon: 'success',
-        showCancelButton: false,
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-        allowEnterKey: false,
-        confirmButtonText: 'Yes',
-        willClose: () => {
-          this.flightService.toFlightList();
-          clearFormData();
-        },
-      });
+      this.showPaymentSuccessAlert();
     }, 2000);
+  }
+
+  private showPaymentSuccessAlert(): void {
+    Swal.fire({
+      title: 'Payment Accepted!',
+      text: 'Return to the homepage?',
+      icon: 'success',
+      showCancelButton: false,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      allowEnterKey: false,
+      confirmButtonText: 'Yes',
+      willClose: () => {
+        this.flightService.toFlightList();
+        clearFormData();
+      },
+    });
+  }
+
+  private showTimeoutAlert(): void {
+    Swal.fire({
+      title: 'Payment Failed!',
+      text: 'Payment could not be completed because the time limit has been exceeded.',
+      icon: 'error',
+      showCancelButton: false,
+      confirmButtonText: 'OK',
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      allowEnterKey: false,
+      willClose: () => {
+        this.flightService.toFlightList();
+        clearFormData();
+      },
+    });
   }
 
   private startTimer(): void {
@@ -57,6 +78,7 @@ export class FlightBookConfirmComponent implements OnInit, OnDestroy {
       if (this.remainingSeconds <= 0) {
         clearInterval(this.timerInterval);
         this.displayTime = '00:00';
+        this.showTimeoutAlert();
       }
     }, 1000);
   }
