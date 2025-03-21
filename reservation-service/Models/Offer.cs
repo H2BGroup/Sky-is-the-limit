@@ -10,5 +10,5 @@ public class Offer
     public string? Destination { get; set; }
     public DateTime DepartureDate { get; set; }
 
-    public List<Reservation> Reservations { get; set; } = new();
+    public List<Booking> Bookings { get; set; } = new();
 }

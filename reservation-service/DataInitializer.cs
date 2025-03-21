@@ -12,7 +12,7 @@ namespace reservation_service
             context.Database.EnsureCreated();
 
             // Look for any existing data.
-            if (context.Users.Any() && context.Offers.Any() && context.Reservations.Any())
+            if (context.Users.Any() && context.Offers.Any() && context.Bookings.Any())
             {
                 return;   // DB has been seeded
             }
@@ -42,14 +42,14 @@ namespace reservation_service
             }
             context.SaveChanges();
 
-            var reservations = new Reservation[]
+            var bookings = new Booking[]
             {
-                new Reservation { Id="1", UserId = users[0].Id, OfferId = offers[0].Id, FirstClassSeats = 1, SecondClassSeats = 2, RegisteredBaggage = 3, Price = 100, Status = ReservationStatus.Confirmed},
+                new Booking { Id="1", UserId = users[0].Id, OfferId = offers[0].Id, FirstClassSeats = 1, SecondClassSeats = 2, RegisteredBaggage = 3, Price = 100, Status = BookingStatus.Confirmed},
             };
 
-            foreach (var reservation in reservations)
+            foreach (var booking in bookings)
             {
-                context.Reservations.Add(reservation);
+                context.Bookings.Add(booking);
             }
             context.SaveChanges();
         }

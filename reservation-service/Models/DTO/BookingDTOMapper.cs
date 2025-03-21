@@ -1,18 +1,18 @@
 namespace reservation_service.Models.DTO;
 
-public static class ReservationDTOMapper
+public static class BookingDTOMapper
 {
-    public static GetReservationResponse ReservationToResponse(Reservation reservation)
+    public static GetBookingResponse BookingToResponse(Booking reservation)
     {
-        return new GetReservationResponse
+        return new GetBookingResponse
         {
             Id = reservation.Id,
-            User = new GetReservationResponse.SimpleUser
+            User = new GetBookingResponse.SimpleUser
             {
                 Id = reservation.User!.Id,
                 Login = reservation.User.Login
             },
-            Offer = new GetReservationResponse.SimpleOffer
+            Offer = new GetBookingResponse.SimpleOffer
             {
                 Id = reservation.Offer!.Id,
                 Origin = reservation.Offer.Origin,
@@ -30,20 +30,20 @@ public static class ReservationDTOMapper
         };
     }
 
-    public static GetReservationsResponse ReservationsToResponse(IEnumerable<Reservation> reservations)
+    public static GetBookingsResponse BookingsToResponse(IEnumerable<Booking> bookings)
     {
-        return new GetReservationsResponse
+        return new GetBookingsResponse
         {
-            Reservations = reservations.Select(r => new GetReservationsResponse.SimpleReservation
+            Bookings = bookings.Select(r => new GetBookingsResponse.SimpleBooking
             {
                 Id = r.Id
             })
         };
     }
 
-    public static Reservation RequestToReservation(string id, PutReservationRequest request)
+    public static Booking RequestToBooking(string id, PutBookingRequest request)
     {
-        return new Reservation
+        return new Booking
         {
             Id = id,
             UserId = request.UserId ,
@@ -55,7 +55,7 @@ public static class ReservationDTOMapper
             PriorityBoarding = request.PriorityBoarding,
             Insurance = request.Insurance,
             Price = request.Price,
-            Status = ReservationStatus.Pending
+            Status = BookingStatus.Pending
         };
     }
 }

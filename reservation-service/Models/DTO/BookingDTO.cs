@@ -1,6 +1,6 @@
 namespace reservation_service.Models.DTO;
 
-public class GetReservationResponse
+public class GetBookingResponse
 {
     public class SimpleUser
     {
@@ -26,19 +26,19 @@ public class GetReservationResponse
     public bool PriorityBoarding { get; set; }
     public bool Insurance { get; set; }
     public double Price { get; set; }
-    public ReservationStatus Status { get; set; }
+    public BookingStatus Status { get; set; }
 }
 
-public class GetReservationsResponse
+public class GetBookingsResponse
 {
-    public class SimpleReservation
+    public class SimpleBooking
     {
         required public string Id { get; set; }
     }
-    public IEnumerable<SimpleReservation> Reservations { get; set; } = [];
+    public IEnumerable<SimpleBooking> Bookings { get; set; } = [];
 }
 
-public class PutReservationRequest
+public class PutBookingRequest
 {
     public required string OfferId { get; set; }
     public required string UserId { get; set; }

@@ -4,14 +4,14 @@ using System.Text.Json.Serialization;
 
 namespace reservation_service.Models;
 
-public enum ReservationStatus
+public enum BookingStatus
 {
     Pending,
     Confirmed,
     Cancelled
 }
 
-public class Reservation
+public class Booking
 {
     [Key]
     required public string Id { get; set; }
@@ -33,5 +33,5 @@ public class Reservation
     public double Price { get; set; }
     
     [JsonConverter(typeof(JsonStringEnumConverter))]
-    public ReservationStatus Status { get; set; }
+    public BookingStatus Status { get; set; }
 }

@@ -14,7 +14,7 @@ builder.Services.AddDbContext<ReservationContext>(options =>
     options.UseInMemoryDatabase("Reservations");
 });
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IReservationService, ReservationService>();
+builder.Services.AddScoped<IBookingService, BookingService>();
 
 var app = builder.Build();
 
