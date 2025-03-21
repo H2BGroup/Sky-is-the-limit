@@ -7,6 +7,7 @@ namespace reservation_service.Models;
 public enum BookingStatus
 {
     Pending,
+    Reserved,
     Confirmed,
     Cancelled
 }
