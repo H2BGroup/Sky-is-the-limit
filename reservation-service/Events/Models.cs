@@ -41,6 +41,14 @@ public class BookingAvailable
     public double Price { get; set; }
 }
 
+public class BookingUnavailable
+{
+    required public string Id { get; set; }
+    required public string OfferId { get; set; }
+    public int FirstClassSeats { get; set; }
+    public int SecondClassSeats { get; set; }
+}
+
 public class PaymentSucceeded
 {
     required public string Id { get; set; }

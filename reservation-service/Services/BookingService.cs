@@ -45,4 +45,18 @@ public class BookingService : IBookingService
     {
         return _context.Bookings.Include(r => r.User).Include(r => r.Offer).ToList();
     }
+
+    public void Update(Booking booking)
+    {
+        if(_context.Offers.Find(booking.OfferId) == null)
+        {
+            throw new ArgumentException("Offer not found");
+        }
+        if(_context.Users.Find(booking.UserId) == null)
+        {
+            throw new ArgumentException("User not found");
+        }
+        _context.Bookings.Update(booking);
+        _context.SaveChanges();
+    }
 }

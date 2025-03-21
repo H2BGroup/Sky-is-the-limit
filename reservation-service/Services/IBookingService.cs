@@ -8,4 +8,5 @@ public interface IBookingService
     public Booking? GetBooking(string id);
     public void Create(Booking booking);
     public void Delete(string id);
+    public void Update(Booking booking);
 }
