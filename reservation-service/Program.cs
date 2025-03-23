@@ -12,7 +12,8 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddDbContext<ReservationContext>(options =>
 {
-    options.UseInMemoryDatabase("Reservations");
+    // options.UseInMemoryDatabase("Reservations");
+    options.UseMySQL(builder.Configuration.GetConnectionString("MySql")!);
 });
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
