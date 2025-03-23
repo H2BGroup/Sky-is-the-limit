@@ -17,6 +17,7 @@ builder.Services.AddDbContext<ReservationContext>(options =>
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddSingleton<EventConsumer>();
+builder.Services.AddSingleton<IEventProducer, EventProducer>();
 
 var app = builder.Build();
 
