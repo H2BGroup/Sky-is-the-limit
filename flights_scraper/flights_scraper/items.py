@@ -11,5 +11,6 @@ class Flight(scrapy.Item):
     destination = scrapy.Field()
     duration = scrapy.Field()
     airlines = scrapy.Field()
+    aircrafts = scrapy.Field()
     flight_schedule = scrapy.Field()
 
