@@ -17,7 +17,7 @@ NEWSPIDER_MODULE = "flights_scraper.spiders"
 #USER_AGENT = "flights_scraper (+http://www.yourdomain.com)"
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
@@ -91,9 +91,12 @@ ROBOTSTXT_OBEY = True
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
 
+DOWNLOADER_MIDDLEWARES = {
+    "flights_scraper.middlewares.RandomUserAgentMiddleware": 400,
+    # "rotating_proxies.middlewares.RotatingProxyMiddleware": 350,
+    # "rotating_proxies.middlewares.BanDetectionMiddleware": 351,
+}
 
-USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36'
+DOWNLOAD_DELAY = 0.5
 
-DOWNLOAD_DELAY = 1  # Opóźnienie 3 sekundy
-#RANDOMIZE_DOWNLOAD_DELAY = True  # Losowe opóźnienia, by wyglądało naturalnie
-#CONCURRENT_REQUESTS = 2  # Zmniejsz liczbę równoczesnych zapytań
+ROTATING_PROXY_LIST_PATH = "D:\\Sky-is-the-limit\\flights_scraper\\rotating_proxy_list.txt"
