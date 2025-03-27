@@ -1,3 +1,9 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap");
+
+html {
+  font-family: "Poppins";
+}
+
 body {
   background: #e6efff;
   overflow-x: hidden;
@@ -10,6 +16,7 @@ button {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  font-family: "Poppins";
 }
 button:hover {
   background-color: #1e4fa3;
