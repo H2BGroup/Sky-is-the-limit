@@ -5,7 +5,7 @@ from flights_scraper.items import Flight
 
 class FlightsSpider(scrapy.Spider):
     name = "flights"
-    start_urls = ["https://flightsfrom.com"]
+    start_urls = ["https://www.flightconnections.com"]
 
     def start_requests(self):
         base_url = "https://www.flightconnections.com"
@@ -25,8 +25,9 @@ class FlightsSpider(scrapy.Spider):
 
         for code1 in iata_codes:
             for code2 in iata_codes:
-                url = f"{base_url}/flights-from-{code1}-to-{code2}"
-                yield scrapy.Request(url, self.parse)
+                if code1 != code2:
+                    url = f"{base_url}/flights-from-{code1}-to-{code2}"
+                    yield scrapy.Request(url, self.parse)
 
     def parse(self, response):
         flight = Flight()
@@ -40,4 +41,5 @@ class FlightsSpider(scrapy.Spider):
             flight["destination"] = response.css("div.route-page-des h3::text").get()
             flight["airlines"] = response.css("ul.route-page-info-text.airlines li::text").getall()
             flight["flight_schedule"] = response.css("div.schedule-day::text").getall()
+            flight["aircrafts"] = response.css("ul.route-page-info-text.aircrafts li::text").getall()
             yield flight
