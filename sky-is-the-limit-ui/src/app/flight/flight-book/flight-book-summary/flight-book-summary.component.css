@@ -27,6 +27,7 @@ app-personal-details {
   color: #2c63c2;
   font-size: 3rem;
   font-weight: bold;
+  cursor: default;
 }
 
 .button-container {

@@ -58,6 +58,7 @@
 
 .mat-expansion-panel {
   color: #2c63c2;
+  cursor: default;
 }
 
 .mat-expansion-panel:hover {

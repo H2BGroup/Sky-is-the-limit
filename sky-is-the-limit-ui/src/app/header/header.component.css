@@ -15,6 +15,7 @@ header {
   position: relative;
   flex-direction: column;
   text-align: center;
+  cursor: default;
 }
 
 .title {
@@ -45,6 +46,7 @@ button {
 .logo:hover {
   animation: rotate 1.5s linear infinite;
   opacity: 0.8;
+  cursor: pointer;
 }
 
 @keyframes rotate {

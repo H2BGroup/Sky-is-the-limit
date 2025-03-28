@@ -8,6 +8,7 @@
   flex-direction: column;
   align-items: center;
   color: #2c63c2;
+  cursor: default;
 }
 .search-form {
   display: flex;
