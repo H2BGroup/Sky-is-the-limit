@@ -14,6 +14,22 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.button-row {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.info-item {
+  flex: 1;
+}
+
 .mat-expansion-panel-header {
   background-color: #f8f9fa;
   font-size: 1rem;
@@ -52,18 +68,32 @@
   margin-top: 8px;
 }
 
-.info-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
+.mat-mdc-paginator {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 16px;
+  color: #2c63c2;
+  font-weight: bold;
+  cursor: default;
 }
 
-.button-row {
-  display: flex;
-  justify-content: flex-end;
+::ng-deep .mat-mdc-paginator-navigation-previous:hover,
+::ng-deep .mat-mdc-paginator-navigation-next:hover {
+  background-color: #e0f7fa !important;
+  transform: scale(1.2) !important;
+  transition: all 0.3s ease !important;
+  cursor: pointer !important;
 }
 
-.info-item {
-  flex: 1;
+::ng-deep .mat-mdc-tooltip {
+  color: #2c63c2 !important;
+}
+
+::ng-deep .mat-mdc-paginator-page-size-label {
+  display: none;
+}
+
+::ng-deep .mat-mdc-paginator-page-size-value {
+  display: none;
 }

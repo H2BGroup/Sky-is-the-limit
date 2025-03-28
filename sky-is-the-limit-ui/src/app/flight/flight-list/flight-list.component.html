@@ -1,6 +1,6 @@
 <div class="p-24">
   <mat-accordion>
-    @for (flight of flights$ | async; track flight.id; let i = $index) {
+    @for (flight of paginatedFlights; track flight.id; let i = $index) {
     <mat-expansion-panel [class.mt-8]="i > 0" [id]="'panel-' + i">
       <mat-expansion-panel-header>
         <div class="d-flex justify-content-between w-100 align-items-center">
@@ -43,4 +43,11 @@
     </mat-expansion-panel>
     }
   </mat-accordion>
+
+  <mat-paginator
+    [length]="(flights$ | async)?.length"
+    [pageSize]="pageSize"
+    (page)="onPageChange($event)"
+  >
+  </mat-paginator>
 </div>
