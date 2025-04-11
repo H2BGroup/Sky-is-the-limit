@@ -11,8 +11,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<OfferContext>(options =>
-    options.UseInMemoryDatabase("OfferDb"));
-//options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection")));
+    //options.UseInMemoryDatabase("OfferDb"));
+    options.UseMySQL(builder.Configuration.GetConnectionString("MySql")));
 builder.Services.AddScoped<OfferService.Services.OfferService>();
 var app = builder.Build();
 
