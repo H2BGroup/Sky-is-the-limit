@@ -1,12 +1,7 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
-
-namespace payment_service.Models
+﻿namespace payment_service.Events.Models
 {
-    public class Payment
+    public class PaymentFailedEvent
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
         required public string Id { get; set; }
         required public string BookingId { get; set; }
         required public double Value { get; set; }

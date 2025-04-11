@@ -1,4 +1,6 @@
+using MassTransit;
 using payment_service.Data;
+using payment_service.Events;
 using payment_service.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +9,26 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddTransient<IPaymentService, PaymentService>();
 builder.Services.Configure<MongoDBSettings>(
     builder.Configuration.GetSection("MongoDBSettings"));
+
+builder.Services.AddMassTransit(config =>
+{
+    config.AddConsumer<Consumer>();
+
+    config.UsingRabbitMq((ctx, cfg) =>
+    {
+        cfg.Host("rabbitmq", h =>
+        {
+            h.Username("guest");
+            h.Password("guest");
+        });
+
+        cfg.ReceiveEndpoint("booking-created-queue", e =>
+        {
+            e.ConfigureConsumer<Consumer>(ctx);
+        });
+    });
+});
+
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
