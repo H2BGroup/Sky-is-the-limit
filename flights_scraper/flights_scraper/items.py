@@ -7,8 +7,10 @@ import scrapy
 
 
 class Flight(scrapy.Item):
+    origin_iata = scrapy.Field()
     origin = scrapy.Field()
     destination = scrapy.Field()
+    destination_iata = scrapy.Field()
     duration = scrapy.Field()
     airlines = scrapy.Field()
     aircrafts = scrapy.Field()

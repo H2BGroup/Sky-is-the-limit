@@ -27,7 +27,7 @@ class FlightsSpider(scrapy.Spider):
             for code2 in iata_codes:
                 if code1 != code2:
                     url = f"{base_url}/flights-from-{code1}-to-{code2}"
-                    yield scrapy.Request(url, self.parse)
+                    yield scrapy.Request(url, self.parse, meta={"code1": code1, "code2": code2})      
 
     def parse(self, response):
         flight = Flight()
@@ -37,7 +37,9 @@ class FlightsSpider(scrapy.Spider):
         if flight["duration"] is None:
             pass
         else:
+            flight["origin_iata"] = response.meta.get("code1")
             flight["origin"] = response.css("div.route-page-dep  h3::text").get()
+            flight["destination_iata"] = response.meta.get("code2")
             flight["destination"] = response.css("div.route-page-des h3::text").get()
             flight["airlines"] = response.css("ul.route-page-info-text.airlines li::text").getall()
             flight["flight_schedule"] = response.css("div.schedule-day::text").getall()

@@ -6,8 +6,17 @@
 
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
+import re
 
 
 class FlightsScraperPipeline:
     def process_item(self, item, spider):
+        adapter = ItemAdapter(item)
+
+        if adapter.get("duration"):
+            duration = re.sub(r'(\d+)\s*hours?', r'\1h', adapter["duration"])
+            duration = re.sub(r'(\d+)\s*minutes?', r'\1m', duration)
+            duration = duration.replace(' and ', ' ')
+            item['duration'] = duration.strip()
+
         return item
