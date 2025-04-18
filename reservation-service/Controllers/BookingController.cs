@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using reservation_service.Models;
 using reservation_service.Models.DTO;
 using reservation_service.Services;
+using reservation_service.Events;
 
 namespace reservation_service.Controllers;
 
@@ -10,10 +11,12 @@ namespace reservation_service.Controllers;
 public class BookingController : ControllerBase
 {
     private readonly IBookingService _bookingService;
+    private readonly Publisher _publisher;
 
-    public BookingController(IBookingService bookingService)
+    public BookingController(IBookingService bookingService, Publisher publisher)
     {
         _bookingService = bookingService;
+        _publisher = publisher;
     }
 
     [HttpGet]
@@ -34,11 +37,18 @@ public class BookingController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public IActionResult Create(string id, PutBookingRequest booking)
+    public async Task<IActionResult> Create(string id, PutBookingRequest booking)
     {
         try
         {
             _bookingService.Create(BookingDTOMapper.RequestToBooking(id, booking));
+            await _publisher.Publish(new BookingCreatedEvent{
+                Id = id,
+                OfferId = booking.OfferId,
+                FirstClassSeats = booking.FirstClassSeats,
+                SecondClassSeats = booking.SecondClassSeats,
+                Price = booking.Price,
+            });
         } 
         catch(ArgumentException e)
         {
@@ -48,7 +58,7 @@ public class BookingController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public IActionResult Delete(string id)
+    public async Task<IActionResult> Delete(string id)
     {
         Booking? booking = _bookingService.GetBooking(id);
         if (booking == null)
@@ -56,6 +66,12 @@ public class BookingController : ControllerBase
             return NotFound();
         }
         _bookingService.Delete(id);
+        await _publisher.Publish(new BookingCancelledEvent{
+            Id = id,
+            OfferId = booking.OfferId,
+            FirstClassSeats = booking.FirstClassSeats,
+            SecondClassSeats = booking.SecondClassSeats,
+        });
         return NoContent();
     }
 }

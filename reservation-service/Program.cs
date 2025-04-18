@@ -1,6 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using reservation_service.Models;
 using reservation_service.Services;
+using MassTransit;
+using reservation_service.Events.Consumers;
+using reservation_service.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +17,17 @@ builder.Services.AddDbContext<ReservationContext>(options =>
     // options.UseInMemoryDatabase("Reservations");
     options.UseMySQL(builder.Configuration.GetConnectionString("MySql")!);
 });
+builder.Services.AddMassTransit(config => {
+    config.AddConsumer<BookingAvailableConsumer>();
+    config.AddConsumer<BookingUnavailableConsumer>();
+    config.AddConsumer<PaymentSucceededConsumer>();
+
+    config.UsingRabbitMq((context, cfg) => {
+        cfg.Host(builder.Configuration.GetConnectionString("RabbitMQ")!);
+        cfg.ConfigureEndpoints(context);
+    });
+});
+builder.Services.AddTransient<Publisher>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddCors(options => {

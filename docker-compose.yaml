@@ -32,11 +32,11 @@ services:
       ConnectionStrings__RabbitMQ: amqp://guest:guest@rabbitmq:5672
       ConnectionStrings__MySql: Server=reservation-service-db;Database=reservation_service;User=root;Password=root;SslMode=none;
 
-  api-gateway:
-    build:
-      context: api-gateway/.
-      dockerfile: Dockerfile
-    container_name: api-gateway
-    ports:
-      - '5000:8080'
-    restart: always
+  # api-gateway:
+  #   build:
+  #     context: api-gateway/.
+  #     dockerfile: Dockerfile
+  #   container_name: api-gateway
+  #   ports:
+  #     - '5000:8080'
+  #   restart: always
