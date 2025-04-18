@@ -6,8 +6,7 @@ namespace payment_service.Models
     public class Payment
     {
         [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        required public string Id { get; set; }
+        public ObjectId Id { get; set; }
         required public string BookingId { get; set; }
         required public double Value { get; set; }
         public bool Status { get; set; }
