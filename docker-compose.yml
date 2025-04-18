@@ -7,6 +7,11 @@ services:
     ports:
         - 5672:5672
         - 15672:15672
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 10s
+      timeout: 5s
+      retries: 3
         
   mongo:
     image: mongo:latest
@@ -37,6 +42,11 @@ services:
       context: payment-service/.
       dockerfile: Dockerfile
     container_name: payment-service
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      mongo:
+        condition: service_started
     ports:
       - '8080:8080'
     restart: always
