@@ -1,6 +1,6 @@
 ﻿namespace payment_service.Events.Models
 {
-    public class BookingCreatedEvent
+    public class BookingAvailableEvent
     {
         required public string Id { get; set; }
         required public string OfferId { get; set; }

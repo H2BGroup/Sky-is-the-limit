@@ -10,6 +10,7 @@ builder.Services.AddTransient<IPaymentService, PaymentService>();
 builder.Services.Configure<MongoDBSettings>(
     builder.Configuration.GetSection("MongoDBSettings"));
 
+builder.Services.AddScoped<Publisher>();
 builder.Services.AddMassTransit(config =>
 {
     config.AddConsumer<Consumer>();
@@ -22,7 +23,7 @@ builder.Services.AddMassTransit(config =>
             h.Password("guest");
         });
 
-        cfg.ReceiveEndpoint("booking-created-queue", e =>
+        cfg.ReceiveEndpoint("payment-booking-available", e =>
         {
             e.ConfigureConsumer<Consumer>(ctx);
         });

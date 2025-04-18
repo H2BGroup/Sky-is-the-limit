@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using payment_service.Data;
 using payment_service.Events;
@@ -31,19 +32,23 @@ namespace payment_service.Services
 
             if (rnd.Next(10) == 0)
             {
-                await _publisher.PublishPaymentFailedEvent(payment.Id, payment.BookingId, payment.Value);
                 return;
             }
             else
             {
                 await _payments.InsertOneAsync(payment);
+                await _publisher.PublishPaymentSucceededEvent(payment.BookingId);
                 return;
             }
         }
 
 
-        public async Task<Payment?> GetPayment(string id) =>
-           await _payments.Find(x => x.Id == id).FirstOrDefaultAsync();
+        public async Task<Payment?> GetPayment(string id)
+        {
+            if (!ObjectId.TryParse(id, out var objectId))
+                return null;
+           return await _payments.Find(x => x.Id == objectId).FirstOrDefaultAsync();
+        }
 
         public async Task<List<Payment>> GetPayments() =>
             await _payments.Find(_ => true).ToListAsync();

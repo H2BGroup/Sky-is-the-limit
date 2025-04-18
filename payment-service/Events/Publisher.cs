@@ -12,18 +12,14 @@ namespace payment_service.Events
             _publishEndpoint = publishEndpoint;
         }
 
-        public async Task PublishPaymentFailedEvent(string paymentId, string bookingId, double value)
+        public async Task PublishPaymentSucceededEvent(string bookingId)
         {
-            var paymentFailedEvent = new PaymentFailedEvent
+            var paymentSucceededEvent = new PaymentSucceededEvent
             {
-                Id = paymentId,
-                BookingId = bookingId,
-                Value = value,
-                Status = false,
-                DateOfPayment = DateTime.UtcNow
+                BookingId = bookingId
             };
 
-            await _publishEndpoint.Publish(paymentFailedEvent);
+            await _publishEndpoint.Publish(paymentSucceededEvent);
         }
     }
 }

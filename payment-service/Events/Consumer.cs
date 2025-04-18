@@ -5,7 +5,7 @@ using payment_service.Services;
 
 namespace payment_service.Events
 {
-    public class Consumer : IConsumer<BookingCreatedEvent>
+    public class Consumer : IConsumer<BookingAvailableEvent>
     {
         private readonly IPaymentService _paymentService;
 
@@ -14,18 +14,19 @@ namespace payment_service.Events
             _paymentService = paymentService;
         }
 
-        public async Task Consume(ConsumeContext<BookingCreatedEvent> context)
+        public async Task Consume(ConsumeContext<BookingAvailableEvent> context)
         {
             var message = context.Message;
 
             var payment = new Payment
             {
-                Id = Guid.NewGuid().ToString(),
                 BookingId = message.Id,
                 Value = message.Price,
                 Status = true,
                 DateOfPayment = DateTime.UtcNow
             };
+
+             Console.WriteLine($"Received event: {context.Message.Id}");
 
             await _paymentService.Create(payment);
 
