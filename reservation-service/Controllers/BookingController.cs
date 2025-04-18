@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using reservation_service.Events;
 using reservation_service.Models;
 using reservation_service.Models.DTO;
 using reservation_service.Services;
@@ -11,12 +10,10 @@ namespace reservation_service.Controllers;
 public class BookingController : ControllerBase
 {
     private readonly IBookingService _bookingService;
-    private readonly IEventProducer _eventProducer;
 
-    public BookingController(IBookingService bookingService, IEventProducer eventProducer)
+    public BookingController(IBookingService bookingService)
     {
         _bookingService = bookingService;
-        _eventProducer = eventProducer;
     }
 
     [HttpGet]
@@ -42,14 +39,6 @@ public class BookingController : ControllerBase
         try
         {
             _bookingService.Create(BookingDTOMapper.RequestToBooking(id, booking));
-            _eventProducer.Publish("BookingCreated", new BookingCreated
-            {
-                Id = id,
-                OfferId = booking.OfferId,
-                FirstClassSeats = booking.FirstClassSeats,
-                SecondClassSeats = booking.SecondClassSeats,
-                Price = booking.Price
-            });
         } 
         catch(ArgumentException e)
         {
@@ -67,13 +56,6 @@ public class BookingController : ControllerBase
             return NotFound();
         }
         _bookingService.Delete(id);
-        _eventProducer.Publish("BookingCancelled", new BookingCancelled
-        {
-            Id = id,
-            OfferId = booking.OfferId,
-            FirstClassSeats = booking.FirstClassSeats,
-            SecondClassSeats = booking.SecondClassSeats
-        });
         return NoContent();
     }
 }
