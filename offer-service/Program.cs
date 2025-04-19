@@ -16,6 +16,13 @@ builder.Services.AddDbContext<OfferContext>(options =>
 builder.Services.AddScoped<OfferService.Services.OfferService>();
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<OfferContext>();
+    context.Database.EnsureCreated();
+}
+
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
