@@ -40,7 +40,9 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: offer_service
-
+    volumes:
+      - ./offer-db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./offer-db/database:/var/lib/mysql
   offer-service:
     build:
       context: offer-service/.
@@ -64,3 +66,4 @@ services:
     ports:
       - '5000:8080'
     restart: always
+    
