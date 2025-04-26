@@ -14,11 +14,15 @@ namespace payment_service.Controllers
             _paymentService = paymentService;
 
         [HttpGet]
-        public async Task<List<Payment>> Get() =>
-            await _paymentService.GetPayments();
+        public async Task<ActionResult<IEnumerable<Payment>>> GetPayments()
+        {
+            var payments = await _paymentService.GetPayments();
+
+            return Ok(payments);
+        }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Payment>> Get(string id)
+        public async Task<ActionResult<Payment>> GetPayment(string id)
         {
             var payment = await _paymentService.GetPayment(id);
 
@@ -27,16 +31,7 @@ namespace payment_service.Controllers
                 return NotFound();
             }
 
-            return payment;
+            return Ok(payment);
         }
-
-        [HttpPost]
-        public async Task<ActionResult> Create(Payment payment)
-        {
-            await _paymentService.Create(payment);
-
-            return CreatedAtAction(nameof(Get), new { id = payment.Id }, payment);
-        }
-
     }
 }
