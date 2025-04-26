@@ -26,6 +26,16 @@ namespace payment_service.Services
             _publisher = publisher;
         }
 
+        public async Task<IEnumerable<Payment>> GetPayments() =>
+            await _payments.Find(_ => true).ToListAsync();
+
+        public async Task<Payment> GetPayment(string id)
+        {
+            if (!ObjectId.TryParse(id, out var objectId))
+                return null;
+            return await _payments.Find(x => x.Id == objectId).FirstOrDefaultAsync();
+        }
+
         public async Task Create(Payment payment)
         {
             Random rnd = new Random();
@@ -38,19 +48,10 @@ namespace payment_service.Services
             {
                 await _payments.InsertOneAsync(payment);
                 await _publisher.PublishPaymentSucceededEvent(payment.BookingId);
+
                 return;
             }
         }
 
-
-        public async Task<Payment?> GetPayment(string id)
-        {
-            if (!ObjectId.TryParse(id, out var objectId))
-                return null;
-           return await _payments.Find(x => x.Id == objectId).FirstOrDefaultAsync();
-        }
-
-        public async Task<List<Payment>> GetPayments() =>
-            await _payments.Find(_ => true).ToListAsync();
     }
 }
