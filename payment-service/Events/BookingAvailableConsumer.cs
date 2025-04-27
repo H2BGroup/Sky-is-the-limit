@@ -1,15 +1,15 @@
 ﻿using MassTransit;
-using payment_service.Events.Models;
 using payment_service.Models;
 using payment_service.Services;
+using shared.Events;
 
 namespace payment_service.Events
 {
-    public class Consumer : IConsumer<BookingAvailableEvent>
+    public class BookingAvailableConsumer : IConsumer<BookingAvailableEvent>
     {
         private readonly IPaymentService _paymentService;
 
-        public Consumer(IPaymentService paymentService)
+        public BookingAvailableConsumer(IPaymentService paymentService)
         {
             _paymentService = paymentService;
         }

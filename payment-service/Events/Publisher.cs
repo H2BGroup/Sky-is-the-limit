@@ -1,5 +1,5 @@
 ﻿using MassTransit;
-using payment_service.Events.Models;
+using shared.Events;
 
 namespace payment_service.Events
 {

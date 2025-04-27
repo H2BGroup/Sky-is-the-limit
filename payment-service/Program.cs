@@ -13,20 +13,13 @@ builder.Services.Configure<MongoDBSettings>(
 builder.Services.AddScoped<Publisher>();
 builder.Services.AddMassTransit(config =>
 {
-    config.AddConsumer<Consumer>();
+    config.AddConsumer<BookingAvailableConsumer>();
 
     config.UsingRabbitMq((ctx, cfg) =>
     {
-        cfg.Host("rabbitmq", h =>
-        {
-            h.Username("guest");
-            h.Password("guest");
-        });
+        cfg.Host(builder.Configuration.GetConnectionString("RabbitMQ")!);
 
-        cfg.ReceiveEndpoint("payment-booking-available", e =>
-        {
-            e.ConfigureConsumer<Consumer>(ctx);
-        });
+        cfg.ConfigureEndpoints(ctx);
     });
 });
 
