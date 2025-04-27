@@ -1,7 +1,7 @@
 namespace reservation_service.Events;
 
 //send
-public class BookingCreated
+public class BookingCreatedEvent
 {
     required public string Id { get; set; }
     required public string OfferId { get; set; }
@@ -10,7 +10,7 @@ public class BookingCreated
     public double Price { get; set; }
 }
 
-public class BookingExpired
+public class BookingExpiredEvent
 {
     required public string Id { get; set; }
     required public string OfferId { get; set; }
@@ -18,7 +18,7 @@ public class BookingExpired
     public int SecondClassSeats { get; set; }
 }
 
-public class BookingCancelled
+public class BookingCancelledEvent
 {
     required public string Id { get; set; }
     required public string OfferId { get; set; }
@@ -26,13 +26,13 @@ public class BookingCancelled
     public int SecondClassSeats { get; set; }
 }
 
-public class BookingConfirmed
+public class BookingConfirmedEvent
 {
     required public string Id { get; set; }
 }
 
 //receive
-public class BookingAvailable
+public class BookingAvailableEvent
 {
     required public string Id { get; set; }
     required public string OfferId { get; set; }
@@ -41,7 +41,7 @@ public class BookingAvailable
     public double Price { get; set; }
 }
 
-public class BookingUnavailable
+public class BookingUnavailableEvent
 {
     required public string Id { get; set; }
     required public string OfferId { get; set; }
@@ -49,7 +49,7 @@ public class BookingUnavailable
     public int SecondClassSeats { get; set; }
 }
 
-public class PaymentSucceeded
+public class PaymentSucceededEvent
 {
     required public string Id { get; set; }
     required public string BookingId { get; set; }

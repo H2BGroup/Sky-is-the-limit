@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using reservation_service.Models;
 using reservation_service.Services;
+using MassTransit;
+using reservation_service.Events.Consumers;
 using reservation_service.Events;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,10 +17,19 @@ builder.Services.AddDbContext<ReservationContext>(options =>
     // options.UseInMemoryDatabase("Reservations");
     options.UseMySQL(builder.Configuration.GetConnectionString("MySql")!);
 });
+builder.Services.AddMassTransit(config => {
+    config.AddConsumer<BookingAvailableConsumer>();
+    config.AddConsumer<BookingUnavailableConsumer>();
+    config.AddConsumer<PaymentSucceededConsumer>();
+
+    config.UsingRabbitMq((context, cfg) => {
+        cfg.Host(builder.Configuration.GetConnectionString("RabbitMQ")!);
+        cfg.ConfigureEndpoints(context);
+    });
+});
+builder.Services.AddTransient<Publisher>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
-builder.Services.AddSingleton<EventConsumer>();
-builder.Services.AddSingleton<IEventProducer, EventProducer>();
 builder.Services.AddCors(options => {
     options.AddDefaultPolicy(policy => {
         policy.SetIsOriginAllowed(_ => true);
@@ -37,9 +48,6 @@ using (var scope = app.Services.CreateScope())
     var context = services.GetRequiredService<ReservationContext>();
     reservation_service.DataInitializer.Initialize(context);
 }
-
-var eventConsumer = app.Services.GetRequiredService<EventConsumer>();
-eventConsumer.Consume();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
