@@ -28,10 +28,29 @@ namespace payment_service.Controllers
 
             if (payment is null)
             {
-                return NotFound();
+                return NotFound($"Payment with id {id} not found.");
             }
 
             return Ok(payment);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Payment>> ProcessPayment(string id)
+        {
+            try
+            {
+                await _paymentService.ProcessPayment(id);
+
+                return NoContent();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
