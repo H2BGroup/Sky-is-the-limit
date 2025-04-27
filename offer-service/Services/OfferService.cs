@@ -29,6 +29,12 @@ namespace OfferService.Services
             await _context.SaveChangesAsync();
             return offer;
         }
+        public async Task<Offer> UpdateOffer(Offer offer)
+        {
+            _context.Offers.Update(offer);
+            await _context.SaveChangesAsync();
+            return offer;
+        }
 
         public async Task<bool> DeleteOffer(string id)
         {
