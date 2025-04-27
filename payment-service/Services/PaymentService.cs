@@ -31,27 +31,81 @@ namespace payment_service.Services
 
         public async Task<Payment> GetPayment(string id)
         {
-            if (!ObjectId.TryParse(id, out var objectId))
-                return null;
-            return await _payments.Find(x => x.Id == objectId).FirstOrDefaultAsync();
+            return await _payments.Find(x => x.Id == ObjectId.Parse(id)).FirstOrDefaultAsync();
         }
 
         public async Task Create(Payment payment)
         {
+            await _payments.InsertOneAsync(payment);
+        }
+
+        public async Task<Payment> ProcessPayment(string bookingId)
+        {
             Random rnd = new Random();
+            var payment = await _payments.Find(x => x.BookingId == bookingId).FirstOrDefaultAsync();
+
+            if (payment is null)
+            {
+                throw new KeyNotFoundException($"Payment with bookingId {bookingId} not found.");
+            }
+            
+            if(payment.Status != PaymentStatus.Pending)
+            {
+                throw new InvalidOperationException($"Payment with bookingId {bookingId} is already processed.");
+            }
 
             if (rnd.Next(10) == 0)
             {
-                return;
+                payment.Status = PaymentStatus.Failed;
+                payment.DateOfPayment = DateTime.UtcNow;
+
+                return payment;
             }
             else
             {
-                await _payments.InsertOneAsync(payment);
+                payment.Status = PaymentStatus.Succeeded;
+                payment.DateOfPayment = DateTime.UtcNow;
+
+                await _payments.ReplaceOneAsync(x => x.BookingId == bookingId, payment);
+
                 await _publisher.PublishPaymentSucceededEvent(payment.BookingId);
 
-                return;
+                return payment;
             }
         }
 
+        public async Task ExpirePayment(string bookingId)
+        {
+            var payment = await _payments.Find(x => x.BookingId == bookingId).FirstOrDefaultAsync();
+
+            if (payment is null)
+            {
+                throw new KeyNotFoundException($"Payment with bookingId {bookingId} not found.");
+            }
+
+            payment.Status = PaymentStatus.Failed;
+            payment.DateOfPayment = DateTime.UtcNow;
+            await _payments.ReplaceOneAsync(x => x.BookingId == bookingId, payment);
+        }
+
+        public async Task CancelPayment(string bookingId)
+        {
+            var payment = await _payments.Find(x => x.BookingId == bookingId).FirstOrDefaultAsync();
+
+            if (payment is null)
+            {
+                throw new KeyNotFoundException($"Payment with bookingId {bookingId} not found.");
+            }
+
+            var refund = new Payment
+            { 
+                BookingId = payment.BookingId,
+                Value = -payment.Value,
+                Status = PaymentStatus.Succeeded,
+                DateOfPayment = DateTime.UtcNow
+            };
+
+            await _payments.InsertOneAsync(refund);
+        }
     }
 }
