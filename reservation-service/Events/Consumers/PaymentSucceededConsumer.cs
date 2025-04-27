@@ -17,7 +17,7 @@ public class PaymentSucceededConsumer : IConsumer<PaymentSucceededEvent>
     public async Task Consume(ConsumeContext<PaymentSucceededEvent> context)
     {
         var message = context.Message;
-        Console.WriteLine(" [x] Received PaymentSucceeded {0}", message.Id);
+        Console.WriteLine(" [x] Received PaymentSucceeded {0}", message.BookingId);
         Booking? booking = _bookingService.GetBooking(message.BookingId);
         if (booking != null && booking.Status == BookingStatus.Reserved)
         {
