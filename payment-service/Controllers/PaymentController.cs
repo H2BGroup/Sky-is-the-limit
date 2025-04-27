@@ -39,9 +39,9 @@ namespace payment_service.Controllers
         {
             try
             {
-                await _paymentService.ProcessPayment(id);
+                var payment = await _paymentService.ProcessPayment(id);
 
-                return NoContent();
+                return Ok(payment);
             }
             catch (KeyNotFoundException ex)
             {
@@ -50,6 +50,10 @@ namespace payment_service.Controllers
             catch (InvalidOperationException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(402);
             }
         }
     }

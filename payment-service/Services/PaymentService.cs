@@ -56,10 +56,11 @@ namespace payment_service.Services
 
             if (rnd.Next(10) == 0)
             {
-                payment.Status = PaymentStatus.Failed;
                 payment.DateOfPayment = DateTime.UtcNow;
 
-                return payment;
+                await _payments.ReplaceOneAsync(x => x.BookingId == bookingId, payment);
+
+                throw new Exception($"Payment with bookingId {bookingId} failed.");
             }
             else
             {
