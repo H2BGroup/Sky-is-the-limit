@@ -1,5 +1,5 @@
 using MassTransit;
-using OfferService.Events.Models;
+using shared.Events;
 
 namespace OfferService.Events.Consumers;
 

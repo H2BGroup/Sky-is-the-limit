@@ -1,6 +1,7 @@
 using MassTransit;
 using reservation_service.Models;
 using reservation_service.Services;
+using shared.Events;
 
 namespace reservation_service.Events.Consumers;
 
