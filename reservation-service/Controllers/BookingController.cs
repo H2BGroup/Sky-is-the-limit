@@ -3,75 +3,77 @@ using reservation_service.Models;
 using reservation_service.Models.DTO;
 using reservation_service.Services;
 using reservation_service.Events;
+using shared.Events;
 
-namespace reservation_service.Controllers;
-
-[ApiController]
-[Route("/api/[controller]")]
-public class BookingController : ControllerBase
+namespace reservation_service.Controllers
 {
-    private readonly IBookingService _bookingService;
-    private readonly Publisher _publisher;
-
-    public BookingController(IBookingService bookingService, Publisher publisher)
+    [ApiController]
+    [Route("/api/[controller]")]
+    public class BookingController : ControllerBase
     {
-        _bookingService = bookingService;
-        _publisher = publisher;
-    }
+        private readonly IBookingService _bookingService;
+        private readonly Publisher _publisher;
 
-    [HttpGet]
-    public GetBookingsResponse GetBookings()
-    {
-        return BookingDTOMapper.BookingsToResponse(_bookingService.GetBookings());
-    }
-
-    [HttpGet("{id}")]
-    public ActionResult<GetBookingResponse> GetBooking(string id)
-    {
-        Booking? booking = _bookingService.GetBooking(id);
-        if (booking == null)
+        public BookingController(IBookingService bookingService, Publisher publisher)
         {
-            return NotFound();
+            _bookingService = bookingService;
+            _publisher = publisher;
         }
-        return BookingDTOMapper.BookingToResponse(booking);
-    }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> Create(string id, PutBookingRequest booking)
-    {
-        try
+        [HttpGet]
+        public GetBookingsResponse GetBookings()
         {
-            _bookingService.Create(BookingDTOMapper.RequestToBooking(id, booking));
-            await _publisher.Publish(new BookingCreatedEvent{
+            return BookingDTOMapper.BookingsToResponse(_bookingService.GetBookings());
+        }
+
+        [HttpGet("{id}")]
+        public ActionResult<GetBookingResponse> GetBooking(string id)
+        {
+            Booking? booking = _bookingService.GetBooking(id);
+            if (booking == null)
+            {
+                return NotFound();
+            }
+            return BookingDTOMapper.BookingToResponse(booking);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Create(string id, PutBookingRequest booking)
+        {
+            try
+            {
+                _bookingService.Create(BookingDTOMapper.RequestToBooking(id, booking));
+                await _publisher.Publish(new BookingCreatedEvent{
+                    Id = id,
+                    OfferId = booking.OfferId,
+                    FirstClassSeats = booking.FirstClassSeats,
+                    SecondClassSeats = booking.SecondClassSeats,
+                    Price = booking.Price,
+                });
+            } 
+            catch(ArgumentException e)
+            {
+                return BadRequest(e.Message);
+            }
+            return CreatedAtAction(nameof(GetBooking), new { id = id }, booking);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            Booking? booking = _bookingService.GetBooking(id);
+            if (booking == null)
+            {
+                return NotFound();
+            }
+            _bookingService.Delete(id);
+            await _publisher.Publish(new BookingCancelledEvent{
                 Id = id,
                 OfferId = booking.OfferId,
                 FirstClassSeats = booking.FirstClassSeats,
                 SecondClassSeats = booking.SecondClassSeats,
-                Price = booking.Price,
             });
-        } 
-        catch(ArgumentException e)
-        {
-            return BadRequest(e.Message);
+            return NoContent();
         }
-        return CreatedAtAction(nameof(GetBooking), new { id = id }, booking);
-    }
-
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(string id)
-    {
-        Booking? booking = _bookingService.GetBooking(id);
-        if (booking == null)
-        {
-            return NotFound();
-        }
-        _bookingService.Delete(id);
-        await _publisher.Publish(new BookingCancelledEvent{
-            Id = id,
-            OfferId = booking.OfferId,
-            FirstClassSeats = booking.FirstClassSeats,
-            SecondClassSeats = booking.SecondClassSeats,
-        });
-        return NoContent();
     }
 }

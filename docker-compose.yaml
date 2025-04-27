@@ -32,11 +32,78 @@ services:
       ConnectionStrings__RabbitMQ: amqp://guest:guest@rabbitmq:5672
       ConnectionStrings__MySql: Server=reservation-service-db;Database=reservation_service;User=root;Password=root;SslMode=none;
 
-  # api-gateway:
-  #   build:
-  #     context: api-gateway/.
-  #     dockerfile: Dockerfile
-  #   container_name: api-gateway
-  #   ports:
-  #     - '5000:8080'
-  #   restart: always
+  offer-service-db:
+    image: mysql:5.7
+    container_name: offer-service-db
+    ports:
+      - '3307:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: offer_service
+    volumes:
+      - ./offer-db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./offer-db/database:/var/lib/mysql
+  offer-service:
+    build:
+      context: offer-service/.
+      dockerfile: Dockerfile
+    container_name: offer-service
+    ports:
+      - '5002:8080'
+    depends_on:
+      - rabbitmq
+      - offer-service-db
+    restart: always
+    environment:
+      ConnectionStrings__RabbitMQ: amqp://guest:guest@rabbitmq:5672
+      ConnectionStrings__MySql: Server=offer-service-db;Database=offer_service;User=root;Password=root;SslMode=none;
+
+  mongo:
+    image: mongo:latest
+    restart: always
+    container_name: mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - '27017:27017'
+    volumes:
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017
+      ME_CONFIG_BASICAUTH: false
+
+  payment-service:
+    build:
+      context: payment-service/.
+      dockerfile: Dockerfile
+    container_name: payment-service
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      mongo:
+        condition: service_started
+    ports:
+      - '5003:8080'
+    restart: always
+    environment:
+      MongoDBSettings__ConnectionString: mongodb://user:password@mongo:27017/PaymentsDB
+      ConnectionStrings__RabbitMQ: amqp://guest:guest@rabbitmq:5672
+   
+  api-gateway:
+    build:
+      context: api-gateway/.
+      dockerfile: Dockerfile
+    container_name: api-gateway
+    ports:
+      - '5000:8080'
+    restart: always
+    

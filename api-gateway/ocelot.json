@@ -44,6 +44,42 @@
         ],
         "UpstreamPathTemplate": "/api/user/login",
         "UpstreamHttpMethod": [ "POST" ]
+      },
+      {
+        "DownstreamPathTemplate": "/api/offer",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          { "Host": "offer-service", "Port": 8080 }
+        ],
+        "UpstreamPathTemplate": "/api/offer",
+        "UpstreamHttpMethod": [ "GET" ]
+      },
+      {
+        "DownstreamPathTemplate": "/api/offer/{id}",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          { "Host": "offer-service", "Port": 8080 }
+        ],
+        "UpstreamPathTemplate": "/api/offer/{id}",
+        "UpstreamHttpMethod": [ "GET", "PUT", "DELETE" ]
+      },
+      {
+        "DownstreamPathTemplate": "/api/payment",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          { "Host": "payment-service", "Port": 8080 }
+        ],
+        "UpstreamPathTemplate": "/api/payment",
+        "UpstreamHttpMethod": [ "GET" ]
+      },
+      {
+        "DownstreamPathTemplate": "/api/payment/{id}",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          { "Host": "payment-service", "Port": 8080 }
+        ],
+        "UpstreamPathTemplate": "/api/payment/{id}",
+        "UpstreamHttpMethod": [ "GET" ]
       }
     ],
     "GlobalConfiguration": {

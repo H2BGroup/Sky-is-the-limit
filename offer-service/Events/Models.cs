@@ -49,5 +49,6 @@ public class BookingUnavailableEvent
 
 public class PaymentSucceededEvent
 {
+    required public string Id { get; set; }
     required public string BookingId { get; set; }
 }
