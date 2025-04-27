@@ -1,0 +1,71 @@
+{
+    "Routes": [
+      {
+        "DownstreamPathTemplate": "/api/booking",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          { "Host": "reservation-service", "Port": 8080 }
+        ],
+        "UpstreamPathTemplate": "/api/booking",
+        "UpstreamHttpMethod": [ "GET" ]
+      },
+      {
+        "DownstreamPathTemplate": "/api/booking/{id}",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          { "Host": "reservation-service", "Port": 8080 }
+        ],
+        "UpstreamPathTemplate": "/api/booking/{id}",
+        "UpstreamHttpMethod": [ "GET", "PUT", "DELETE" ]
+      },
+      {
+        "DownstreamPathTemplate": "/api/user",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          { "Host": "reservation-service", "Port": 8080 }
+        ],
+        "UpstreamPathTemplate": "/api/user",
+        "UpstreamHttpMethod": [ "GET" ]
+      },
+      {
+        "DownstreamPathTemplate": "/api/user/{id}",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          { "Host": "reservation-service", "Port": 8080 }
+        ],
+        "UpstreamPathTemplate": "/api/user/{id}",
+        "UpstreamHttpMethod": [ "GET", "PUT", "DELETE"]
+      },
+      {
+        "DownstreamPathTemplate": "/api/user/login",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          { "Host": "reservation-service", "Port": 8080 }
+        ],
+        "UpstreamPathTemplate": "/api/user/login",
+        "UpstreamHttpMethod": [ "POST" ]
+      },
+      {
+        "DownstreamPathTemplate": "/api/offer",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          { "Host": "offer-service", "Port": 8080 }
+        ],
+        "UpstreamPathTemplate": "/api/offer",
+        "UpstreamHttpMethod": [ "GET" ]
+      },
+      {
+        "DownstreamPathTemplate": "/api/offer/{id}",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          { "Host": "offer-service", "Port": 8080 }
+        ],
+        "UpstreamPathTemplate": "/api/offer/{id}",
+        "UpstreamHttpMethod": [ "GET", "PUT", "DELETE" ]
+      }
+    ],
+    "GlobalConfiguration": {
+      "BaseUrl": "http://api-gateway"
+    }
+  }
+  
