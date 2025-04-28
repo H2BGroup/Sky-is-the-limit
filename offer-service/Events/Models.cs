@@ -49,21 +49,6 @@ public class BookingUnavailableEvent
 
 public class PaymentSucceededEvent
 {
+    required public string Id { get; set; }
     required public string BookingId { get; set; }
-}
-
-public class OfferCreatedEvent
-{
-    required public string Id { get; set; }
-    public string? Origin { get; set; }
-    public string? Destination { get; set; }
-    public DateTime DepartureDate { get; set; }
-}
-
-public class OfferUpdatedEvent
-{
-    required public string Id { get; set; }
-    public string? Origin { get; set; }
-    public string? Destination { get; set; }
-    public DateTime DepartureDate { get; set; }
 }
