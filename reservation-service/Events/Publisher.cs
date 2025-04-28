@@ -16,5 +16,6 @@ public class Publisher
         if (message == null)
             throw new ArgumentNullException(nameof(message));
         await _publishEndpoint.Publish(message);
+        Console.WriteLine(" [x] Published {0}", message.GetType().Name);
     }
 }

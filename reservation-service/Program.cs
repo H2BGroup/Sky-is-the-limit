@@ -21,6 +21,8 @@ builder.Services.AddMassTransit(config => {
     config.AddConsumer<BookingAvailableConsumer>();
     config.AddConsumer<BookingUnavailableConsumer>();
     config.AddConsumer<PaymentSucceededConsumer>();
+    config.AddConsumer<OfferCreatedConsumer>();
+    config.AddConsumer<OfferUpdatedConsumer>();
 
     config.UsingRabbitMq((context, cfg) => {
         cfg.Host(builder.Configuration.GetConnectionString("RabbitMQ")!);
@@ -29,6 +31,7 @@ builder.Services.AddMassTransit(config => {
 });
 builder.Services.AddTransient<Publisher>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IOfferService, OfferService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddCors(options => {
     options.AddDefaultPolicy(policy => {
