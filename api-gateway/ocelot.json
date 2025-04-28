@@ -79,7 +79,7 @@
           { "Host": "payment-service", "Port": 8080 }
         ],
         "UpstreamPathTemplate": "/api/payment/{id}",
-        "UpstreamHttpMethod": [ "GET" ]
+        "UpstreamHttpMethod": [ "GET", "PUT" ]
       }
     ],
     "GlobalConfiguration": {
