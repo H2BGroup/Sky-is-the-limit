@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import { LoginService } from './login.service';
 
 @Component({
   selector: 'app-login',
@@ -10,6 +11,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 })
 export class LoginComponent {
   @Output() loggedIn = new EventEmitter<boolean>();
+
+  private loginService = inject(LoginService);
 
   loginForm = new FormGroup({
     username: new FormControl('', [
@@ -24,8 +27,20 @@ export class LoginComponent {
 
   logIn() {
     if (this.loginForm.valid) {
-      sessionStorage.setItem('isLoggedIn', 'true');
-      this.loggedIn.emit(true);
+      this.loginService
+        .login({
+          login: this.loginForm.value.username!,
+          password: this.loginForm.value.password!,
+        })
+        .subscribe({
+          next: () => {
+            sessionStorage.setItem('isLoggedIn', 'true');
+            this.loggedIn.emit(true);
+          },
+          error: () => {
+            this.loginForm.setErrors({ invalidLogin: true });
+          },
+        });
     }
   }
 }
