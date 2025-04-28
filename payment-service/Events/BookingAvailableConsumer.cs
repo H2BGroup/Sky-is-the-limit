@@ -22,7 +22,7 @@ namespace payment_service.Events
             {
                 BookingId = message.Id,
                 Value = message.Price,
-                Status = true,
+                Status = PaymentStatus.Pending,
                 DateOfPayment = DateTime.UtcNow
             };
 
