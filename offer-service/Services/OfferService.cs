@@ -1,16 +1,20 @@
 ﻿using OfferService.Models;
 using System;
 using Microsoft.EntityFrameworkCore;
+using OfferService.Events;
+using shared.Events;
 
 namespace OfferService.Services
 {
     public class OfferService
     {
         private readonly OfferContext _context;
+        private readonly Publisher _publisher;
 
-        public OfferService(OfferContext context)
+        public OfferService(OfferContext context, Publisher publisher)
         {
             _context = context;
+            _publisher = publisher;
         }
 
         public async Task<IEnumerable<Offer>> GetAllOffers()
@@ -27,12 +31,26 @@ namespace OfferService.Services
         {
             _context.Offers.Add(offer);
             await _context.SaveChangesAsync();
+            await _publisher.Publish(new OfferCreatedEvent
+            {
+                Id = offer.Id,
+                Origin = offer.Origin,
+                Destination = offer.Destination,
+                DepartureDate = offer.DepartureDateTime
+            });
             return offer;
         }
         public async Task<Offer> UpdateOffer(Offer offer)
         {
             _context.Offers.Update(offer);
             await _context.SaveChangesAsync();
+            await _publisher.Publish(new OfferUpdatedEvent
+            {
+                Id = offer.Id,
+                Origin = offer.Origin,
+                Destination = offer.Destination,
+                DepartureDate = offer.DepartureDateTime
+            });
             return offer;
         }
 
