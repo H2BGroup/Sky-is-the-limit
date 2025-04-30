@@ -63,7 +63,7 @@ def generate_offers(data):
 
     for entry in data:
         if len(entry["airlines"]) == 0:
-            airline = "Unknown Airline"
+            continue
         else:
             airline = entry["airlines"][0]
         hours, minutes = parse_duration(entry["duration"])
