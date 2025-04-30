@@ -76,7 +76,7 @@ def generate_offers(data):
             offer_id = str(uuid.uuid4())
 
             offer = {
-                "Id": str(uuid.uuid4()),
+                "Id": offer_id,
                 "Departure": f'{entry["origin"]} ({entry["origin_iata"].upper()})',
                 "Arrival": f'{entry["destination"]} ({entry["destination_iata"].upper()})',
                 "Price": generate_price(hours, minutes, economy, first),

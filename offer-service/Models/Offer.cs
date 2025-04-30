@@ -9,9 +9,6 @@ namespace OfferService.Models
         public string Id { get; set; }
 
         [Required]
-        public string FlightId { get; set; }
-
-        [Required]
         public string Origin { get; set; }
 
         [Required]
