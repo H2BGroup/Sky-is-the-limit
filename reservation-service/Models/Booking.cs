@@ -35,4 +35,5 @@ public class Booking
     
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public BookingStatus Status { get; set; }
+    public DateTime? StatusTime { get; set; }
 }

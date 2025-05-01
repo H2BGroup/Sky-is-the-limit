@@ -59,4 +59,9 @@ public class BookingService : IBookingService
         _context.Bookings.Update(booking);
         _context.SaveChanges();
     }
+
+    public IEnumerable<Booking> GetCurrentReservations()
+    {
+        return _context.Bookings.Where(b => b.Status == BookingStatus.Reserved).ToList();
+    }
 }

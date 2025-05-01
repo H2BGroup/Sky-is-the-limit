@@ -9,4 +9,5 @@ public interface IBookingService
     public void Create(Booking booking);
     public void Delete(string id);
     public void Update(Booking booking);
+    public IEnumerable<Booking> GetCurrentReservations();
 }

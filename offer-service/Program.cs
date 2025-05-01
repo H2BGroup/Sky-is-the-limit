@@ -21,6 +21,8 @@ builder.Services.AddMassTransit(config => {
     config.AddConsumer<BookingCreatedConsumer>();
     config.AddConsumer<BookingExpiredConsumer>();
 
+    config.SetEndpointNameFormatter(new DefaultEndpointNameFormatter("offer-service", false));
+
     config.UsingRabbitMq((context, cfg) => {
         cfg.Host(builder.Configuration.GetConnectionString("RabbitMQ")!);
         cfg.ConfigureEndpoints(context);

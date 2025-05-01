@@ -39,10 +39,16 @@ namespace OfferService.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(string id, [FromBody] PutOfferRequest request)
         {
-            var newOffer = OfferDTOMapper.RequestToOffer(id, request);
-            await _offerService.CreateOffer(newOffer);
-
-            return CreatedAtAction(nameof(GetById), new { id = newOffer.Id }, null);
+            try
+            {
+                var newOffer = OfferDTOMapper.RequestToOffer(id, request);
+                await _offerService.CreateOffer(newOffer);
+                return CreatedAtAction(nameof(GetById), new { id = newOffer.Id }, null);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         // DELETE: api/Offer/{id}

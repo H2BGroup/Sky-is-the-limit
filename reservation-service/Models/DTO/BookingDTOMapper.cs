@@ -55,7 +55,8 @@ public static class BookingDTOMapper
             PriorityBoarding = request.PriorityBoarding,
             Insurance = request.Insurance,
             Price = request.Price,
-            Status = BookingStatus.Pending
+            Status = BookingStatus.Pending,
+            StatusTime = DateTime.UtcNow
         };
     }
 }
