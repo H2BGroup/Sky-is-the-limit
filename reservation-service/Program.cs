@@ -32,6 +32,7 @@ builder.Services.AddMassTransit(config => {
     });
 });
 builder.Services.AddTransient<Publisher>();
+builder.Services.AddTransient<Sender>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IOfferService, OfferService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
