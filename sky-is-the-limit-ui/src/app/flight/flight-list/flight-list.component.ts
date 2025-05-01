@@ -19,10 +19,13 @@ export class FlightListComponent implements OnInit {
   private currentPage = 0;
 
   protected pageSize = 10;
-  protected flights$: Observable<Flight[]> = this.flightService.getFlights;
+  protected flights$: Observable<Flight[]> =
+    this.flightService.filteredFlights$;
   protected paginatedFlights: Flight[] = [];
 
   ngOnInit() {
+    this.flightService.fetchAndStoreFlights();
+
     this.flights$.subscribe((flights) => {
       this.updatePaginatedFlights(flights);
     });
@@ -33,7 +36,8 @@ export class FlightListComponent implements OnInit {
   }
 
   createFlightSummary(flight: Flight): string {
-    return `✈️ ${flight.departure} → ${flight.arrival} from just ${flight.price} zł`;
+    const formattedPrice = flight.price.toFixed(2);
+    return `✈️ ${flight.departure} → ${flight.arrival} from just ${formattedPrice} zł`;
   }
 
   onBookFlight(flightId: string) {

@@ -3,6 +3,5 @@ export interface Filters {
   arrival: string | null;
   fromDate: string | null;
   toDate: string | null;
-  passengers: number | null;
   price: number | null;
 }

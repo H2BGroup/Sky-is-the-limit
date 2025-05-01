@@ -1,6 +1,6 @@
 <div class="container">
   <app-flight-details />
-  <div class="flight-book">
+  <div *ngIf="flight" class="flight-book">
     <h1>Book flight</h1>
     <form
       [formGroup]="bookForm"
@@ -81,7 +81,7 @@
       </div>
 
       <div>
-        <h2>Total price: {{ totalPrice }} zł</h2>
+        <h2>Total price: {{ totalPrice | number : "1.2-2" }} zł</h2>
       </div>
 
       <div class="button-container">

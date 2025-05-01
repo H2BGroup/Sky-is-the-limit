@@ -41,16 +41,6 @@
     </div>
 
     <div class="input-group">
-      <label for="passengers">Passengers:</label>
-      <input
-        formControlName="passengers"
-        type="number"
-        id="passengers"
-        name="passengers"
-      />
-    </div>
-
-    <div class="input-group">
       <label for="price">Max Price:</label>
       <input
         formControlName="price"
@@ -70,10 +60,6 @@
   <div class="error-message">
     The form is invalid. @if(filtersForm.errors?.['invalidDates']) {
     {{ filtersForm.errors!["invalidDates"] }} }
-    @if(filtersForm.get(['passengers'])?.errors?.['max']) { You can select a
-    maximum of 10 passengers. }
-    @if(filtersForm.get(['passengers'])?.errors?.['min']) { You must select at
-    least one passenger. }
   </div>
   }
 </div>

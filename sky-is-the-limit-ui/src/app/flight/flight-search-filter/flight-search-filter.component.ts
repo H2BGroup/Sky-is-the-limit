@@ -28,7 +28,6 @@ export class FlightSearchFilterComponent implements OnInit {
         Validators.pattern(/^\d{4}-\d{2}-\d{2}$/),
       ]),
       toDate: new FormControl('', [Validators.pattern(/^\d{4}-\d{2}-\d{2}$/)]),
-      passengers: new FormControl(1, [Validators.min(1), Validators.max(10)]),
       price: new FormControl(1000, [Validators.min(0), Validators.max(2000)]),
     },
     { validators: this.datesValidator() }
@@ -70,7 +69,6 @@ export class FlightSearchFilterComponent implements OnInit {
       arrival: '',
       fromDate: '',
       toDate: '',
-      passengers: 1,
       price: 1000,
     });
     this.setInitialPriceValue();
@@ -82,7 +80,6 @@ export class FlightSearchFilterComponent implements OnInit {
       arrival: this.filtersForm.get('arrival')?.value || '',
       fromDate: this.filtersForm.get('fromDate')?.value || '',
       toDate: this.filtersForm.get('toDate')?.value || '',
-      passengers: this.filtersForm.get('passengers')?.value || 1,
       price: this.filtersForm.get('price')?.value || 1000,
     };
   }

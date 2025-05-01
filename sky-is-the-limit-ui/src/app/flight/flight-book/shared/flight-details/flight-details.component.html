@@ -44,7 +44,7 @@
     <div class="section info-row">
       <h3>Base Price</h3>
       <div class="info-item">
-        <h2>{{ flight.price }} zł</h2>
+        <h2>{{ flight.price | number : "1.2-2" }} zł</h2>
       </div>
     </div>
   </div>

@@ -20,10 +20,11 @@ import {
   PRIORITY_BOARDING_PRICE,
 } from '../price-constants';
 import { FlightDetailsComponent } from '../shared/flight-details/flight-details.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-flight-book-details',
-  imports: [ReactiveFormsModule, FlightDetailsComponent],
+  imports: [ReactiveFormsModule, FlightDetailsComponent, CommonModule],
   templateUrl: './flight-book-details.component.html',
   styleUrl: './flight-book-details.component.css',
 })
@@ -37,24 +38,31 @@ export class FlightBookDetailsComponent implements OnInit, OnDestroy {
   private MAX_BAGGAGE: number = 2;
   private MAX_SEATS: number = 10;
 
-  flight?: Flight = this.flightService.getFlight(
-    this.activatedRoute.snapshot.paramMap.get('id')!
-  );
+  flight?: Flight;
 
   bookForm!: FormGroup;
 
   ngOnInit(): void {
-    if (this.flight) {
-      this.basePrice = this.flight.price;
-    }
-    this.setBookForm();
-    this.calculateTotalPrice();
+    const id = this.activatedRoute.snapshot.paramMap.get('id');
+    if (id) {
+      this.flightService.getFlight(id).subscribe((flight) => {
+        this.flight = flight;
+        this.basePrice = flight.price;
+        this.setBookForm();
+        this.calculateTotalPrice();
 
-    this.formSubscription = this.bookForm.valueChanges.subscribe((values) => {
-      this.calculateTotalPrice();
-      sessionStorage.setItem('bookFormData', JSON.stringify(values));
-      sessionStorage.setItem('totalPrice', JSON.stringify(this.totalPrice));
-    });
+        this.formSubscription = this.bookForm.valueChanges.subscribe(
+          (values) => {
+            this.calculateTotalPrice();
+            sessionStorage.setItem('bookFormData', JSON.stringify(values));
+            sessionStorage.setItem(
+              'totalPrice',
+              JSON.stringify(this.totalPrice)
+            );
+          }
+        );
+      });
+    }
   }
 
   ngOnDestroy(): void {

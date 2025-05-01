@@ -9,10 +9,11 @@ import {
   INSURANCE_PRICE,
   PRIORITY_BOARDING_PRICE,
 } from '../../price-constants';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-booking-details',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './booking-details.component.html',
   styleUrl: './booking-details.component.css',
 })
@@ -30,13 +31,17 @@ export class BookingDetailsComponent implements OnInit {
 
   pricingDetails: string[] = [];
 
-  flight?: Flight = this.flightService.getFlight(
-    this.activatedRoute.snapshot.paramMap.get('id')!
-  );
+  flight?: Flight;
 
   ngOnInit(): void {
-    this.setSelectedBookingDetails();
-    this.showDetailedPrice();
+    const id = this.activatedRoute.snapshot.paramMap.get('id');
+    if (id) {
+      this.flightService.getFlight(id).subscribe((flight) => {
+        this.flight = flight;
+        this.setSelectedBookingDetails();
+        this.showDetailedPrice();
+      });
+    }
   }
 
   setSelectedBookingDetails() {
@@ -64,40 +69,48 @@ export class BookingDetailsComponent implements OnInit {
     this.pricingDetails = [];
 
     if (this.selectedFirstClassSeats) {
+      const firstClassPrice = (
+        this.selectedFirstClassSeats *
+        basePrice *
+        FIRST_CLASS_PRICE_RATIO
+      ).toFixed(2);
       this.pricingDetails.push(
-        `First Class Seats (${this.selectedFirstClassSeats}): ${
-          this.selectedFirstClassSeats * basePrice * FIRST_CLASS_PRICE_RATIO
-        } zł`
+        `First Class Seats (${this.selectedFirstClassSeats}): ${firstClassPrice} zł`
       );
     }
     if (this.selectedEconomyClassSeats) {
+      const economyClassPrice = (
+        this.selectedEconomyClassSeats * basePrice
+      ).toFixed(2);
       this.pricingDetails.push(
-        `Economy Class Seats (${this.selectedEconomyClassSeats}): ${
-          this.selectedEconomyClassSeats * basePrice
-        } zł`
+        `Economy Class Seats (${this.selectedEconomyClassSeats}): ${economyClassPrice} zł`
       );
     }
     if (this.selectedCarryOnBaggages) {
+      const carryOnBaggagePrice = (
+        this.selectedCarryOnBaggages * CARRY_ON_BAGGAGE_PRICE
+      ).toFixed(2);
       this.pricingDetails.push(
-        `Carry-on Baggages (${this.selectedCarryOnBaggages}): ${
-          this.selectedCarryOnBaggages * CARRY_ON_BAGGAGE_PRICE
-        } zł`
+        `Carry-on Baggages (${this.selectedCarryOnBaggages}): ${carryOnBaggagePrice} zł`
       );
     }
     if (this.selectedCheckedBaggages) {
+      const checkedBaggagePrice = (
+        this.selectedCheckedBaggages * CHECKED_BAGGAGE_PRICE
+      ).toFixed(2);
       this.pricingDetails.push(
-        `Checked Baggages (${this.selectedCheckedBaggages}): ${
-          this.selectedCheckedBaggages * CHECKED_BAGGAGE_PRICE
-        } zł`
+        `Checked Baggages (${this.selectedCheckedBaggages}): ${checkedBaggagePrice} zł`
       );
     }
     if (this.selectedPriorityBoarding) {
+      const priorityBoardingPrice = PRIORITY_BOARDING_PRICE.toFixed(2);
       this.pricingDetails.push(
-        `Priority Boarding: ${PRIORITY_BOARDING_PRICE} zł`
+        `Priority Boarding: ${priorityBoardingPrice} zł`
       );
     }
     if (this.selectedInsurance) {
-      this.pricingDetails.push(`Insurance: ${INSURANCE_PRICE} zł`);
+      const insurancePrice = INSURANCE_PRICE.toFixed(2);
+      this.pricingDetails.push(`Insurance: ${insurancePrice} zł`);
     }
   }
 }

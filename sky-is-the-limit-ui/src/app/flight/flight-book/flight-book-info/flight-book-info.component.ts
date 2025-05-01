@@ -26,11 +26,16 @@ export class FlightBookInfoComponent implements OnInit, OnDestroy {
 
   pricingDetails: string[] = [];
 
-  flight?: Flight = this.flightService.getFlight(
-    this.activatedRoute.snapshot.paramMap.get('id')!
-  );
+  flight?: Flight;
 
   ngOnInit(): void {
+    const id = this.activatedRoute.snapshot.paramMap.get('id');
+    if (id) {
+      this.flightService.getFlight(id).subscribe((flight) => {
+        this.flight = flight;
+      });
+    }
+
     this.setPersonalInfoForm();
 
     this.formSubscription = this.personalInfoForm.valueChanges.subscribe(

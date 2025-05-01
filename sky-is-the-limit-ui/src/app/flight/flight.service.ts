@@ -1,22 +1,38 @@
 import { inject, Injectable } from '@angular/core';
 import { Flight } from './flight.model';
-import { FLIGHTS } from './flights';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Filters } from './flight-search-filter/filters.model';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class FlightService {
-  private flightsSubject = new BehaviorSubject<Flight[]>(FLIGHTS);
+  private flightsSubject = new BehaviorSubject<Flight[]>([]);
 
   public filteredFlights$: BehaviorSubject<Flight[]> = new BehaviorSubject<
     Flight[]
-  >(FLIGHTS);
+  >([]);
   private router = inject(Router);
-  private activatedRoute = inject(ActivatedRoute);
+
+  constructor(private http: HttpClient) {}
+
+  fetchAndStoreFlights(): void {
+    this.getFlights.subscribe((flights) => {
+      this.flightsSubject.next(flights);
+      this.filteredFlights$.next(flights);
+    });
+  }
 
   get getFlights(): Observable<Flight[]> {
-    return this.filteredFlights$.asObservable();
+    return this.http
+      .get<{ offers: Flight[] }>('http://localhost:5000/api/offer')
+      .pipe(map((response) => response.offers));
+  }
+
+  getFlightDetails(flightId: string): Observable<Partial<Flight>> {
+    return this.http.get<Partial<Flight>>(
+      `http://localhost:5000/api/offer/${flightId}`
+    );
   }
 
   toFlightList() {
@@ -52,17 +68,23 @@ export class FlightService {
             .includes(filters.arrival.toLowerCase())) &&
         (!filters.fromDate || filters.fromDate <= flight.datetime) &&
         (!filters.toDate || filters.toDate >= flight.datetime) &&
-        (!filters.passengers ||
-          filters.passengers <= flight.seatsEconomy + flight.seatsFirstClass) &&
         (!filters.price || filters.price >= flight.price)
       );
     });
     this.filteredFlights$.next(filteredFlights);
+    console.log('Filtered flights:', filteredFlights.length);
   }
 
-  getFlight(flightId: string) {
-    return this.flightsSubject
+  getFlight(flightId: string): Observable<Flight> {
+    const localFlight = this.flightsSubject
       .getValue()
       .find((flight) => flight.id === flightId);
+
+    return this.getFlightDetails(flightId).pipe(
+      map((detail: Partial<Flight>) => {
+        if (!detail) throw new Error('Brak szczegółów lotu z API');
+        return { ...localFlight, ...detail } as Flight;
+      })
+    );
   }
 }

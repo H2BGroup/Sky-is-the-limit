@@ -11,7 +11,7 @@ interface LoginRequest {
   providedIn: 'root',
 })
 export class LoginService {
-  private apiUrl = 'http://localhost:5186/api/User/login';
+  private apiUrl = 'http://localhost:5000/api/User/login';
 
   constructor(private http: HttpClient) {}
 
