@@ -8,10 +8,12 @@ namespace reservation_service.Events.Consumers;
 public class PaymentSucceededConsumer : IConsumer<PaymentSucceededEvent>
 {
     private readonly IBookingService _bookingService;
+    private readonly Sender _sender;
 
-    public PaymentSucceededConsumer(IBookingService bookingService)
+    public PaymentSucceededConsumer(IBookingService bookingService, Sender sender)
     {
         _bookingService = bookingService;
+        _sender = sender;
     }
 
     public async Task Consume(ConsumeContext<PaymentSucceededEvent> context)
@@ -25,7 +27,19 @@ public class PaymentSucceededConsumer : IConsumer<PaymentSucceededEvent>
             booking.StatusTime = DateTime.UtcNow;
             _bookingService.Update(booking);
             Console.WriteLine(" [x] Updated Booking Status {0}", booking);
+            await _sender.Send(new BookingConfirmedEvent
+            {
+                Id = booking.Id,
+                OfferId = booking.OfferId,
+                FirstClassSeats = booking.FirstClassSeats,
+                SecondClassSeats = booking.SecondClassSeats,
+                RegisteredBaggage = booking.RegisteredBaggage,
+                CarryOnBaggage = booking.CarryOnBaggage,
+                PriorityBoarding = booking.PriorityBoarding,
+                Insurance = booking.Insurance,
+                Price = booking.Price
+            }, "TO-OUTPUT-QUEUE");
+            Console.WriteLine(" [x] Published BookingConfirmed {0}", booking.Id);
         }
-        //TODO: Send BookingConfirmed event
     }
 }
