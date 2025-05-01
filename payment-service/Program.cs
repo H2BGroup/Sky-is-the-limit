@@ -14,6 +14,8 @@ builder.Services.AddScoped<Publisher>();
 builder.Services.AddMassTransit(config =>
 {
     config.AddConsumer<BookingAvailableConsumer>();
+    config.AddConsumer<BookingCanceledConsumer>();
+    config.AddConsumer<BookingExpiredConsumer>();
 
     config.SetEndpointNameFormatter(new DefaultEndpointNameFormatter("payment-service", false));
 

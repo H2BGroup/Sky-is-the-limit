@@ -24,28 +24,9 @@ public class BookingAvailableConsumer : IConsumer<BookingAvailableEvent>
         if (booking != null && booking.Status == BookingStatus.Pending)
         {
             booking.Status = BookingStatus.Reserved;
+            booking.StatusTime = DateTime.UtcNow;
             _bookingService.Update(booking);
             Console.WriteLine(" [x] Updated Booking Status {0}", booking);
         }
-        //Start timer for booking expiration
-        var task = Task.Delay(60 * 1000).ContinueWith(async t => 
-        {
-            Console.WriteLine(" [x] Booking Expired {0}", message.Id);
-            booking = _bookingService.GetBooking(message.Id);
-            Console.WriteLine(" [x] Booking Status {0}", booking?.Status);
-            if (booking != null && booking.Status == BookingStatus.Reserved)
-            {
-                booking.Status = BookingStatus.Cancelled;
-                _bookingService.Update(booking);
-                Console.WriteLine(" [x] Updated Booking Status {0}", booking);
-                await _publisher.Publish(new BookingExpiredEvent
-                {
-                    Id = message.Id,
-                    OfferId = message.OfferId,
-                    FirstClassSeats = message.FirstClassSeats,
-                    SecondClassSeats = message.SecondClassSeats
-                });
-            }
-        });
     }
 }

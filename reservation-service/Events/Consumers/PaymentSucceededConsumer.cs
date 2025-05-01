@@ -22,6 +22,7 @@ public class PaymentSucceededConsumer : IConsumer<PaymentSucceededEvent>
         if (booking != null && booking.Status == BookingStatus.Reserved)
         {
             booking.Status = BookingStatus.Confirmed;
+            booking.StatusTime = DateTime.UtcNow;
             _bookingService.Update(booking);
             Console.WriteLine(" [x] Updated Booking Status {0}", booking);
         }

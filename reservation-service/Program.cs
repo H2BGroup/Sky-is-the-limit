@@ -35,6 +35,7 @@ builder.Services.AddTransient<Publisher>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IOfferService, OfferService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
+builder.Services.AddHostedService<BookingExpirationWorker>();
 builder.Services.AddCors(options => {
     options.AddDefaultPolicy(policy => {
         policy.SetIsOriginAllowed(_ => true);
