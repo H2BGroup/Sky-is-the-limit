@@ -32,6 +32,7 @@ public class BookingAvailableConsumer : IConsumer<BookingAvailableEvent>
         {
             Console.WriteLine(" [x] Booking Expired {0}", message.Id);
             booking = _bookingService.GetBooking(message.Id);
+            Console.WriteLine(" [x] Booking Status {0}", booking?.Status);
             if (booking != null && booking.Status == BookingStatus.Reserved)
             {
                 booking.Status = BookingStatus.Cancelled;

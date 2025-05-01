@@ -24,6 +24,8 @@ builder.Services.AddMassTransit(config => {
     config.AddConsumer<OfferCreatedConsumer>();
     config.AddConsumer<OfferUpdatedConsumer>();
 
+    config.SetEndpointNameFormatter(new DefaultEndpointNameFormatter("reservation-service", false));
+
     config.UsingRabbitMq((context, cfg) => {
         cfg.Host(builder.Configuration.GetConnectionString("RabbitMQ")!);
         cfg.ConfigureEndpoints(context);

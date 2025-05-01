@@ -51,7 +51,7 @@ namespace reservation_service.Controllers
                     Price = booking.Price,
                 });
             } 
-            catch(ArgumentException e)
+            catch(Exception e)
             {
                 return BadRequest(e.Message);
             }

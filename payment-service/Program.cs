@@ -15,6 +15,8 @@ builder.Services.AddMassTransit(config =>
 {
     config.AddConsumer<BookingAvailableConsumer>();
 
+    config.SetEndpointNameFormatter(new DefaultEndpointNameFormatter("payment-service", false));
+
     config.UsingRabbitMq((ctx, cfg) =>
     {
         cfg.Host(builder.Configuration.GetConnectionString("RabbitMQ")!);
