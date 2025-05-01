@@ -62,11 +62,13 @@ namespace reservation_service.Controllers
         public async Task<IActionResult> Delete(string id)
         {
             Booking? booking = _bookingService.GetBooking(id);
-            if (booking == null)
+            if (booking == null || booking.Status != BookingStatus.Confirmed)
             {
                 return NotFound();
             }
-            _bookingService.Delete(id);
+            booking.Status = BookingStatus.Cancelled;
+            booking.StatusTime = DateTime.UtcNow;
+            _bookingService.Update(booking);
             await _publisher.Publish(new BookingCancelledEvent{
                 Id = id,
                 OfferId = booking.OfferId,
