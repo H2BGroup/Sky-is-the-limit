@@ -1,18 +1,13 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FlightDetailsComponent } from '../shared/flight-details/flight-details.component';
 import { BookingDetailsComponent } from '../shared/booking-details/booking-details.component';
-import { PersonalDetailsComponent } from '../shared/personal-details/personal-details.component';
 import { FlightService } from '../../flight.service';
 import { ActivatedRoute } from '@angular/router';
 import { Flight } from '../../flight.model';
 
 @Component({
   selector: 'app-flight-book-summary',
-  imports: [
-    FlightDetailsComponent,
-    BookingDetailsComponent,
-    PersonalDetailsComponent,
-  ],
+  imports: [FlightDetailsComponent, BookingDetailsComponent],
   templateUrl: './flight-book-summary.component.html',
   styleUrl: './flight-book-summary.component.css',
 })
@@ -35,6 +30,6 @@ export class FlightBookSummaryComponent implements OnInit {
     this.flightService.toBookingConfirmation(this.flight!.id);
   }
   onBackToBookInfo() {
-    this.flightService.toPersonalDetailsForm(this.flight!.id);
+    this.flightService.toFlightDetails(this.flight!.id);
   }
 }

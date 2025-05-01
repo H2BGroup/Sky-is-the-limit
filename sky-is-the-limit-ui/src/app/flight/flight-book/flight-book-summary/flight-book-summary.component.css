@@ -11,7 +11,7 @@ app-booking-details,
 app-personal-details {
   display: flex;
   flex-direction: column;
-  width: 30%;
+  width: 45%;
 }
 
 .title,

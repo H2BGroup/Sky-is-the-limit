@@ -43,10 +43,6 @@ export class FlightService {
     this.router.navigate(['/flights', flightId, 'book', 'details']);
   }
 
-  toPersonalDetailsForm(flightId: string) {
-    this.router.navigate(['/flights', flightId, 'book', 'info']);
-  }
-
   toBookingSummary(flightId: string) {
     this.router.navigate(['/flights', flightId, 'book', 'summary']);
   }

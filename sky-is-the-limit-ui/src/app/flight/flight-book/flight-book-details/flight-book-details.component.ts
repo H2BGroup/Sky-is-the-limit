@@ -113,7 +113,7 @@ export class FlightBookDetailsComponent implements OnInit, OnDestroy {
   onProceedWithBooking() {
     sessionStorage.setItem('bookFormData', JSON.stringify(this.bookForm.value));
     sessionStorage.setItem('totalPrice', JSON.stringify(this.totalPrice));
-    this.flightService.toPersonalDetailsForm(this.flight!.id);
+    this.flightService.toBookingSummary(this.flight!.id);
   }
 
   seatsValidator(): ValidatorFn {
