@@ -1,36 +1,36 @@
 ﻿using OfferService.Models;
-using System;
-using Microsoft.EntityFrameworkCore;
 using OfferService.Events;
 using shared.Events;
+using MediatR;
+using OfferService.Queries;
+using OfferService.Commands;
 
 namespace OfferService.Services
 {
     public class OfferService
     {
-        private readonly OfferContext _context;
+        private readonly IMediator _mediator;
         private readonly Publisher _publisher;
 
-        public OfferService(OfferContext context, Publisher publisher)
+        public OfferService(IMediator mediator, Publisher publisher)
         {
-            _context = context;
+            _mediator = mediator;
             _publisher = publisher;
         }
 
         public async Task<IEnumerable<Offer>> GetAllOffers()
         {
-            return await _context.Offers.ToListAsync();
+            return await _mediator.Send(new GetOffersQuerry());
         }
 
         public async Task<Offer?> GetOfferById(string id)
         {
-            return await _context.Offers.FirstOrDefaultAsync(o => o.Id == id);
+            return await _mediator.Send(new GetOfferByIdQuery(id));
         }
 
         public async Task<Offer> CreateOffer(Offer offer)
         {
-            _context.Offers.Add(offer);
-            await _context.SaveChangesAsync();
+            await _mediator.Send(new CreateOfferCommand(offer));
             await _publisher.Publish(new OfferCreatedEvent
             {
                 Id = offer.Id,
@@ -42,8 +42,7 @@ namespace OfferService.Services
         }
         public async Task<Offer> UpdateOffer(Offer offer)
         {
-            _context.Offers.Update(offer);
-            await _context.SaveChangesAsync();
+            await _mediator.Send(new UpdateOfferCommand(offer));
             await _publisher.Publish(new OfferUpdatedEvent
             {
                 Id = offer.Id,
@@ -56,12 +55,7 @@ namespace OfferService.Services
 
         public async Task<bool> DeleteOffer(string id)
         {
-            var offer = await _context.Offers.FindAsync(id);
-            if (offer == null) return false;
-
-            _context.Offers.Remove(offer);
-            await _context.SaveChangesAsync();
-            return true;
+            return await _mediator.Send(new DeleteOfferCommand(id));
         }
     }
 }
