@@ -21,7 +21,7 @@ namespace payment_service.Controllers
             return Ok(payments);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{bookingId}")]
         public async Task<ActionResult<Payment>> GetPayment(string bookingId)
         {
             try
@@ -36,7 +36,7 @@ namespace payment_service.Controllers
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{bookingId}")]
         public async Task<ActionResult<Payment>> ProcessPayment(string bookingId)
         {
             try
