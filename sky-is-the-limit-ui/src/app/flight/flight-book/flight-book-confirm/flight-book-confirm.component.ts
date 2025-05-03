@@ -2,6 +2,8 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FlightService } from '../../flight.service';
 import Swal from 'sweetalert2';
 import { clearFormData } from '../../shared/clearFormData';
+import { v4 as uuidv4 } from 'uuid';
+import { PaymentService } from '../payment.service';
 
 @Component({
   selector: 'app-flight-book-confirm',
@@ -11,10 +13,17 @@ import { clearFormData } from '../../shared/clearFormData';
 })
 export class FlightBookConfirmComponent implements OnInit, OnDestroy {
   private flightService = inject(FlightService);
-  private remainingSeconds: number = 60;
-  private timerInterval: any;
+  private paymentService = inject(PaymentService);
 
   private readonly SECONDS = 60;
+  private remainingSeconds: number = this.SECONDS;
+  private timerInterval: any;
+  private paymentId: string = uuidv4();
+
+  private timeoutErrorMessage: string =
+    'Payment could not be completed because the time limit has been exceeded.';
+  private paymentErrorMessage: string =
+    'Something went wrong with the payment process. Please try again.';
 
   protected displayTime: string = '01:00';
   protected isLoading = false;
@@ -30,10 +39,35 @@ export class FlightBookConfirmComponent implements OnInit, OnDestroy {
   onPayment() {
     this.isLoading = true;
 
-    setTimeout(() => {
-      this.isLoading = false;
-      this.showPaymentSuccessAlert();
-    }, 2000);
+    this.paymentService.createPayment(this.paymentId, {}).subscribe({
+      // TODO: add payment data
+      next: () => {
+        this.checkPaymentStatus(this.paymentId);
+      },
+      error: () => {
+        this.isLoading = false;
+        this.showPaymentErrorAlert(this.paymentErrorMessage);
+      },
+    });
+  }
+
+  private checkPaymentStatus(paymentId: string) {
+    const interval = setInterval(() => {
+      this.paymentService.getPayment(paymentId).subscribe({
+        next: (payment) => {
+          if (payment.status === 'OK') {
+            clearInterval(interval);
+            this.isLoading = false;
+            this.showPaymentSuccessAlert();
+          }
+        },
+        error: () => {
+          clearInterval(interval);
+          this.isLoading = false;
+          this.showPaymentErrorAlert(this.paymentErrorMessage);
+        },
+      });
+    }, 1000);
   }
 
   private showPaymentSuccessAlert(): void {
@@ -53,10 +87,10 @@ export class FlightBookConfirmComponent implements OnInit, OnDestroy {
     });
   }
 
-  private showTimeoutAlert(): void {
+  private showPaymentErrorAlert(errorMessage: string): void {
     Swal.fire({
       title: 'Payment Failed!',
-      text: 'Payment could not be completed because the time limit has been exceeded.',
+      text: errorMessage,
       icon: 'error',
       showCancelButton: false,
       confirmButtonText: 'OK',
@@ -64,8 +98,10 @@ export class FlightBookConfirmComponent implements OnInit, OnDestroy {
       allowEscapeKey: false,
       allowEnterKey: false,
       willClose: () => {
-        this.flightService.toFlightList();
-        clearFormData();
+        if (errorMessage === this.timeoutErrorMessage) {
+          this.flightService.toFlightList();
+          clearFormData();
+        }
       },
     });
   }
@@ -78,7 +114,7 @@ export class FlightBookConfirmComponent implements OnInit, OnDestroy {
       if (this.remainingSeconds <= 0) {
         clearInterval(this.timerInterval);
         this.displayTime = '00:00';
-        this.showTimeoutAlert();
+        this.showPaymentErrorAlert(this.timeoutErrorMessage);
       }
     }, 1000);
   }

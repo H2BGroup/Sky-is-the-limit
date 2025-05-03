@@ -3,6 +3,7 @@ import { FlightBookDetailsComponent } from './flight/flight-book/flight-book-det
 import { FlightsMainPageComponent } from './flight/flights-main-page/flights-main-page.component';
 import { FlightBookSummaryComponent } from './flight/flight-book/flight-book-summary/flight-book-summary.component';
 import { FlightBookConfirmComponent } from './flight/flight-book/flight-book-confirm/flight-book-confirm.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 export const routes: Routes = [
   {
@@ -21,18 +22,23 @@ export const routes: Routes = [
       {
         path: 'details',
         component: FlightBookDetailsComponent,
-        title: 'Sky is the limit - personal details',
+        title: 'Sky is the limit - Details',
       },
       {
         path: 'summary',
         component: FlightBookSummaryComponent,
-        title: 'Sky is the limit - summary',
+        title: 'Sky is the limit - Summary',
       },
       {
         path: 'confirm',
         component: FlightBookConfirmComponent,
-        title: 'Sky is the limit - confirmation',
+        title: 'Sky is the limit - Confirmation',
       },
     ],
+  },
+  {
+    path: '**',
+    component: NotFoundComponent,
+    title: 'Sky is the limit - Page Not Found',
   },
 ];

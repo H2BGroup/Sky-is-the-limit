@@ -4,6 +4,7 @@ import { BookingDetailsComponent } from '../shared/booking-details/booking-detai
 import { FlightService } from '../../flight.service';
 import { ActivatedRoute } from '@angular/router';
 import { Flight } from '../../flight.model';
+import { BookingService } from '../booking.service';
 
 @Component({
   selector: 'app-flight-book-summary',
@@ -13,6 +14,7 @@ import { Flight } from '../../flight.model';
 })
 export class FlightBookSummaryComponent implements OnInit {
   private flightService = inject(FlightService);
+  private bookingService = inject(BookingService);
   private activatedRoute = inject(ActivatedRoute);
 
   flight?: Flight;
@@ -27,7 +29,15 @@ export class FlightBookSummaryComponent implements OnInit {
   }
 
   onToConfirmation() {
-    this.flightService.toBookingConfirmation(this.flight!.id);
+    // TODO: add functionality, fill booking data
+    this.bookingService.createBooking(this.flight!.id, {}).subscribe({
+      next: () => {
+        this.flightService.toBookingConfirmation(this.flight!.id);
+      },
+      error: (error) => {
+        console.error('Error creating booking:', error);
+      },
+    });
   }
   onBackToBookInfo() {
     this.flightService.toFlightDetails(this.flight!.id);
