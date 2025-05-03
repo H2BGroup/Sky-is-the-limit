@@ -16,13 +16,6 @@ public class BookingCancelledConsumer : IConsumer<BookingCancelledEvent>
     {
         var booking = context.Message;
         Console.WriteLine(" [x] Received BookingCancelled {0}", booking.Id);
-        var offer = await _offerService.GetOfferById(booking.OfferId);
-
-        if (offer != null)
-        {
-            offer.FirstClassSeats += booking.FirstClassSeats;
-            offer.SecondClassSeats += booking.SecondClassSeats;
-            await _offerService.UpdateOffer(offer);
-        }
+        await _offerService.UpdateOfferSeats(booking.OfferId, booking.FirstClassSeats, booking.SecondClassSeats);
     }
 }

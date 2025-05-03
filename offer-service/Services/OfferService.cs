@@ -53,6 +53,12 @@ namespace OfferService.Services
             return offer;
         }
 
+        public async Task<bool> UpdateOfferSeats(string id, int firstClassSeatsDiff, int secondClassSeatsDiff)
+        {
+            await _mediator.Send(new UpdateOfferSeatsCommand(id, firstClassSeatsDiff, secondClassSeatsDiff));
+            return true;
+        }
+
         public async Task<bool> DeleteOffer(string id)
         {
             return await _mediator.Send(new DeleteOfferCommand(id));
