@@ -22,24 +22,26 @@ namespace payment_service.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Payment>> GetPayment(string id)
-        {
-            var payment = await _paymentService.GetPayment(id);
-
-            if (payment is null)
-            {
-                return NotFound($"Payment with id {id} not found.");
-            }
-
-            return Ok(payment);
-        }
-
-        [HttpPut("{id}")]
-        public async Task<ActionResult<Payment>> ProcessPayment(string id)
+        public async Task<ActionResult<Payment>> GetPayment(string bookingId)
         {
             try
             {
-                var payment = await _paymentService.ProcessPayment(id);
+                var payment = await _paymentService.GetPayment(bookingId);
+
+                return Ok(payment);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Payment>> ProcessPayment(string bookingId)
+        {
+            try
+            {
+                var payment = await _paymentService.ProcessPayment(bookingId);
 
                 return Ok(payment);
             }

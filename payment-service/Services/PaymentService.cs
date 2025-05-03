@@ -29,9 +29,16 @@ namespace payment_service.Services
         public async Task<IEnumerable<Payment>> GetPayments() =>
             await _payments.Find(_ => true).ToListAsync();
 
-        public async Task<Payment> GetPayment(string id)
+        public async Task<Payment> GetPayment(string bookingId)
         {
-            return await _payments.Find(x => x.Id == ObjectId.Parse(id)).FirstOrDefaultAsync();
+            var payment = await _payments.Find(x => x.BookingId == bookingId).FirstOrDefaultAsync();
+
+            if (payment is null)
+            {
+                throw new KeyNotFoundException($"Payment with bookingId {bookingId} not found.");
+            }
+
+            return payment;
         }
 
         public async Task Create(Payment payment)

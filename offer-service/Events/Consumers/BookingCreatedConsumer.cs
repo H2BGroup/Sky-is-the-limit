@@ -22,9 +22,7 @@ public class BookingCreatedConsumer : IConsumer<BookingCreatedEvent>
 
         if (offer!=null && offer.FirstClassSeats >= booking.FirstClassSeats && offer.SecondClassSeats >= booking.SecondClassSeats)
         {
-            offer.FirstClassSeats -= booking.FirstClassSeats;
-            offer.SecondClassSeats -= booking.SecondClassSeats;
-            await _offerService.UpdateOffer(offer);
+            await _offerService.UpdateOfferSeats(booking.OfferId, -booking.FirstClassSeats, -booking.SecondClassSeats);
 
             await _publisher.Publish(new BookingAvailableEvent
             {
