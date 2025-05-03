@@ -6,7 +6,7 @@
         {
             return new GetOfferResponse
             {
-                Id = offer.FlightId,
+                Id = offer.Id,
                 Departure = offer.Origin,
                 Arrival = offer.Destination,
                 Price = offer.Price,
@@ -24,7 +24,7 @@
             {
                 Offers = offers.Select(o => new GetOffersResponse.SimpleOffer
                 {
-                    Id = o.FlightId,
+                    Id = o.Id,
                     Departure = o.Origin,
                     Arrival = o.Destination,
                     Price = o.Price,
@@ -44,7 +44,6 @@
             return new Offer
             {
                 Id = id,
-                FlightId = request.Id,
                 Origin = request.Departure,
                 Destination = request.Arrival,
                 DepartureDateTime = DateTime.Parse(request.Datetime),
