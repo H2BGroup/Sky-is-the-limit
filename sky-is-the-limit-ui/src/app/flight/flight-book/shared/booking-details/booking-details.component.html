@@ -6,21 +6,30 @@
       <div class="info-row">
         <h2>
           First class:
-          {{ this.selectedFirstClassSeats || "None" }}
+          {{ this.selectedBookingDetails?.firstClassSeats || "None" }}
         </h2>
       </div>
       <div class="info-row">
-        <h2>Economy class: {{ this.selectedEconomyClassSeats || "None" }}</h2>
+        <h2>
+          Economy class:
+          {{ this.selectedBookingDetails?.economyClassSeats || "None" }}
+        </h2>
       </div>
     </div>
 
     <div class="section">
       <h3>Baggage</h3>
       <div class="info-row">
-        <h2>Carry on baggages: {{ this.selectedCarryOnBaggages || "None" }}</h2>
+        <h2>
+          Carry on baggages:
+          {{ this.selectedBookingDetails?.carryOnBaggages || "None" }}
+        </h2>
       </div>
       <div class="info-row">
-        <h2>Checked baggages: {{ this.selectedCheckedBaggages || "None" }}</h2>
+        <h2>
+          Checked baggages:
+          {{ this.selectedBookingDetails?.checkedBaggages || "None" }}
+        </h2>
       </div>
     </div>
 
@@ -29,13 +38,19 @@
       <div class="info-row">
         <h2>
           Priority boarding:
-          {{ this.selectedPriorityBoarding ? "Selected" : "Not selected" }}
+          {{
+            this.selectedBookingDetails?.priorityBoarding
+              ? "Selected"
+              : "Not selected"
+          }}
         </h2>
       </div>
       <div class="info-row">
         <h2>
           Insurance:
-          {{ this.selectedInsurance ? "Selected" : "Not selected" }}
+          {{
+            this.selectedBookingDetails?.insurance ? "Selected" : "Not selected"
+          }}
         </h2>
       </div>
     </div>
@@ -53,6 +68,8 @@
     }
     <hr />
 
-    <h2>In Total: {{ this.totalPrice | number : "1.2-2" }} zł</h2>
+    <h2>
+      In Total: {{ this.selectedBookingDetails?.price | number : "1.2-2" }} zł
+    </h2>
   </div>
 </div>

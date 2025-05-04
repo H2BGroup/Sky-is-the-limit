@@ -10,8 +10,8 @@ export class PaymentService {
 
   constructor(private http: HttpClient) {}
 
-  createPayment(id: string, data: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, data);
+  createPayment(id: string): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}`, {});
   }
 
   getPayment(id: string): Observable<any> {

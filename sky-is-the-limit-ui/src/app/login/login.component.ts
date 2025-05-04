@@ -27,22 +27,21 @@ export class LoginComponent {
 
   logIn() {
     if (this.loginForm.valid) {
-      // this.loginService
-      //   .login({
-      //     login: this.loginForm.value.username!,
-      //     password: this.loginForm.value.password!,
-      //   })
-      //   .subscribe({
-      //     next: () => {
-      //       sessionStorage.setItem('isLoggedIn', 'true');
-      //       this.loggedIn.emit(true);
-      //     },
-      //     error: () => {
-      //       this.loginForm.setErrors({ invalidLogin: true });
-      //     },
-      //   });
-      sessionStorage.setItem('isLoggedIn', 'true');
-      this.loggedIn.emit(true);
+      this.loginService
+        .login({
+          login: this.loginForm.value.username!,
+          password: this.loginForm.value.password!,
+        })
+        .subscribe({
+          next: (response) => {
+            sessionStorage.setItem('isLoggedIn', 'true');
+            sessionStorage.setItem('userId', response.id);
+            this.loggedIn.emit(true);
+          },
+          error: () => {
+            this.loginForm.setErrors({ invalidLogin: true });
+          },
+        });
     }
   }
 }

@@ -2,7 +2,6 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FlightService } from '../../flight.service';
 import Swal from 'sweetalert2';
 import { clearFormData } from '../../shared/clearFormData';
-import { v4 as uuidv4 } from 'uuid';
 import { PaymentService } from '../payment.service';
 
 @Component({
@@ -18,12 +17,14 @@ export class FlightBookConfirmComponent implements OnInit, OnDestroy {
   private readonly SECONDS = 60;
   private remainingSeconds: number = this.SECONDS;
   private timerInterval: any;
-  private paymentId: string = uuidv4();
+  private bookingId: string = sessionStorage.getItem('bookingId')!;
 
   private timeoutErrorMessage: string =
     'Payment could not be completed because the time limit has been exceeded.';
   private paymentErrorMessage: string =
     'Something went wrong with the payment process. Please try again.';
+  private paymentDeclinedMessage: string =
+    'Payment was declined. Please check your payment details and try again.';
 
   protected displayTime: string = '01:00';
   protected isLoading = false;
@@ -39,26 +40,33 @@ export class FlightBookConfirmComponent implements OnInit, OnDestroy {
   onPayment() {
     this.isLoading = true;
 
-    this.paymentService.createPayment(this.paymentId, {}).subscribe({
-      // TODO: add payment data
+    this.paymentService.createPayment(this.bookingId).subscribe({
       next: () => {
-        this.checkPaymentStatus(this.paymentId);
+        this.checkPaymentStatus(this.bookingId);
       },
-      error: () => {
+      error: (error) => {
+        console.error('Payment error:', error);
         this.isLoading = false;
         this.showPaymentErrorAlert(this.paymentErrorMessage);
       },
     });
   }
 
-  private checkPaymentStatus(paymentId: string) {
+  private checkPaymentStatus(bookingId: string) {
     const interval = setInterval(() => {
-      this.paymentService.getPayment(paymentId).subscribe({
+      this.paymentService.getPayment(bookingId).subscribe({
         next: (payment) => {
-          if (payment.status === 'OK') {
+          console.log('Payment status:', payment.status);
+          if (payment.status === 0) {
+            // Payment is still pending, do nothing
+          } else if (payment.status === 1) {
             clearInterval(interval);
             this.isLoading = false;
             this.showPaymentSuccessAlert();
+          } else if (payment.status === 2) {
+            clearInterval(interval);
+            this.isLoading = false;
+            this.showPaymentErrorAlert(this.paymentDeclinedMessage);
           }
         },
         error: () => {

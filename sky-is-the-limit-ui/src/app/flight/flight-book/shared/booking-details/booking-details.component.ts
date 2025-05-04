@@ -10,6 +10,7 @@ import {
   PRIORITY_BOARDING_PRICE,
 } from '../../price-constants';
 import { CommonModule } from '@angular/common';
+import { BookingDetails } from '../../booking-details.model';
 
 @Component({
   selector: 'app-booking-details',
@@ -21,13 +22,7 @@ export class BookingDetailsComponent implements OnInit {
   private flightService = inject(FlightService);
   private activatedRoute = inject(ActivatedRoute);
 
-  protected selectedFirstClassSeats?: number;
-  protected selectedEconomyClassSeats?: number;
-  protected selectedCarryOnBaggages?: number;
-  protected selectedCheckedBaggages?: number;
-  protected selectedPriorityBoarding?: boolean;
-  protected selectedInsurance?: boolean;
-  protected totalPrice?: number;
+  protected selectedBookingDetails?: BookingDetails;
 
   pricingDetails: string[] = [];
 
@@ -49,66 +44,77 @@ export class BookingDetailsComponent implements OnInit {
       ? JSON.parse(sessionStorage.getItem('bookFormData')!)
       : {};
 
-    this.selectedFirstClassSeats =
-      savedBookForm.classSelection?.firstClass ?? 0;
-    this.selectedEconomyClassSeats =
-      savedBookForm.classSelection?.economyClass ?? 0;
-    this.selectedCarryOnBaggages =
-      savedBookForm.baggageSelection?.carryOnBaggage ?? 0;
-    this.selectedCheckedBaggages =
-      savedBookForm.baggageSelection?.checkedBaggage ?? 0;
-    this.selectedPriorityBoarding = savedBookForm.priorityBoarding ?? false;
-    this.selectedInsurance = savedBookForm.insurance ?? false;
-    this.totalPrice = sessionStorage.getItem(
-      'totalPrice'
-    )! as unknown as number;
+    let totalPrice = sessionStorage.getItem('totalPrice')! as unknown as number;
+
+    this.selectedBookingDetails = {
+      firstClassSeats: savedBookForm.classSelection?.firstClass ?? 0,
+      economyClassSeats: savedBookForm.classSelection?.economyClass ?? 0,
+      carryOnBaggages: savedBookForm.baggageSelection?.carryOnBaggage ?? 0,
+      checkedBaggages: savedBookForm.baggageSelection?.checkedBaggage ?? 0,
+      priorityBoarding: savedBookForm.priorityBoarding ?? false,
+      insurance: savedBookForm.insurance ?? false,
+      price: totalPrice,
+    };
   }
 
   showDetailedPrice() {
     let basePrice = this.flight!.price;
     this.pricingDetails = [];
 
-    if (this.selectedFirstClassSeats) {
+    let selectedFirstClassSeats = this.selectedBookingDetails?.firstClassSeats;
+    if (selectedFirstClassSeats) {
       const firstClassPrice = (
-        this.selectedFirstClassSeats *
+        selectedFirstClassSeats *
         basePrice *
         FIRST_CLASS_PRICE_RATIO
       ).toFixed(2);
       this.pricingDetails.push(
-        `First Class Seats (${this.selectedFirstClassSeats}): ${firstClassPrice} zł`
+        `First Class Seats (${selectedFirstClassSeats}): ${firstClassPrice} zł`
       );
     }
-    if (this.selectedEconomyClassSeats) {
-      const economyClassPrice = (
-        this.selectedEconomyClassSeats * basePrice
-      ).toFixed(2);
+
+    let selectedEconomyClassSeats =
+      this.selectedBookingDetails?.economyClassSeats;
+    if (selectedEconomyClassSeats) {
+      const economyClassPrice = (selectedEconomyClassSeats * basePrice).toFixed(
+        2
+      );
       this.pricingDetails.push(
-        `Economy Class Seats (${this.selectedEconomyClassSeats}): ${economyClassPrice} zł`
+        `Economy Class Seats (${selectedEconomyClassSeats}): ${economyClassPrice} zł`
       );
     }
-    if (this.selectedCarryOnBaggages) {
+
+    let selectedCarryOnBaggages = this.selectedBookingDetails?.carryOnBaggages;
+    if (selectedCarryOnBaggages) {
       const carryOnBaggagePrice = (
-        this.selectedCarryOnBaggages * CARRY_ON_BAGGAGE_PRICE
+        selectedCarryOnBaggages * CARRY_ON_BAGGAGE_PRICE
       ).toFixed(2);
       this.pricingDetails.push(
-        `Carry-on Baggages (${this.selectedCarryOnBaggages}): ${carryOnBaggagePrice} zł`
+        `Carry-on Baggages (${selectedCarryOnBaggages}): ${carryOnBaggagePrice} zł`
       );
     }
-    if (this.selectedCheckedBaggages) {
+
+    let selectedCheckedBaggages = this.selectedBookingDetails?.checkedBaggages;
+    if (selectedCheckedBaggages) {
       const checkedBaggagePrice = (
-        this.selectedCheckedBaggages * CHECKED_BAGGAGE_PRICE
+        selectedCheckedBaggages * CHECKED_BAGGAGE_PRICE
       ).toFixed(2);
       this.pricingDetails.push(
-        `Checked Baggages (${this.selectedCheckedBaggages}): ${checkedBaggagePrice} zł`
+        `Checked Baggages (${selectedCheckedBaggages}): ${checkedBaggagePrice} zł`
       );
     }
-    if (this.selectedPriorityBoarding) {
+
+    let selectedPriorityBoarding =
+      this.selectedBookingDetails?.priorityBoarding;
+    if (selectedPriorityBoarding) {
       const priorityBoardingPrice = PRIORITY_BOARDING_PRICE.toFixed(2);
       this.pricingDetails.push(
         `Priority Boarding: ${priorityBoardingPrice} zł`
       );
     }
-    if (this.selectedInsurance) {
+
+    let selectedInsurance = this.selectedBookingDetails?.insurance;
+    if (selectedInsurance) {
       const insurancePrice = INSURANCE_PRICE.toFixed(2);
       this.pricingDetails.push(`Insurance: ${insurancePrice} zł`);
     }

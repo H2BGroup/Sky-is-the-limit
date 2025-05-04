@@ -1,5 +1,8 @@
 <div class="title">Summary</div>
 <div class="container">
+  <div *ngIf="isLoading" class="overlay">
+    <div class="spinner"></div>
+  </div>
   <app-flight-details />
   <app-booking-details />
 </div>

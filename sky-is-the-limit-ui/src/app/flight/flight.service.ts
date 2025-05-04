@@ -8,11 +8,11 @@ import { FLIGHTS } from './flights';
 
 @Injectable({ providedIn: 'root' })
 export class FlightService {
-  private flightsSubject = new BehaviorSubject<Flight[]>(FLIGHTS);
+  private flightsSubject = new BehaviorSubject<Flight[]>([]);
 
   public filteredFlights$: BehaviorSubject<Flight[]> = new BehaviorSubject<
     Flight[]
-  >(FLIGHTS);
+  >([]);
   private router = inject(Router);
 
   constructor(private http: HttpClient) {}
@@ -77,16 +77,11 @@ export class FlightService {
       .getValue()
       .find((flight) => flight.id === flightId);
 
-    // return this.getFlightDetails(flightId).pipe(
-    //   map((detail: Partial<Flight>) => {
-    //     if (!detail) throw new Error('Brak szczegółów lotu z API');
-    //     return { ...localFlight, ...detail } as Flight;
-    //   })
-    // );
-    return new Observable<Flight>((observer) => {
-      if (localFlight) {
-        observer.next(localFlight);
-      }
-    });
+    return this.getFlightDetails(flightId).pipe(
+      map((detail: Partial<Flight>) => {
+        if (!detail) throw new Error('Brak szczegółów lotu z API');
+        return { ...localFlight, ...detail } as Flight;
+      })
+    );
   }
 }
