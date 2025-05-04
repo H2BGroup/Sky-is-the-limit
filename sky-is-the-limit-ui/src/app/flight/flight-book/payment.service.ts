@@ -1,20 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { ConfigService } from '../../config.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PaymentService {
-  private apiUrl = 'http://localhost:5000/api/payment';
-
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private config: ConfigService) {}
 
   createPayment(id: string): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, {});
+    return this.http.put(`${this.config.paymentUrl}/${id}`, {});
   }
 
   getPayment(id: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}`);
+    return this.http.get(`${this.config.paymentUrl}/${id}`);
   }
 }

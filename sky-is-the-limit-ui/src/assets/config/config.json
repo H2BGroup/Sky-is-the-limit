@@ -1,0 +1,6 @@
+{
+  "bookingUrl": "http://localhost:5000/api/booking",
+  "paymentUrl": "http://localhost:5000/api/payment",
+  "userUrl": "http://localhost:5000/api/User/login",
+  "offerUrl": "http://localhost:5000/api/offer"
+}

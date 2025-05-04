@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Filters } from './flight-search-filter/filters.model';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { FLIGHTS } from './flights';
+import { ConfigService } from '../config.service';
 
 @Injectable({ providedIn: 'root' })
 export class FlightService {
@@ -15,7 +15,7 @@ export class FlightService {
   >([]);
   private router = inject(Router);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private config: ConfigService) {}
 
   fetchAndStoreFlights(): void {
     this.getFlights.subscribe((flights) => {
@@ -26,13 +26,13 @@ export class FlightService {
 
   get getFlights(): Observable<Flight[]> {
     return this.http
-      .get<{ offers: Flight[] }>('http://localhost:5000/api/offer')
+      .get<{ offers: Flight[] }>(this.config.offerUrl)
       .pipe(map((response) => response.offers));
   }
 
   getFlightDetails(flightId: string): Observable<Partial<Flight>> {
     return this.http.get<Partial<Flight>>(
-      `http://localhost:5000/api/offer/${flightId}`
+      `${this.config.offerUrl}/${flightId}`
     );
   }
 
