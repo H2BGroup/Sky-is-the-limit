@@ -1,0 +1,6 @@
+<app-header (loggedIn)="checkIfLoggedIn($event)" />
+@if(!loggedIn) {
+<app-login (loggedIn)="checkIfLoggedIn($event)" />
+} @else {
+<router-outlet />
+}

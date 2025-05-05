@@ -1,0 +1,16 @@
+<div class="container">
+  <div class="booking-confirmation">
+    <h1>Booking Confirmed!</h1>
+    <h2>Your booking has been reserved.</h2>
+    <h2>You have 1 minute to pay or it will be canceled.</h2>
+    <h2>{{ displayTime }}</h2>
+    @if(isLoading) {
+    <div class="overlay">
+      <div class="spinner"></div>
+    </div>
+    }
+    <div class="button-container">
+      <button (click)="onPayment()">Payment</button>
+    </div>
+  </div>
+</div>

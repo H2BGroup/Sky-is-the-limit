@@ -1,0 +1,65 @@
+<div class="search-container">
+  <h2>Search for Flights</h2>
+  <form [formGroup]="filtersForm" (ngSubmit)="onSearch()" class="search-form">
+    <button type="button" (click)="onResetFilters()">Reset Filters</button>
+
+    <div class="input-group">
+      <label for="departure">Departure:</label>
+      <input
+        formControlName="departure"
+        type="text"
+        id="departure"
+        name="departure"
+        placeholder="Enter departure city"
+      />
+    </div>
+
+    <div class="input-group">
+      <label for="arrival">Arrival:</label>
+      <input
+        formControlName="arrival"
+        type="text"
+        id="arrival"
+        name="arrival"
+        placeholder="Enter arrival city"
+      />
+    </div>
+
+    <div class="input-group">
+      <label for="from-date">From Date:</label>
+      <input
+        formControlName="fromDate"
+        type="date"
+        id="from-date"
+        name="from-date"
+      />
+    </div>
+
+    <div class="input-group">
+      <label for="to-date">To Date:</label>
+      <input formControlName="toDate" type="date" id="to-date" name="to-date" />
+    </div>
+
+    <div class="input-group">
+      <label for="price">Max Price:</label>
+      <input
+        formControlName="price"
+        type="range"
+        id="price"
+        name="price"
+        min="100"
+        max="2000"
+        step="100"
+      />
+      <span id="price-value">1000</span>
+    </div>
+
+    <button type="submit" [disabled]="filtersForm.invalid">Search</button>
+  </form>
+  @if(filtersForm.invalid) {
+  <div class="error-message">
+    The form is invalid. @if(filtersForm.errors?.['invalidDates']) {
+    {{ filtersForm.errors!["invalidDates"] }} }
+  </div>
+  }
+</div>

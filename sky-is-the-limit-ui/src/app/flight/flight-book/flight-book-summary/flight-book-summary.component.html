@@ -1,0 +1,12 @@
+<div class="title">Summary</div>
+<div class="container">
+  <div *ngIf="isLoading" class="overlay">
+    <div class="spinner"></div>
+  </div>
+  <app-flight-details />
+  <app-booking-details />
+</div>
+<div class="button-container">
+  <button (click)="onBackToBookInfo()">Back</button>
+  <button (click)="onToConfirmation()">Confirm</button>
+</div>
