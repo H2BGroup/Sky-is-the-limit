@@ -20,36 +20,14 @@ namespace reservation_service
             var users = new User[]
             {
                 new User { Id="1", Name = "Alice", Surname = "Smith", Login = "alice", Password = "password"},
-                new User { Id="2", Name = "Bob", Surname = "Brown", Login = "bob", Password = "password"}
+                new User { Id="2", Name = "Bob", Surname = "Brown", Login = "bob", Password = "password"},
+                new User { Id="3", Name = "Charlie", Surname = "Davis", Login = "charlie", Password = "password"},
+                new User { Id="4", Name = "David", Surname = "Evans", Login = "david", Password = "password"}
             };
 
             foreach (var user in users)
             {
                 context.Users.Add(user);
-            }
-            context.SaveChanges();
-
-            var offers = new Offer[]
-            {
-                new Offer { Id="1", Origin = "Paris", Destination = "London", DepartureDate = DateTime.Now },
-                new Offer { Id="2", Origin = "London", Destination = "Paris", DepartureDate = DateTime.Now },
-                new Offer { Id="3", Origin = "Paris", Destination = "Berlin", DepartureDate = DateTime.Now }
-            };
-
-            foreach (var offer in offers)
-            {
-                context.Offers.Add(offer);
-            }
-            context.SaveChanges();
-
-            var bookings = new Booking[]
-            {
-                new Booking { Id="1", UserId = users[0].Id, OfferId = offers[0].Id, FirstClassSeats = 1, SecondClassSeats = 2, RegisteredBaggage = 3, Price = 100, Status = BookingStatus.Confirmed},
-            };
-
-            foreach (var booking in bookings)
-            {
-                context.Bookings.Add(booking);
             }
             context.SaveChanges();
         }
