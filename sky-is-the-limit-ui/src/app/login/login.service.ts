@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ConfigService } from '../config.service';
 
 interface LoginRequest {
   login: string;
@@ -12,7 +11,7 @@ interface LoginRequest {
   providedIn: 'root',
 })
 export class LoginService {
-  constructor(private http: HttpClient, private config: ConfigService) {}
+  constructor(private http: HttpClient) {}
 
   login(user: LoginRequest): Observable<any> {
     const headers = new HttpHeaders({
@@ -22,6 +21,6 @@ export class LoginService {
     body.set('login', user.login);
     body.set('password', user.password);
 
-    return this.http.post(this.config.userUrl, body.toString(), { headers });
+    return this.http.post('/api/User/login', body.toString(), { headers });
   }
 }

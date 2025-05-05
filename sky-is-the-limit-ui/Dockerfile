@@ -1,13 +1,11 @@
-FROM node:18-alpine
+FROM nginx:1.23.3
 
-WORKDIR /app
+ENV VERSION="1.0.0-SNAPSHOT"
 
-COPY package*.json ./
+EXPOSE 80
 
-RUN npm install
+ENV API_URL http://localhost:8080/api
 
-COPY . .
+ADD dist/sky-is-the-limit-ui/browser /usr/share/nginx/html/
+ADD docker/nginx/templates/ /etc/nginx/templates
 
-EXPOSE 4200
-
-CMD ["npm", "run", "start", "--", "--host", "0.0.0.0"]
