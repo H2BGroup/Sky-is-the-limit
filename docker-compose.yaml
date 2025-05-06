@@ -25,14 +25,13 @@ services:
       - rswd_188679_network
 
   mongo:
-    image: mongo:latest
+    image: mongo:4.4.0
     container_name: mongodb
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
     volumes:
       - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
-      - /mnt/block-storage/students/projects/students-swarm-services/RSWD_188679/mongo:/data/db
     networks:
       - rswd_188679_network
     deploy:
