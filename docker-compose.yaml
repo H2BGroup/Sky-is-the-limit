@@ -23,6 +23,28 @@ services:
           memory: 256M
     networks:
       - rswd_188679_network
+
+  mongo:
+    image: mongo:latest
+    container_name: mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+      - /mnt/block-storage/students/projects/students-swarm-services/RSWD_188679/mongo:/data/db
+    networks:
+      - rswd_188679_network
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 5
+        window: 70s
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
   
   reservation-service:
     image: jjayjohnny/rswd_188679_reservation_service:latest
@@ -79,7 +101,7 @@ services:
       mongo:
         condition: service_started
     environment:
-      MongoDBSettings__ConnectionString: mongodb://root:student@admin-mongodb_mongo:27017/rswd_188679_PaymentsDB
+      MongoDBSettings__ConnectionString: mongodb://user:password@mongo:27017/PaymentsDB
       ConnectionStrings__RabbitMQ: amqp://guest:guest@rabbitmq:5672
     deploy:
       restart_policy:
@@ -93,7 +115,6 @@ services:
           memory: 256M
     networks:
     - rswd_188679_network
-    - admin-mongodb_default
    
   api-gateway:
     image: jjayjohnny/rswd_188679_api_gateway:latest
@@ -136,7 +157,5 @@ services:
 networks:
   rswd_188679_network:
   admin-mysql_default:
-    external: true
-  admin-mongodb_default:
     external: true
     
