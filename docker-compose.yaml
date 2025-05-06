@@ -49,9 +49,6 @@ services:
   reservation-service:
     image: jjayjohnny/rswd_188679_reservation_service:latest
     container_name: reservation-service
-    depends_on:
-      - rabbitmq
-      - reservation-service-db
     environment:
       ConnectionStrings__RabbitMQ: amqp://guest:guest@rabbitmq:5672
       ConnectionStrings__MySql: Server=admin-mysql_db;Database=rswd_188679_reservation_service;User=root;Password=student;SslMode=none;
@@ -72,9 +69,6 @@ services:
   offer-service:
     image: jjayjohnny/rswd_188679_offer_service:latest
     container_name: offer-service
-    depends_on:
-      - rabbitmq
-      - offer-service-db
     environment:
       ConnectionStrings__RabbitMQ: amqp://guest:guest@rabbitmq:5672
       ConnectionStrings__MySql: Server=admin-mysql_db;Database=rswd_188679_offer_service;User=root;Password=student;SslMode=none;
@@ -95,11 +89,6 @@ services:
   payment-service:
     image: jjayjohnny/rswd_188679_payment_service:latest
     container_name: payment-service
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-      mongo:
-        condition: service_started
     environment:
       MongoDBSettings__ConnectionString: mongodb://user:password@mongo:27017/PaymentsDB
       ConnectionStrings__RabbitMQ: amqp://guest:guest@rabbitmq:5672
