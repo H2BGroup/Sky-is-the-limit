@@ -487,3 +487,5 @@ $RECYCLE.BIN/
 OfferService.sln
 offer-db/database/
 reservation-db/database/
+script/venv/
+tests/venv/
