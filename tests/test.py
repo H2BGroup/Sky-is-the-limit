@@ -36,18 +36,18 @@ def select_flight(driver):
 def select_details(driver):
     driver.find_element(By.ID, "first-class").clear()
     driver.find_element(By.ID, "first-class").send_keys("1")
-    time.sleep(2)
+    time.sleep(1)
     driver.find_element(By.ID, "economy-class").clear()
     driver.find_element(By.ID, "economy-class").send_keys("3")
-    time.sleep(2)
+    time.sleep(1)
     driver.find_element(By.ID, "carry-on-baggage").clear()
     driver.find_element(By.ID, "carry-on-baggage").send_keys("2")
-    time.sleep(2)
+    time.sleep(1)
     driver.find_element(By.ID, "checked-baggage").clear()
     driver.find_element(By.ID, "checked-baggage").send_keys("2")
-    time.sleep(2)
+    time.sleep(1)
     driver.find_element(By.ID, "priority-boarding").click()
-    time.sleep(2)
+    time.sleep(1)
     driver.find_element(By.XPATH, "//button[text()='Proceed']").click()
     time.sleep(2)
     driver.find_element(By.XPATH, "//button[normalize-space()='Confirm']").click()
@@ -58,7 +58,7 @@ def process_payment(driver):
 
     while True:
         driver.find_element(By.XPATH, "//button[normalize-space()='Payment']").click()
-
+        time.sleep(1)
         wait.until(EC.visibility_of_element_located((By.ID, "swal2-title")))
         message = driver.find_element(By.ID, "swal2-title").text.strip()
 
