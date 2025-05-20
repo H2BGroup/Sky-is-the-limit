@@ -12,7 +12,7 @@ namespace reservation_service
             context.Database.EnsureCreated();
 
             // Look for any existing data.
-            if (context.Users.Any() && context.Offers.Any() && context.Bookings.Any())
+            if (context.Users.Any())
             {
                 return;   // DB has been seeded
             }
