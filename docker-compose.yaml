@@ -113,4 +113,5 @@ services:
     restart: always
     environment:
       API_URL: http://api-gateway:8080/api
+      NOTIFICATION_URL: http://api-gateway:8080/notifications
     
