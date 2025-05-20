@@ -21,6 +21,8 @@ builder.Services.AddMassTransit(config => {
     config.AddConsumer<BookingCreatedConsumer>();
     config.AddConsumer<BookingExpiredConsumer>();
 
+    config.SetEndpointNameFormatter(new DefaultEndpointNameFormatter("offer-service", false));
+
     config.UsingRabbitMq((context, cfg) => {
         cfg.Host(builder.Configuration.GetConnectionString("RabbitMQ")!);
         cfg.ConfigureEndpoints(context);
@@ -28,6 +30,7 @@ builder.Services.AddMassTransit(config => {
 });
 builder.Services.AddTransient<Publisher>();
 builder.Services.AddScoped<OfferService.Services.OfferService>();
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 builder.Services.AddCors(options => {
     options.AddDefaultPolicy(policy => {
         policy.SetIsOriginAllowed(_ => true);
@@ -52,6 +55,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors();
 
 app.UseHttpsRedirection();
 

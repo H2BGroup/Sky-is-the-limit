@@ -1,0 +1,29 @@
+<div class="login-container">
+  <form (ngSubmit)="logIn()" [formGroup]="loginForm" class="login-form">
+    <div class="input-group">
+      <label for="username">Username:</label>
+      <input
+        type="text"
+        id="username"
+        formControlName="username"
+        placeholder="Enter your username"
+      />
+    </div>
+
+    <div class="input-group">
+      <label for="password">Password:</label>
+      <input
+        type="password"
+        id="password"
+        formControlName="password"
+        placeholder="Enter your password"
+      />
+    </div>
+
+    <button type="submit" [disabled]="loginForm.invalid">Log in</button>
+  </form>
+  @if(loginForm.invalid && loginForm.get('username')!.touched &&
+  loginForm.get('password')!.touched) {
+  <div class="error-message">Invalid login or password.</div>
+  }
+</div>

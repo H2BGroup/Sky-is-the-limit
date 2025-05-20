@@ -21,17 +21,42 @@ namespace payment_service.Controllers
             return Ok(payments);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Payment>> GetPayment(string id)
+        [HttpGet("{bookingId}")]
+        public async Task<ActionResult<Payment>> GetPayment(string bookingId)
         {
-            var payment = await _paymentService.GetPayment(id);
-
-            if (payment is null)
+            try
             {
-                return NotFound();
-            }
+                var payment = await _paymentService.GetPayment(bookingId);
 
-            return Ok(payment);
+                return Ok(payment);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpPut("{bookingId}")]
+        public async Task<ActionResult<Payment>> ProcessPayment(string bookingId)
+        {
+            try
+            {
+                var payment = await _paymentService.ProcessPayment(bookingId);
+
+                return Ok(payment);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(402);
+            }
         }
     }
 }

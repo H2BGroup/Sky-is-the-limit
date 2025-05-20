@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OfferService.Models.DomainEvents;
 
 namespace OfferService.Models
 {
@@ -10,5 +11,6 @@ namespace OfferService.Models
 
         public DbSet<Offer> Offers { get; set; }
 
+        public DbSet<DomainEvent> DomainEvents { get; set; }
     }
 }

@@ -63,7 +63,7 @@ def generate_offers(data):
 
     for entry in data:
         if len(entry["airlines"]) == 0:
-            airline = "Unknown Airline"
+            continue
         else:
             airline = entry["airlines"][0]
         hours, minutes = parse_duration(entry["duration"])
@@ -76,7 +76,7 @@ def generate_offers(data):
             offer_id = str(uuid.uuid4())
 
             offer = {
-                "Id": str(uuid.uuid4()),
+                "Id": offer_id,
                 "Departure": f'{entry["origin"]} ({entry["origin_iata"].upper()})',
                 "Arrival": f'{entry["destination"]} ({entry["destination_iata"].upper()})',
                 "Price": generate_price(hours, minutes, economy, first),

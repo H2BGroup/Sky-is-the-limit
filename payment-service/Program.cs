@@ -14,6 +14,10 @@ builder.Services.AddScoped<Publisher>();
 builder.Services.AddMassTransit(config =>
 {
     config.AddConsumer<BookingAvailableConsumer>();
+    config.AddConsumer<BookingCanceledConsumer>();
+    config.AddConsumer<BookingExpiredConsumer>();
+
+    config.SetEndpointNameFormatter(new DefaultEndpointNameFormatter("payment-service", false));
 
     config.UsingRabbitMq((ctx, cfg) =>
     {
@@ -30,6 +34,15 @@ builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options => {
+    options.AddDefaultPolicy(policy => {
+        policy.SetIsOriginAllowed(_ => true);
+        policy.AllowAnyHeader();
+        policy.AllowAnyMethod();
+        policy.AllowCredentials();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -39,6 +52,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors();
 
 app.UseHttpsRedirection();
 
