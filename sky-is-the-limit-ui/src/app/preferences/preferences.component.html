@@ -1,0 +1,15 @@
+<div class="container">
+  <h1>Customer Preferences</h1>
+
+  <div>
+    <h2>Averages</h2>
+    <h3>Average Baggages Selected: {{ averageBaggage | number : "1.0-1" }}</h3>
+    <h3>Average Seats Selected: {{ averageSeats | number : "1.0-1" }}</h3>
+    <h3>Average Price: {{ averagePrice | number : "1.0-2" }} zł</h3>
+    <h3>Insurance Percentage: {{ insurancePercentage | number : "1.0-0" }}%</h3>
+    <h3>
+      Priority Boarding Percentage:
+      {{ priorityBoardingPercentage | number : "1.0-0" }}%
+    </h3>
+  </div>
+</div>

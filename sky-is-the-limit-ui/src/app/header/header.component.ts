@@ -17,4 +17,7 @@ export class HeaderComponent {
     this.router.navigate(['/flights']);
     clearFormData();
   }
+  toPreferences() {
+    this.router.navigate(['/preferences']);
+  }
 }

@@ -1,0 +1,25 @@
+.container {
+  gap: 20px;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
+  border-radius: 12px;
+}
+
+h1 {
+  text-align: center;
+  color: #2c63c2;
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-size: 1.5rem;
+  color: #2c63c2;
+}
+
+h3 {
+  font-size: 1.2rem;
+  color: #2c63c2;
+}

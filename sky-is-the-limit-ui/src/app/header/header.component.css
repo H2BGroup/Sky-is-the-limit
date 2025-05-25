@@ -28,9 +28,16 @@ header {
   font-size: 1.5rem;
 }
 
-button {
+.logOutButton {
   position: absolute;
   right: 0.5rem;
+  top: 0.5rem;
+  padding: 0.7rem 1rem;
+}
+
+.preferencesButton {
+  position: absolute;
+  right: 6rem;
   top: 0.5rem;
   padding: 0.7rem 1rem;
 }

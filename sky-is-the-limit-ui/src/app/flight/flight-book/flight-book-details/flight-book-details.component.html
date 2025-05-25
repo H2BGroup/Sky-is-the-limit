@@ -1,4 +1,12 @@
 <div class="container">
+  @if(offerPurchasedMessageCounter) {
+  <div>
+    <h2>
+      This offer was recently purchased by
+      {{ offerPurchasedMessageCounter }} client(s).
+    </h2>
+  </div>
+  }
   <app-flight-details />
   <div *ngIf="flight" class="flight-book">
     <h1>Book flight</h1>
