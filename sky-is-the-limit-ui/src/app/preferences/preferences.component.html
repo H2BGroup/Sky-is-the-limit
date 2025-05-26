@@ -1,15 +1,122 @@
 <div class="container">
-  <h1>Customer Preferences</h1>
-
-  <div>
+  <div class="averages">
     <h2>Averages</h2>
-    <h3>Average Baggages Selected: {{ averageBaggage | number : "1.0-1" }}</h3>
-    <h3>Average Seats Selected: {{ averageSeats | number : "1.0-1" }}</h3>
-    <h3>Average Price: {{ averagePrice | number : "1.0-2" }} zł</h3>
-    <h3>Insurance Percentage: {{ insurancePercentage | number : "1.0-0" }}%</h3>
-    <h3>
-      Priority Boarding Percentage:
-      {{ priorityBoardingPercentage | number : "1.0-0" }}%
-    </h3>
+    <div class="row">
+      <div class="section">
+        <h3>Baggages</h3>
+        <div class="info-item">
+          <h2
+            class="animation"
+            [class.highlight]="animate"
+            (animationend)="onAnimationEnd()"
+          >
+            {{ averageBaggage | number : "1.0-1" }}
+          </h2>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3>Seats</h3>
+        <div class="info-item">
+          <h2
+            class="animation"
+            [class.highlight]="animate"
+            (animationend)="onAnimationEnd()"
+          >
+            {{ averageSeats | number : "1.0-1" }}
+          </h2>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3>Price</h3>
+        <div class="info-item">
+          <h2
+            class="animation"
+            [class.highlight]="animate"
+            (animationend)="onAnimationEnd()"
+          >
+            {{ averagePrice | number : "1.0-2" }} zł
+          </h2>
+        </div>
+      </div>
+    </div>
+    <h2>Percentages</h2>
+    <div class="row">
+      <div class="section">
+        <h3>Insurance</h3>
+        <div class="info-item">
+          <h2
+            class="animation"
+            [class.highlight]="animate"
+            (animationend)="onAnimationEnd()"
+          >
+            {{ insurancePercentage | number : "1.0-0" }}%
+          </h2>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3>Priority Boarding</h3>
+        <div class="info-item">
+          <h2
+            class="animation"
+            [class.highlight]="animate"
+            (animationend)="onAnimationEnd()"
+          >
+            {{ priorityBoardingPercentage | number : "1.0-0" }}%
+          </h2>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3>First Class</h3>
+        <div class="info-item">
+          <h2
+            class="animation"
+            [class.highlight]="animate"
+            (animationend)="onAnimationEnd()"
+          >
+            {{ firstClassPercentage | number : "1.0-0" }}%
+          </h2>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h2>Most Used Arlines</h2>
+      <table class="airlines-table">
+        <thead>
+          <tr>
+            <th>Airline</th>
+            <th>Number of reservations</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let airline of mostUsedAirlines">
+            <td>{{ airline.airline }}</td>
+            <td>{{ airline.count }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div>
+      <h2>Most Used Routes</h2>
+      <table class="airlines-table">
+        <thead>
+          <tr>
+            <th>Route</th>
+            <th>Number of reservations</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let route of mostUsedRoutes">
+            <td>{{ route.route }}</td>
+            <td>{{ route.count }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>

@@ -1,10 +1,15 @@
 <div class="container">
   @if(offerPurchasedMessageCounter) {
-  <div>
-    <h2>
-      This offer was recently purchased by
-      {{ offerPurchasedMessageCounter }} client(s).
-    </h2>
+  <div class="offer-purchased-message">
+    This offer was recently purchased by
+    <span
+      class="counter"
+      [class.highlight]="animateCounter"
+      (animationend)="onAnimationEnd()"
+    >
+      {{ offerPurchasedMessageCounter }}
+    </span>
+    client(s).
   </div>
   }
   <app-flight-details />

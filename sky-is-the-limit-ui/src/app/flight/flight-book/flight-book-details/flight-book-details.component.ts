@@ -35,8 +35,11 @@ export class FlightBookDetailsComponent implements OnInit, OnDestroy {
   private activatedRoute = inject(ActivatedRoute);
   private notificationsService = inject(NotificationsService);
 
-  protected totalPrice: number = 0;
   protected offerPurchasedMessageCounter: number = 0;
+  protected animateCounter: boolean = false;
+
+  protected totalPrice: number = 0;
+
   private basePrice: number = 0;
   private formSubscription!: Subscription;
 
@@ -53,8 +56,10 @@ export class FlightBookDetailsComponent implements OnInit, OnDestroy {
     const id = this.activatedRoute.snapshot.paramMap.get('id');
     if (id) {
       this.notificationsService.receiveBookingConfirmed((data) => {
-        if (offerPurchasedMessage(id, data))
+        if (offerPurchasedMessage(id, data)) {
+          this.triggerAnimation();
           this.offerPurchasedMessageCounter++;
+        }
       });
 
       this.flightService.getFlight(id).subscribe((flight) => {
@@ -81,6 +86,17 @@ export class FlightBookDetailsComponent implements OnInit, OnDestroy {
     if (this.formSubscription) {
       this.formSubscription.unsubscribe();
     }
+  }
+
+  triggerAnimation() {
+    this.animateCounter = false;
+    setTimeout(() => {
+      this.animateCounter = true;
+    }, 0);
+  }
+
+  onAnimationEnd() {
+    this.animateCounter = false;
   }
 
   setBookForm() {

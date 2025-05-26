@@ -2,10 +2,26 @@
   gap: 20px;
   justify-content: center;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
   flex-wrap: wrap;
   border-radius: 12px;
+}
+
+.averages {
+  margin: 20px 0;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background-color: #f8f9fa;
+  width: 90%;
+  text-align: center;
+  cursor: default;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
 }
 
 h1 {
@@ -22,4 +38,83 @@ h2 {
 h3 {
   font-size: 1.2rem;
   color: #2c63c2;
+  text-align: left;
+  padding: 10px 20px;
+  background-color: #f0f8ff;
+  border-radius: 12px 12px 0 0;
+  border: 2px solid #2c63c2;
+  margin: 0;
+}
+
+.section {
+  border: 2px solid #2c63c2;
+  border-radius: 12px;
+  padding: 5px;
+  margin-bottom: 20px;
+  background-color: #f0f8ff;
+  position: relative;
+  max-width: 30%;
+  flex: 1;
+  box-sizing: border-box;
+}
+
+.section h3 {
+  padding: 5px 15px;
+  border: none;
+  position: absolute;
+  top: -20px;
+  left: 20px;
+}
+
+.animation {
+  transition: all 1s ease;
+}
+
+.highlight {
+  animation: pulse 2s ease;
+}
+
+.airlines-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  border-radius: 12px;
+  overflow: hidden;
+  font-size: 0.95rem;
+}
+
+.airlines-table th,
+.airlines-table td {
+  padding: 12px 16px;
+  text-align: left;
+  width: 100px;
+}
+
+.airlines-table thead {
+  background-color: #2c63c2;
+  color: white;
+}
+
+.airlines-table tbody {
+  color: #2c63c2;
+  font-weight: 900;
+}
+
+.airlines-table tbody tr:nth-child(even) {
+  background-color: #e9f0fb;
+}
+
+.airlines-table tbody tr:nth-child(odd) {
+  background-color: #ffffff;
+}
+
+@keyframes pulse {
+  0% {
+    background-color: rgba(0, 255, 0, 0.3);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  100% {
+    background-color: transparent;
+  }
 }
