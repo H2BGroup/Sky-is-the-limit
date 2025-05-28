@@ -4,7 +4,6 @@ using reservation_service.Services;
 using MassTransit;
 using reservation_service.Events.Consumers;
 using reservation_service.Events;
-using reservation_service.Events.Notifications;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,8 +31,6 @@ builder.Services.AddMassTransit(config => {
         cfg.ConfigureEndpoints(context);
     });
 });
-builder.Services.AddSignalR();
-builder.Services.AddSingleton<INotificationSender, NotificationSender>();
 builder.Services.AddTransient<Publisher>();
 builder.Services.AddTransient<Sender>();
 builder.Services.AddScoped<IUserService, UserService>();
@@ -76,7 +73,5 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
-app.MapHub<NotificationHub>("/notifications");
 
 app.Run();

@@ -93,6 +93,17 @@ services:
     environment:
       MongoDBSettings__ConnectionString: mongodb://user:password@mongo:27017/PaymentsDB
       ConnectionStrings__RabbitMQ: amqp://guest:guest@rabbitmq:5672
+
+  notification-service:
+    build:
+      context: notification-service/.
+      dockerfile: Dockerfile
+    container_name: notification-service
+    restart: always
+    depends_on:
+      - rabbitmq
+    environment:
+      ConnectionStrings__RabbitMQ: amqp://guest:guest@rabbitmq:5672
    
   api-gateway:
     build:
