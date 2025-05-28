@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.SignalR;
 using shared.Events;
 
-namespace reservation_service.Events.Notifications;
+namespace notification_service.Events.Notifications;
 
 public class NotificationSender : INotificationSender
 {

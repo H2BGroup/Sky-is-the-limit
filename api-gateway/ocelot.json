@@ -4,7 +4,7 @@
         "DownstreamPathTemplate": "/notifications/negotiate",
         "DownstreamScheme": "http",
         "DownstreamHostAndPorts": [
-          { "Host": "reservation-service", "Port": 8080 }
+          { "Host": "notification-service", "Port": 8080 }
         ],
         "UpstreamPathTemplate": "/notifications/negotiate",
         "UpstreamHttpMethod": [ "POST" ]
@@ -14,7 +14,7 @@
         "DownstreamScheme": "ws",
         "UpstreamPathTemplate": "/notifications",
         "DownstreamHostAndPorts": [
-          { "Host": "reservation-service", "Port": 8080}
+          { "Host": "notification-service", "Port": 8080}
         ]
       },
       {
