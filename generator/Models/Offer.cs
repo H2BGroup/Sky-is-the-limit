@@ -5,33 +5,14 @@ namespace Generator.Models
 {
     public class Offer
     {
-        [Key]
         public string Id { get; set; }
-
-        [Required]
-        public string Origin { get; set; }
-
-        [Required]
-        public string Destination { get; set; }
-
-        [Required]
-        public DateTime DepartureDateTime { get; set; }
-
-        [Required]
-        public TimeSpan FlightLength { get; set; }
-
-        [Required]
+        public string Departure { get; set; }
+        public string Arrival { get; set; }
+        public DateTime Datetime { get; set; }
+        public string Duration { get; set; }
         public string Airline { get; set; }
-
-        [Required]
-        [Range(0, int.MaxValue)]
-        public int FirstClassSeats { get; set; }
-
-        [Required]
-        [Range(0, int.MaxValue)]
-        public int SecondClassSeats { get; set; }
-
-        [Required]
+        public int SeatsFirstClass { get; set; }
+        public int SeatsEconomy { get; set; }
         public double Price { get; set; }
     }
 }

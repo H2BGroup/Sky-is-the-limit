@@ -1,9 +1,11 @@
 ﻿using Generator.Models;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Json;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Generator.Services
@@ -25,7 +27,9 @@ namespace Generator.Services
             if (response?.Offers == null || response.Offers.Count == 0)
                 throw new InvalidOperationException("No offers returned from API.");
 
-            var randomOffer = response.Offers[_random.Next(response.Offers.Count)];
+            var randomOfferId = response.Offers[_random.Next(response.Offers.Count)].Id;
+
+            var randomOffer = await _httpClient.GetFromJsonAsync<Offer>($"offer/{randomOfferId}");
 
             return randomOffer;
         }
