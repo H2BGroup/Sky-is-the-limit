@@ -1,4 +1,5 @@
 using Generator;
+using Generator.Events;
 using Generator.Services;
 using MassTransit;
 
@@ -19,7 +20,7 @@ builder.Services.AddMassTransit(cfg =>
         rabbitCfg.ConfigureEndpoints(context);
     });
 });
-
+builder.Services.AddScoped<Publisher>();
 builder.Services.AddHttpClient<IOfferService, OfferService>(client =>
 {
     client.BaseAddress = new Uri("http://localhost:5000/api/");
