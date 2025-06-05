@@ -126,3 +126,15 @@ services:
       API_URL: http://api-gateway:8080/api
       NOTIFICATION_URL: http://api-gateway:8080/notifications
     
+  generatoor:
+    build:
+      context: generator/.
+      dockerfile: Dockerfile
+    container_name: generatoor
+    depends_on:
+      - rabbitmq
+    restart: always
+    environment:
+      ConnectionStrings__RabbitMQ: amqp://guest:guest@rabbitmq:5672
+      ConnectionStrings__ApiHost: http://api-gateway:8080/api/
+      GENERATOR_DELAY_SECONDS: "1"

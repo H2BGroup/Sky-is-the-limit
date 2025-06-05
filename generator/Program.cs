@@ -5,7 +5,6 @@ using MassTransit;
 
 var builder = Host.CreateApplicationBuilder(args);
 
-// MassTransit z RabbitMQ i konsumentami
 builder.Services.AddMassTransit(cfg =>
 {
     cfg.SetEndpointNameFormatter(new DefaultEndpointNameFormatter("generator", false));
@@ -23,7 +22,7 @@ builder.Services.AddMassTransit(cfg =>
 builder.Services.AddScoped<Publisher>();
 builder.Services.AddHttpClient<IOfferService, OfferService>(client =>
 {
-    client.BaseAddress = new Uri("http://localhost:5000/api/");
+    client.BaseAddress = new Uri(builder.Configuration.GetConnectionString("ApiHost")!);
 });
 
 builder.Services.AddHostedService<Worker>();

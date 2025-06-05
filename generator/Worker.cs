@@ -22,6 +22,8 @@ public class Worker : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        var delaySeconds = int.TryParse(Environment.GetEnvironmentVariable("GENERATOR_DELAY_SECONDS"), out var seconds) ? seconds : 5;
+
         while (!stoppingToken.IsCancellationRequested)
         {
             try
@@ -61,7 +63,7 @@ public class Worker : BackgroundService
                 _logger.LogError(ex, "An error occurred while fetching a random offer.");
             }
 
-            Task.Delay(TimeSpan.FromSeconds(5), stoppingToken).Wait(stoppingToken);
+            Task.Delay(TimeSpan.FromSeconds(delaySeconds), stoppingToken).Wait(stoppingToken);
         }
     }
 }
