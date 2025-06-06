@@ -20,6 +20,7 @@ builder.Services.AddMassTransit(config => {
     config.AddConsumer<BookingCancelledConsumer>();
     config.AddConsumer<BookingCreatedConsumer>();
     config.AddConsumer<BookingExpiredConsumer>();
+    config.AddConsumer<GeneratorOfferUpdatedConsumer>();
 
     config.SetEndpointNameFormatter(new DefaultEndpointNameFormatter("offer-service", false));
 
