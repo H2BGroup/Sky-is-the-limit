@@ -16,4 +16,9 @@ public class NotificationSender : INotificationSender
     {
         await _hubContext.Clients.All.SendAsync("BookingConfirmed", @event);
     }
+
+    public async Task NotifyOfferUpdated(OfferUpdatedEvent @event)
+    {
+        await _hubContext.Clients.All.SendAsync("OfferUpdated", @event);
+    }
 }
