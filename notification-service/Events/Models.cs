@@ -19,4 +19,9 @@ public class OfferUpdatedEvent
     public string? Origin { get; set; }
     public string? Destination { get; set; }
     public DateTime DepartureDate { get; set; }
+    public TimeSpan FlightLength { get; set; }
+    public string? Airline { get; set; }
+    public int FirstClassSeats { get; set; }
+    public int SecondClassSeats { get; set; }
+    public double Price { get; set; }
 }

@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddMassTransit(config =>
 {
     config.AddConsumer<BookingConfirmedConsumer>();
+    config.AddConsumer<OfferUpdatedConsumer>();
 
     config.SetEndpointNameFormatter(new DefaultEndpointNameFormatter("notification-service", false));
 
