@@ -20,7 +20,7 @@ export class HeaderComponent {
   }
 
   onHomePage() {
-    return this.router.url === '/flights';
+    return this.router.url === '/flights' || this.router.url === '/';
   }
 
   toFlights() {
