@@ -11,10 +11,27 @@ import { clearFormData } from '../flight/shared/clearFormData';
 export class HeaderComponent {
   @Output() loggedIn = new EventEmitter<boolean>();
   private router = inject(Router);
+
   logOut() {
     sessionStorage.removeItem('isLoggedIn');
     this.loggedIn.emit(false);
     this.router.navigate(['/flights']);
     clearFormData();
+  }
+
+  onHomePage() {
+    return this.router.url === '/flights' || this.router.url === '/';
+  }
+
+  toFlights() {
+    this.router.navigate(['/flights']);
+  }
+
+  toPreferences() {
+    this.router.navigate(['/preferences']);
+  }
+
+  toRecentChanges() {
+    this.router.navigate(['/changes']);
   }
 }

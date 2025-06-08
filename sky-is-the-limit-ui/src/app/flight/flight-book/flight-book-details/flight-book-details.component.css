@@ -98,6 +98,38 @@ input {
   left: 20px;
 }
 
+.offer-purchased-message {
+  position: absolute;
+  top: 9rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 255, 0, 0.2);
+  color: green;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.counter {
+  transition: all 1s ease;
+}
+
+.highlight {
+  animation: pulse 2s ease;
+}
+
+@keyframes pulse {
+  0% {
+    background-color: rgba(0, 255, 0, 0.3);
+    color: green;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  100% {
+    background-color: transparent;
+    color: inherit;
+  }
+}
+
 @media (max-width: 768px) {
   .flight-book {
     flex: 1 1 100%;

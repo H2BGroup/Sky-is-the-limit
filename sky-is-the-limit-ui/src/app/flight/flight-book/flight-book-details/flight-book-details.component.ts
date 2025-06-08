@@ -21,6 +21,8 @@ import {
 } from '../price-constants';
 import { FlightDetailsComponent } from '../shared/flight-details/flight-details.component';
 import { CommonModule } from '@angular/common';
+import { NotificationsService } from '../../../notifications.service';
+import { offerPurchasedMessage } from '../shared/offerPurchasedMessage';
 
 @Component({
   selector: 'app-flight-book-details',
@@ -31,7 +33,15 @@ import { CommonModule } from '@angular/common';
 export class FlightBookDetailsComponent implements OnInit, OnDestroy {
   private flightService = inject(FlightService);
   private activatedRoute = inject(ActivatedRoute);
+  private notificationsService = inject(NotificationsService);
+
+  protected offerPurchasedMessageCounter: number = 0;
+  protected animateCounter: boolean = false;
+
+  protected offerChanged: boolean = false;
+
   protected totalPrice: number = 0;
+
   private basePrice: number = 0;
   private formSubscription!: Subscription;
 
@@ -43,8 +53,20 @@ export class FlightBookDetailsComponent implements OnInit, OnDestroy {
   bookForm!: FormGroup;
 
   ngOnInit(): void {
+    this.notificationsService.startConnection();
+
     const id = this.activatedRoute.snapshot.paramMap.get('id');
     if (id) {
+      this.notificationsService.receiveBookingConfirmed((data) => {
+        if (offerPurchasedMessage(id, data)) {
+          this.triggerAnimation();
+          this.offerPurchasedMessageCounter++;
+        }
+      });
+      this.notificationsService.receiveOfferUpdated((data) => {
+        this.checkIfOfferChanged(data.id);
+      });
+
       this.flightService.getFlight(id).subscribe((flight) => {
         this.flight = flight;
         this.basePrice = flight.price;
@@ -65,10 +87,27 @@ export class FlightBookDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
+  checkIfOfferChanged(offerId: string) {
+    if (this.flight && this.flight.id === offerId) {
+      this.offerChanged = true;
+    }
+  }
+
   ngOnDestroy(): void {
     if (this.formSubscription) {
       this.formSubscription.unsubscribe();
     }
+  }
+
+  triggerAnimation() {
+    this.animateCounter = false;
+    setTimeout(() => {
+      this.animateCounter = true;
+    }, 0);
+  }
+
+  onAnimationEnd() {
+    this.animateCounter = false;
   }
 
   setBookForm() {
