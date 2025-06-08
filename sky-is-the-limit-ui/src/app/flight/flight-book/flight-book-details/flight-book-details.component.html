@@ -99,10 +99,12 @@
 
       <div class="button-container">
         <button (click)="OnBackToList()">Back to flights</button>
-        <button type="submit" [disabled]="!bookForm.valid">Proceed</button>
+        <button type="submit" [disabled]="!bookForm.valid || offerChanged">
+          Proceed
+        </button>
       </div>
     </form>
-    @if(bookForm.invalid) {
+    @if(bookForm.invalid || offerChanged) {
     <div class="error-message">
       The form is invalid.
       @if(bookForm.errors?.['notEnoughFirstClassSeatsLeft']) {
@@ -117,7 +119,8 @@
       {{ bookForm.errors!["maxCarryOnBaggagesExceeded"] }}
       } @if(bookForm.errors?.['maxCheckedBaggagesExceeded']) {
       {{ bookForm.errors!["maxCheckedBaggagesExceeded"] }}
-      }
+      } @if(offerChanged) { The offer has changed since you last viewed it.
+      Please refresh the page.}
     </div>
     }
   </div>

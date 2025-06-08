@@ -38,6 +38,8 @@ export class FlightBookDetailsComponent implements OnInit, OnDestroy {
   protected offerPurchasedMessageCounter: number = 0;
   protected animateCounter: boolean = false;
 
+  protected offerChanged: boolean = false;
+
   protected totalPrice: number = 0;
 
   private basePrice: number = 0;
@@ -61,6 +63,9 @@ export class FlightBookDetailsComponent implements OnInit, OnDestroy {
           this.offerPurchasedMessageCounter++;
         }
       });
+      this.notificationsService.receiveOfferUpdated((data) => {
+        this.checkIfOfferChanged(data.id);
+      });
 
       this.flightService.getFlight(id).subscribe((flight) => {
         this.flight = flight;
@@ -79,6 +84,12 @@ export class FlightBookDetailsComponent implements OnInit, OnDestroy {
           }
         );
       });
+    }
+  }
+
+  checkIfOfferChanged(offerId: string) {
+    if (this.flight && this.flight.id === offerId) {
+      this.offerChanged = true;
     }
   }
 
