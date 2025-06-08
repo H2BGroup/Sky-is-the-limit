@@ -30,4 +30,8 @@ export class HeaderComponent {
   toPreferences() {
     this.router.navigate(['/preferences']);
   }
+
+  toRecentChanges() {
+    this.router.navigate(['/changes']);
+  }
 }

@@ -5,6 +5,7 @@ import { FlightBookSummaryComponent } from './flight/flight-book/flight-book-sum
 import { FlightBookConfirmComponent } from './flight/flight-book/flight-book-confirm/flight-book-confirm.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { PreferencesComponent } from './preferences/preferences.component';
+import { ChangesComponent } from './changes/changes.component';
 
 export const routes: Routes = [
   {
@@ -21,6 +22,11 @@ export const routes: Routes = [
     path: 'preferences',
     component: PreferencesComponent,
     title: 'Sky is the limit - Preferences',
+  },
+  {
+    path: 'changes',
+    component: ChangesComponent,
+    title: 'Sky is the limit - Recent Changes',
   },
   {
     path: 'flights/:id/book',

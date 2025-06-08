@@ -22,4 +22,8 @@ export class NotificationsService {
   public receiveBookingConfirmed(callback: (data: any) => void) {
     this.hubConnection.on('BookingConfirmed', callback);
   }
+
+  public receiveOfferUpdated(callback: (data: any) => void) {
+    this.hubConnection.on('OfferUpdated', callback);
+  }
 }
