@@ -93,6 +93,17 @@ services:
     environment:
       MongoDBSettings__ConnectionString: mongodb://user:password@mongo:27017/PaymentsDB
       ConnectionStrings__RabbitMQ: amqp://guest:guest@rabbitmq:5672
+
+  notification-service:
+    build:
+      context: notification-service/.
+      dockerfile: Dockerfile
+    container_name: notification-service
+    restart: always
+    depends_on:
+      - rabbitmq
+    environment:
+      ConnectionStrings__RabbitMQ: amqp://guest:guest@rabbitmq:5672
    
   api-gateway:
     build:
@@ -115,3 +126,15 @@ services:
       API_URL: http://api-gateway:8080/api
       NOTIFICATION_URL: http://api-gateway:8080/notifications
     
+  generatoor:
+    build:
+      context: generator/.
+      dockerfile: Dockerfile
+    container_name: generatoor
+    depends_on:
+      - rabbitmq
+    restart: always
+    environment:
+      ConnectionStrings__RabbitMQ: amqp://guest:guest@rabbitmq:5672
+      ConnectionStrings__ApiHost: http://api-gateway:8080/api/
+      GENERATOR_DELAY_SECONDS: "1"

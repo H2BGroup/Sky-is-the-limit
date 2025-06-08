@@ -482,10 +482,3 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
-
-
-OfferService.sln
-offer-db/database/
-reservation-db/database/
-script/venv/
-tests/venv/
