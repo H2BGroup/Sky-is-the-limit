@@ -3,7 +3,19 @@
     <div class="title">
       <img src="/logo.jpg" class="logo" />
       Sky is the Limit
-      <button (click)="logOut()">Log out</button>
+      <button (click)="logOut()" class="logOutButton">Log out</button>
+      @if(onHomePage()) {
+      <button (click)="toPreferences()" class="preferencesHomeButton">
+        Preferences
+      </button>
+      <button (click)="toRecentChanges()" class="recentChangesButton">
+        Changes
+      </button>
+      } @else {
+      <button (click)="toFlights()" class="preferencesHomeButton">
+        To Flights
+      </button>
+      }
     </div>
     <a class="subtitle">Find your dream flights with us!</a>
   </div>

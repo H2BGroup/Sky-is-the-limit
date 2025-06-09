@@ -17,7 +17,7 @@ SCHEDULE_MAP = {
 BASE_URL = "http://localhost:5000/api/offer"
 
 def generate_dates_per_week(schedule):
-    start_date = datetime(2025, 5, 8)
+    start_date = datetime(2025, 6, 6)
     end_date = start_date + timedelta(days=30)
     day_numbers = {SCHEDULE_MAP[d] for d in schedule}
     current = start_date

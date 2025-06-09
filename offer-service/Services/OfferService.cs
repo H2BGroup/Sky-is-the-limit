@@ -48,7 +48,12 @@ namespace OfferService.Services
                 Id = offer.Id,
                 Origin = offer.Origin,
                 Destination = offer.Destination,
-                DepartureDate = offer.DepartureDateTime
+                DepartureDate = offer.DepartureDateTime,
+                FlightLength = offer.FlightLength,
+                Airline = offer.Airline,
+                FirstClassSeats = offer.FirstClassSeats,
+                SecondClassSeats = offer.SecondClassSeats,
+                Price = offer.Price
             });
             return offer;
         }

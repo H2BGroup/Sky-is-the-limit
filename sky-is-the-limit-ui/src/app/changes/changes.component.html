@@ -1,0 +1,27 @@
+<div class="container">
+  <div class="changes">
+    <h2>10 Recent Changes</h2>
+    <table class="changes-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Airline</th>
+          <th>Origin</th>
+          <th>Departure</th>
+          <th>Price</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let change of recentChanges; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ change.airline }}</td>
+          <td>{{ change.origin }}</td>
+          <td>{{ change.destination }}</td>
+          <td>{{ change.price }} zł</td>
+          <td>{{ change.departureDate | date : "dd MMMM yyyy, HH:mm" }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
