@@ -5,145 +5,136 @@ services:
     image: rabbitmq:management
     container_name: rabbitmq
     ports:
-      - '18869:15672'
+      - '5672:5672'
+      - '15672:15672'
     healthcheck:
       test: rabbitmq-diagnostics -q ping
       interval: 10s
       timeout: 5s
-      retries: 5
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 5
-        window: 70s
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 256M
-    networks:
-      - rswd_188679_network
+      retries: 3
+  
+  reservation-service-db:
+    image: mysql:5.7
+    container_name: reservation-service-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: reservation_service
+    volumes:
+      - ./reservation-db/database:/var/lib/mysql
+  
+  reservation-service:
+    build:
+      context: reservation-service/.
+      dockerfile: Dockerfile
+    container_name: reservation-service
+    depends_on:
+      - rabbitmq
+      - reservation-service-db
+    restart: always
+    environment:
+      ConnectionStrings__RabbitMQ: amqp://guest:guest@rabbitmq:5672
+      ConnectionStrings__MySql: Server=reservation-service-db;Database=reservation_service;User=root;Password=root;SslMode=none;
+
+  offer-service-db:
+    image: mysql:5.7
+    container_name: offer-service-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: offer_service
+    volumes:
+    #   - ./offer-db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./offer-db/database:/var/lib/mysql
+
+  offer-service:
+    build:
+      context: offer-service/.
+      dockerfile: Dockerfile
+    container_name: offer-service
+    depends_on:
+      - rabbitmq
+      - offer-service-db
+    restart: always
+    environment:
+      ConnectionStrings__RabbitMQ: amqp://guest:guest@rabbitmq:5672
+      ConnectionStrings__MySql: Server=offer-service-db;Database=offer_service;User=root;Password=root;SslMode=none;
 
   mongo:
-    image: mongo:4.4.0
+    image: mongo:latest
+    restart: always
     container_name: mongodb
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
     volumes:
       - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
-    networks:
-      - rswd_188679_network
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 5
-        window: 70s
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 512M
-  
-  reservation-service:
-    image: jjayjohnny/rswd_188679_reservation_service:latest
-    container_name: reservation-service
-    environment:
-      ConnectionStrings__RabbitMQ: amqp://guest:guest@rabbitmq:5672
-      ConnectionStrings__MySql: Server=admin-mysql_db;Database=rswd_188679_reservation_service;User=root;Password=student;SslMode=none;
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 5
-        window: 70s
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 256M
-    networks:
-      - rswd_188679_network
-      - admin-mysql_default
 
-  offer-service:
-    image: jjayjohnny/rswd_188679_offer_service:latest
-    container_name: offer-service
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
     environment:
-      ConnectionStrings__RabbitMQ: amqp://guest:guest@rabbitmq:5672
-      ConnectionStrings__MySql: Server=admin-mysql_db;Database=rswd_188679_offer_service;User=root;Password=student;SslMode=none;
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 5
-        window: 70s
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 256M
-    networks:
-    - rswd_188679_network
-    - admin-mysql_default
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017
+      ME_CONFIG_BASICAUTH: false
 
   payment-service:
-    image: jjayjohnny/rswd_188679_payment_service:latest
+    build:
+      context: payment-service/.
+      dockerfile: Dockerfile
     container_name: payment-service
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      mongo:
+        condition: service_started
+    restart: always
     environment:
       MongoDBSettings__ConnectionString: mongodb://user:password@mongo:27017/PaymentsDB
       ConnectionStrings__RabbitMQ: amqp://guest:guest@rabbitmq:5672
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 5
-        window: 70s
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 256M
-    networks:
-    - rswd_188679_network
+
+  notification-service:
+    build:
+      context: notification-service/.
+      dockerfile: Dockerfile
+    container_name: notification-service
+    restart: always
+    depends_on:
+      - rabbitmq
+    environment:
+      ConnectionStrings__RabbitMQ: amqp://guest:guest@rabbitmq:5672
    
   api-gateway:
-    image: jjayjohnny/rswd_188679_api_gateway:latest
+    build:
+      context: api-gateway/.
+      dockerfile: Dockerfile
     container_name: api-gateway
     ports:
-      - '18868:8080'
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 5
-        window: 70s
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 256M
-    networks:
-      - rswd_188679_network  
+      - '5000:8080'
+    restart: always
 
   frontend:
-    image: jjayjohnny/rswd_188679_frontend:latest
+    build:
+      context: sky-is-the-limit-ui/.
+      dockerfile: Dockerfile
     container_name: frontend
     ports:
-      - '18867:80'
+      - '8080:80'
+    restart: always
     environment:
       API_URL: http://api-gateway:8080/api
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 5
-        window: 70s
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 256M
-    networks:
-      - rswd_188679_network
-
-networks:
-  rswd_188679_network:
-  admin-mysql_default:
-    external: true
+      NOTIFICATION_URL: http://api-gateway:8080/notifications
     
+  generatoor:
+    build:
+      context: generator/.
+      dockerfile: Dockerfile
+    container_name: generatoor
+    depends_on:
+      - rabbitmq
+    restart: always
+    environment:
+      ConnectionStrings__RabbitMQ: amqp://guest:guest@rabbitmq:5672
+      ConnectionStrings__ApiHost: http://api-gateway:8080/api/
+      GENERATOR_DELAY_SECONDS: "1"
