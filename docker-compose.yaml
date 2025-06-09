@@ -103,6 +103,24 @@ services:
           memory: 256M
     networks:
     - rswd_188679_network
+  
+  notification-service:
+    image: jjayjohnny/rswd_188679_notification_service:latest
+    container_name: notification-service
+    environment:
+      ConnectionStrings__RabbitMQ: amqp://guest:guest@rabbitmq:5672
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 5
+        window: 70s
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+    networks:
+      - rswd_188679_network
    
   api-gateway:
     image: jjayjohnny/rswd_188679_api_gateway:latest
@@ -129,6 +147,7 @@ services:
       - '18867:80'
     environment:
       API_URL: http://api-gateway:8080/api
+      NOTIFICATION_URL: http://api-gateway:8080/notifications
     deploy:
       restart_policy:
         condition: on-failure
@@ -139,6 +158,26 @@ services:
         limits:
           cpus: '0.5'
           memory: 256M
+    networks:
+      - rswd_188679_network
+  
+  generator:
+    image: jjayjohnny/rswd_188679_generator:latest
+    container_name: generator
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 5
+        window: 70s
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+    environment:
+      ConnectionStrings__RabbitMQ: amqp://guest:guest@rabbitmq:5672
+      ConnectionStrings__ApiHost: http://api-gateway:8080/api/
+      GENERATOR_DELAY_SECONDS: "15"
     networks:
       - rswd_188679_network
 
